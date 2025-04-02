@@ -1,0 +1,226 @@
+@charset "UTF-8";
+/**
+ *------
+ * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
+ * Hutan implementation : © Timothée (Tisaac) Pecatte <tim.pecatte@gmail.com>, Pavel Kulagin (KuWizard) <kuzwiz@mail.ru>
+ *
+ * This code has been produced on the BGA studio platform for use on http://boardgamearena.com.
+ * See http://en.boardgamearena.com/#!doc/Studio for more information.
+ * -----
+ *
+ * hutan.css
+ *
+ * Hutan stylesheet
+ *
+ */
+.icon-container {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.08em;
+  font-size: 1em;
+}
+
+.brass-icon {
+  background: url("img/icons.png");
+  background-repeat: no-repeat;
+}
+.brass-icon.icon-animal-cassowary {
+  background: url("img/icons.png") no-repeat;
+  background-position: 11.8918918919% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-animal-hornbill {
+  background: url("img/icons.png") no-repeat;
+  background-position: 23.6756756757% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-animal-orangutan {
+  background: url("img/icons.png") no-repeat;
+  background-position: 35.4594594595% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-animal-rhinoceros {
+  background: url("img/icons.png") no-repeat;
+  background-position: 47.2432432432% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-animal-tiger {
+  background: url("img/icons.png") no-repeat;
+  background-position: 59.027027027% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-flower-black {
+  background: url("img/icons.png") no-repeat;
+  background-position: 70.8108108108% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-flower-blue {
+  background: url("img/icons.png") no-repeat;
+  background-position: 82.5945945946% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-flower-joker {
+  background: url("img/icons.png") no-repeat;
+  background-position: 97.5469728601% 2.2321428571%;
+  background-size: 1551.5151515152%;
+  aspect-ratio: 132/128;
+}
+.brass-icon.icon-flower-red {
+  background: url("img/icons.png") no-repeat;
+  background-position: 94.3783783784% 40.3147699758%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-flower-white {
+  background: url("img/icons.png") no-repeat;
+  background-position: 1.0810810811% 67.7966101695%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-flower-yellow {
+  background: url("img/icons.png") no-repeat;
+  background-position: 12.8648648649% 67.7966101695%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/198;
+}
+.brass-icon.icon-nok {
+  background: url("img/icons.png") no-repeat;
+  background-position: 93.9195979899% 17.3913043478%;
+  background-size: 3531.0344827586%;
+  aspect-ratio: 58/58;
+}
+.brass-icon.icon-ok {
+  background: url("img/icons.png") no-repeat;
+  background-position: 97.8391959799% 17.3913043478%;
+  background-size: 3531.0344827586%;
+  aspect-ratio: 58/58;
+}
+.brass-icon.icon-paw {
+  background: url("img/icons.png") no-repeat;
+  background-position: 78.3783783784% 2.4539877301%;
+  background-size: 1034.3434343434%;
+  aspect-ratio: 198/209;
+}
+.brass-icon.icon-player {
+  background: url("img/icons.png") no-repeat;
+  background-position: 67.4911660777% 58.2120582121%;
+  background-size: 3056.7164179104%;
+  aspect-ratio: 67/62;
+}
+.brass-icon.icon-tree {
+  background: url("img/icons.png") no-repeat;
+  background-position: 66.6486778198% 2.4844720497%;
+  background-size: 1050.2564102564%;
+  aspect-ratio: 195/219;
+}
+.brass-icon.icon-tree-1 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 12.0042872454% 2.7322404372%;
+  background-size: 1125.2747252747%;
+  aspect-ratio: 182/292;
+}
+.brass-icon.icon-tree-2 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 1.0729613734% 2.7359781122%;
+  background-size: 1113.0434782609%;
+  aspect-ratio: 184/293;
+}
+.brass-icon.icon-tree-3 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 22.8909188608% 2.6350461133%;
+  background-size: 1095.1871657754%;
+  aspect-ratio: 187/265;
+}
+.brass-icon.icon-tree-4 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 33.9046598822% 2.6315789474%;
+  background-size: 1131.4917127072%;
+  aspect-ratio: 181/264;
+}
+.brass-icon.icon-tree-5 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 44.6705945367% 2.541296061%;
+  background-size: 1131.4917127072%;
+  aspect-ratio: 181/237;
+}
+.brass-icon.icon-tree-6 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 55.4068522484% 2.538071066%;
+  background-size: 1137.7777777778%;
+  aspect-ratio: 180/236;
+}
+.brass-icon.icon-tree-7 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 1.0706638116% 40.758873929%;
+  background-size: 1137.7777777778%;
+  aspect-ratio: 180/207;
+}
+.brass-icon.icon-tree-8 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 89.3411890734% 2.4509803922%;
+  background-size: 1131.4917127072%;
+  aspect-ratio: 181/208;
+}
+.brass-icon.icon-zone-2 {
+  background: url("img/icons.png") no-repeat;
+  background-position: 72.3209751143% 56.9105691057%;
+  background-size: 2592.4050632911%;
+  aspect-ratio: 79/40;
+}
+.brass-icon.icon-zone-3I {
+  background: url("img/icons.png") no-repeat;
+  background-position: 78.8710512688% 56.9105691057%;
+  background-size: 1750.4273504274%;
+  aspect-ratio: 117/40;
+}
+.brass-icon.icon-zone-3L {
+  background: url("img/icons.png") no-repeat;
+  background-position: 36.9730827831% 59.1966173362%;
+  background-size: 2592.4050632911%;
+  aspect-ratio: 79/78;
+}
+.brass-icon.icon-zone-4L {
+  background: url("img/icons.png") no-repeat;
+  background-position: 42.827550492% 59.1966173362%;
+  background-size: 1750.4273504274%;
+  aspect-ratio: 117/78;
+}
+.brass-icon.icon-zone-4O {
+  background: url("img/icons.png") no-repeat;
+  background-position: 48.9588623667% 59.1966173362%;
+  background-size: 2592.4050632911%;
+  aspect-ratio: 79/78;
+}
+.brass-icon.icon-zone-4S {
+  background: url("img/icons.png") no-repeat;
+  background-position: 55.0491973071% 59.1966173362%;
+  background-size: 1750.4273504274%;
+  aspect-ratio: 117/78;
+}
+.brass-icon.icon-zone-4T {
+  background: url("img/icons.png") no-repeat;
+  background-position: 62.1439668566% 59.1966173362%;
+  background-size: 1750.4273504274%;
+  aspect-ratio: 117/78;
+}
+.brass-icon.icon-zone-5L {
+  background: url("img/icons.png") no-repeat;
+  background-position: 23.602484472% 61.7420066152%;
+  background-size: 1765.5172413793%;
+  aspect-ratio: 116/117;
+}
+.brass-icon.icon-zone-5S {
+  background: url("img/icons.png") no-repeat;
+  background-position: 30.6418219462% 61.7420066152%;
+  background-size: 1765.5172413793%;
+  aspect-ratio: 116/117;
+}
+
+/*# sourceMappingURL=hutan.css.map */
