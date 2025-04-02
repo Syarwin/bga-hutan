@@ -12,16 +12,14 @@ class Globals extends DB_Manager
 {
   protected static $initialized = false;
   protected static $variables = [
-    'callbackEngineResolved' => 'obj', // DO NOT MODIFY, USED IN ENGINE MODULE
-    'anytimeRecursion' => 'int', // DO NOT MODIFY, USED IN ENGINE MODULE
     'customTurnOrders' => 'obj', // DO NOT MODIFY, USED FOR CUSTOM TURN ORDER FEATURE
-    'engineWaitingDescriptionSuffix' => 'str', // DO NOT MODIFY, USED IN ENGINE MODULE
 
     'firstPlayer' => 'int',
     'turn' => 'int',
 
     // Setup
     'scenario' => 'int',
+    'boards' => 'obj',
 
     // Game options
     'solo' => 'bool',
@@ -35,6 +33,33 @@ class Globals extends DB_Manager
     $isSolo = count($players) == 1;
     static::setSolo($isSolo);
     static::setFirstPlayer(array_keys($players)[0]);
+
+    $scenario = $options[OPTION_SCENARIO] ?? 0;
+    static::setScenario($scenario);
+
+    // Setup boards
+    $boards = null;
+    switch ($options[OPTION_VARIANT]) {
+      case OPTION_VARIANT_FIRST_GAME:
+        $boards = FIRST_GAME_BOARDS;
+        break;
+
+      case OPTION_VARIANT_SCENARIO:
+        $boards = SCENARIOS[$scenario];
+        break;
+
+      default:
+        $boards = [];
+        // For each color
+        for ($board = 0; $board < 4; $board++) {
+          // Pick a random side (sides have same id +- 4)
+          $boardId = $board + 4 * bga_rand(0, 1);
+          $orientation = bga_rand(0, 3);
+          $boards[] = [$boardId, $orientation];
+        }
+        break;
+    }
+    static::setBoards($boards);
   }
 
 

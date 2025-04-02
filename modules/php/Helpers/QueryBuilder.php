@@ -57,8 +57,8 @@ class QueryBuilder extends \APP_DbObject
   {
     $keys = implode('`, `', array_values($fields));
     $this->sql = ($overwriteIfExists ?
-        'REPLACE' :
-        'INSERT') . " INTO `{$this->table}` (`{$keys}`) VALUES";
+      'REPLACE' :
+      'INSERT') . " INTO `{$this->table}` (`{$keys}`) VALUES";
     $this->insertPrimaryIndex = array_search($this->primary, $fields);
     return $this;
   }
@@ -124,8 +124,8 @@ class QueryBuilder extends \APP_DbObject
     $values = [];
     foreach ($fields as $column => $field) {
       $values[] = "`$column` = " . (is_null($field) ?
-          'NULL' :
-          "'$field'");
+        'NULL' :
+        "'$field'");
     }
 
     $this->operation = 'update';
@@ -476,8 +476,8 @@ class QueryBuilder extends \APP_DbObject
   public function limit($limit, $offset = null)
   {
     $this->limit = " LIMIT {$limit}" . (is_null($offset) ?
-        '' :
-        " OFFSET {$offset}");
+      '' :
+      " OFFSET {$offset}");
     return $this;
   }
 

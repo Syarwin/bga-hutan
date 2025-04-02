@@ -1,4 +1,5 @@
 <?php
+
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -18,11 +19,16 @@
 
 namespace Bga\Games\Hutan;
 
+use Bga\Games\Hutan\Core\Globals;
+use Bga\Games\Hutan\Managers\Players;
+use Bga\Games\Hutan\States\TurnTrait;
+use Bga\Games\Hutan\Core\Stats;
+
 require_once APP_GAMEMODULE_PATH . 'module/table/table.game.php';
 
-class Game extends Table
+class Game extends \Table
 {
-  use States\TurnTrait;
+  use TurnTrait;
 
   public static $instance = null;
 
@@ -48,10 +54,10 @@ class Game extends Table
    */
   protected function setupNewGame($players, $options = [])
   {
-//        Stats::setupNewGame();
-//        Players::setupNewGame($players, $options);
-//        Preferences::setupNewGame($players, $this->player_preferences);
-//        Globals::setupNewGame();
+    Stats::setupNewGame();
+    Players::setupNewGame($players, $options);
+    Globals::setupNewGame($players, $options);
+    $this->activeNextPlayer();
   }
 
   /*
@@ -59,8 +65,9 @@ class Game extends Table
    */
   public function getAllDatas(): array
   {
-//        $this->updateDBTableCustom();
-    return [];
+    return [
+      'boards' => Globals::getBoards(),
+    ];
   }
 
   /*
@@ -86,7 +93,7 @@ class Game extends Table
   public function zombieTurn($state, $active_player): void
   {
     switch ($state['name']) {
-      // TODO
+        // TODO
     }
   }
 
@@ -105,9 +112,9 @@ class Game extends Table
    */
   public function upgradeTableDb($from_version)
   {
-//        if ($from_version <= 2412211311) {
-//            $this->updateDBTableCustom();
-//        }
+    //        if ($from_version <= 2412211311) {
+    //            $this->updateDBTableCustom();
+    //        }
   }
 
   function updateDBTableCustom()
@@ -134,6 +141,6 @@ class Game extends Table
   public static function a()
   {
     // Method to debug something. Just type "a()" in the table chat
-//        var_dump(Stack::get());
+    //        var_dump(Stack::get());
   }
 }

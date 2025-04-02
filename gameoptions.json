@@ -4,15 +4,21 @@
     "default": 0,
     "values": {
       "0": {
-        "name": "Base"
+        "name": "First Game",
+        "firstgameonly": true,
+        "tmdisplay": "[First Game]",
+        "description": "Play with the recommended board layout for your first game"
       },
       "1": {
+        "name": "Base"
+      },
+      "2": {
         "name": "Advanced",
         "tmdisplay": "[Ecosystem]",
         "description": "Play with 5 Ecosystem cards",
         "nobeginner": true
       },
-      "2": {
+      "3": {
         "name": "Scenarios",
         "description": "Play a pre-built layout"
       }
@@ -24,7 +30,7 @@
       {
         "type": "otheroption",
         "id": 110,
-        "value": [2]
+        "value": [3]
       }
     ],
     "default": 0,

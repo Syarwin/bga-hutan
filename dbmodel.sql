@@ -8,7 +8,14 @@
 
 -- dbmodel.sql
 
-# ALTER TABLE `player` ADD `player_something` TINYINT DEFAULT 0;
+
+CREATE TABLE IF NOT EXISTS `cards`
+(
+    `card_id`       smallint unsigned NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (`card_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
 
 CREATE TABLE IF NOT EXISTS `global_variables`
 (
@@ -18,19 +25,13 @@ CREATE TABLE IF NOT EXISTS `global_variables`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS `user_preferences`
-(
-    `id`         int(10) unsigned NOT NULL AUTO_INCREMENT,
-    `player_id`  int(10)          NOT NULL,
-    `pref_id`    int(10)          NOT NULL,
-    `pref_value` int(10)          NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
 
-CREATE TABLE IF NOT EXISTS `cards`
-(
-    `card_id`       smallint unsigned NOT NULL AUTO_INCREMENT,
-    PRIMARY KEY (`card_id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+CREATE TABLE IF NOT EXISTS `log` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `move_id` int(10) NOT NULL,
+  `table` varchar(32) NOT NULL,
+  `primary` varchar(32) NOT NULL,
+  `type` varchar(32) NOT NULL,
+  `affected` JSON,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;

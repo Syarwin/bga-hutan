@@ -4,8 +4,7 @@ namespace Bga\Games\Hutan\Managers;
 
 use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Core\Globals;
-use Bga\Games\Hutan\Helpers\Collection;
-use Bga\Games\Hutan\Helpers\Utils;
+use Bga\Games\Hutan\Helpers\CachedDB_Manager;
 use Bga\Games\Hutan\Models\Player;
 
 /*
@@ -13,7 +12,7 @@ use Bga\Games\Hutan\Models\Player;
  *  a player is an instance of Player class
  */
 
-class Players extends \Bga\Games\Hutan\Helpers\DB_Manager
+class Players extends CachedDB_Manager
 {
   protected static string $table = 'player';
   protected static string $primary = 'player_id';
@@ -36,8 +35,9 @@ class Players extends \Bga\Games\Hutan\Helpers\DB_Manager
       'player_avatar',
     ]);
     $values = [];
+    $playerIndex = 0;
     foreach ($players as $pId => $player) {
-      $color = array_shift($colors);
+      $color = $colors[$playerIndex++];
       $values[] = [
         $pId,
         $color,
@@ -47,7 +47,8 @@ class Players extends \Bga\Games\Hutan\Helpers\DB_Manager
       ];
     }
     $query->values($values);
-    Game::get()->reattributeColorsBasedOnPreferences($players, $gameInfos['player_colors']);
+    self::invalidate();
+    Game::get()->reattributeColorsBasedOnPreferences($players, $colors);
     Game::get()->reloadPlayersBasicInfos();
   }
 

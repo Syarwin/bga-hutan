@@ -42,8 +42,8 @@ class Stats extends \Bga\Games\Hutan\Helpers\DB_Manager
     $existingStats = self::getAll()
       ->map(function ($stat) {
         return $stat['type'] . ',' . ($stat['pId'] == null ?
-            'table' :
-            'player');
+          'table' :
+          'player');
       })
       ->toArray();
 
@@ -95,8 +95,8 @@ class Stats extends \Bga\Games\Hutan\Helpers\DB_Manager
       ->filter(function ($stat) use ($id, $pId) {
         return $stat['type'] == $id &&
           ((is_null($pId) && is_null($stat['pId'])) || (!is_null($pId) && $stat['pId'] == (is_int($pId) ?
-                $pId :
-                $pId->getId())));
+            $pId :
+            $pId->getId())));
       })
       ->first()['value'];
   }

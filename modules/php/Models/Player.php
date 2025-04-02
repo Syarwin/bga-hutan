@@ -42,9 +42,9 @@ class Player extends DB_Model
     return Game::get()->getGameUserPreference($this->id, $prefId);
   }
 
-  public function getStat($name)
-  {
-    $name = 'get' . Utils::ucfirst($name);
-    return Stats::$name($this->id);
-  }
+  // public function getStat($name)
+  // {
+  //   $name = 'get' . Utils::ucfirst($name);
+  //   return Stats::$name($this->id);
+  // }
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  *------
  * BGA framework: © Gregory Isabelli <gisabelli@boardgamearena.com> & Emmanuel Colin <ecolin@boardgamearena.com>
@@ -14,6 +15,8 @@
  *
  */
 
+require_once "modules/php/constants.inc.php";
+
 $machinestates = [
     // The initial state. Please do not modify.
     ST_GAME_SETUP => [
@@ -22,6 +25,13 @@ $machinestates = [
         'type' => 'manager',
         'action' => 'stGameSetup',
         'transitions' => ['' => ST_GENERIC_STATE],
+    ],
+
+    ST_GENERIC_STATE => [
+        'name' => 'foo',
+        'description' => '',
+        'descriptionmyturn' => '',
+        'type' => 'activeplayer',
     ],
 
 
@@ -35,4 +45,3 @@ $machinestates = [
         'args' => 'argGameEnd',
     ],
 ];
-

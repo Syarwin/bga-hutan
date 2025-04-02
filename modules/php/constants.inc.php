@@ -1,6 +1,17 @@
 <?php
 
 /*
+ * Game options
+ */
+const OPTION_VARIANT = 110;
+const OPTION_VARIANT_FIRST_GAME = 0;
+const OPTION_VARIANT_BASE = 1;
+const OPTION_VARIANT_ADVANCED = 2;
+const OPTION_VARIANT_SCENARIO = 3;
+
+const OPTION_SCENARIO = 111;
+
+/*
  * State constants
  */
 const ST_GAME_SETUP = 1;
@@ -70,6 +81,13 @@ const NW = 0;
 const NE = 1;
 const SE = 2;
 const SW = 3;
+
+const FIRST_GAME_BOARDS = [
+  [BLUE_CIRCLE, SE],
+  [PINK_CIRCLE, SW],
+  [RED_CIRCLE, NW],
+  [WHITE_CIRCLE, NE],
+];
 
 const SCENARIOS = [
   // A

@@ -13,35 +13,25 @@
  *
  */
 var isDebug = window.location.host === 'studio.boardgamearena.com' || window.location.hash.indexOf('debug') > -1;
-var debug = isDebug ? console.info.bind(window.console) : function () {
-};
+var debug = isDebug ? console.info.bind(window.console) : function () {};
 
 define([
-    'dojo',
-    'dojo/_base/declare',
-    'ebg/counter',
-    g_gamethemeurl + 'modules/js/Core/game.js',
-    g_gamethemeurl + 'modules/js/playerboard.js',
-    g_gamethemeurl + 'modules/js/common.js',
-    g_gamethemeurl + 'modules/js/lexemes.js',
+  'dojo',
+  'dojo/_base/declare',
+  'ebg/counter',
+  g_gamethemeurl + 'modules/js/Core/game.js',
+  g_gamethemeurl + 'modules/js/playerboard.js',
+  g_gamethemeurl + 'modules/js/common.js',
+  g_gamethemeurl + 'modules/js/lexemes.js',
 ], function (dojo, declare) {
-    return declare(
-        'bgagame.hutan',
-        [
-            customgame.game,
-            state.playerboard,
-            state.common,
-            state.lexemes,
-        ],
-        {
-            constructor() {
-                // this.default_viewport = 'width=990';
-            },
+  return declare('bgagame.hutan', [customgame.game, hutan.playerboard, hutan.common, hutan.lexemes], {
+    constructor() {
+      // this.default_viewport = 'width=990';
+    },
 
-            setup(gamedatas) {
-                debug('SETUP', gamedatas);
-                this.inherited(arguments);
-            },
-        }
-    );
+    setup(gamedatas) {
+      debug('SETUP', gamedatas);
+      this.inherited(arguments);
+    },
+  });
 });

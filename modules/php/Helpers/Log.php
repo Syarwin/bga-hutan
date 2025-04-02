@@ -4,14 +4,10 @@ namespace Bga\Games\Hutan\Helpers;
 
 use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Core\Globals;
-use Bga\Games\Hutan\Core\PGlobals;
 use Bga\Games\Hutan\Core\Stats;
 use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Core\Engine;
 use Bga\Games\Hutan\Managers\Players;
-use Bga\Games\Hutan\Managers\ConstructionCards;
-use Bga\Games\Hutan\Managers\PlanCards;
-use Bga\Games\Hutan\Managers\Scribbles;
 
 /**
  * Class that allows to log DB change: useful for undo feature
@@ -26,6 +22,14 @@ use Bga\Games\Hutan\Managers\Scribbles;
  */
 class Log extends \APP_DbObject
 {
+  public static function clearCache()
+  {
+    Globals::fetch();
+    Players::invalidate();
+    // Stats::invalidate();
+    Notifications::resetCache();
+  }
+
   /**
    * Add an entry
    */
@@ -41,9 +45,6 @@ class Log extends \APP_DbObject
     }
     if (!isset($entry['primary'])) {
       $entry['primary'] = '';
-    }
-    if (!isset($entry['player_id'])) {
-      $entry['player_id'] = Players::getCurrentId(true) ?? 0;
     }
 
     if (is_null(static::$moveId)) {

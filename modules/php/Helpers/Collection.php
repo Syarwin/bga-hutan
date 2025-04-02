@@ -107,8 +107,7 @@ class Collection extends \ArrayObject
         return is_array($value)
           ?
           in_array($objValue, $value)
-          :
-          (strpos($value, '%') !== false
+          : (strpos($value, '%') !== false
             ?
             like_match($value, $objValue)
             :
@@ -128,8 +127,7 @@ class Collection extends \ArrayObject
         return is_array($value)
           ?
           !in_array($objValue, $value)
-          :
-          (strpos($value, '%') !== false
+          : (strpos($value, '%') !== false
             ?
             !like_match($value, $objValue)
             :

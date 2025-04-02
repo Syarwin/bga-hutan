@@ -2,7 +2,7 @@
 
 namespace Bga\Games\Hutan\Helpers;
 
-use APP_Object;
+use Bga\Games\Hutan\Helpers\Log;
 
 class DB_Manager
 {
