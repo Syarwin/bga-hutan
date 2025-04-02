@@ -6,7 +6,6 @@ use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Core\Globals;
 use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Helpers\Utils;
-use Bga\Games\Hutan\Models\Astra;
 use Bga\Games\Hutan\Models\Player;
 
 /*

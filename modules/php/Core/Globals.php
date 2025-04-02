@@ -10,48 +10,6 @@ use Bga\Games\Hutan\Helpers\DB_Manager;
 
 class Globals extends DB_Manager
 {
-  protected static $isReplayMode = false;
-
-  public static function setReplayMode()
-  {
-    static::$isReplayMode = true;
-  }
-
-  public static function unsetReplayMode()
-  {
-    static::$isReplayMode = false;
-  }
-
-  protected static $isDebugMode = false;
-
-  public static function setDebugMode()
-  {
-    static::$isDebugMode = true;
-  }
-
-  public static function unsetDebugMode()
-  {
-    static::$isDebugMode = false;
-  }
-
-  public static function setMode($v)
-  {
-    if ($v == \MODE_REPLAY) {
-      static::$isReplayMode = true;
-    } else {
-      Game::get()->setGameStateValue('mode', $v);
-    }
-  }
-
-  public static function getMode()
-  {
-    if (static::$isReplayMode) {
-      return \MODE_REPLAY;
-    } else {
-      return Game::get()->getGameStateValue('mode');
-    }
-  }
-
   protected static $initialized = false;
   protected static $variables = [
     'callbackEngineResolved' => 'obj', // DO NOT MODIFY, USED IN ENGINE MODULE
@@ -59,27 +17,27 @@ class Globals extends DB_Manager
     'customTurnOrders' => 'obj', // DO NOT MODIFY, USED FOR CUSTOM TURN ORDER FEATURE
     'engineWaitingDescriptionSuffix' => 'str', // DO NOT MODIFY, USED IN ENGINE MODULE
 
-    'gameEndTriggered' => 'bool',
     'firstPlayer' => 'int',
     'turn' => 'int',
-    'soloDraw' => 'int', // Are we on the first or second rotation of the deck?
 
     // Setup
     'scenario' => 'int',
 
     // Game options
     'solo' => 'bool',
-    'astraLevel' => 'int',
-
-    // Scenario 1
-    'triggeredSabotages' => 'obj',
-
-    // Scenario 2
-    'circledMultipliers' => 'obj',
-
-    // Scenario 3
-    'filledQuarters' => 'obj',
   ];
+
+  /*
+   * Setup new game
+   */
+  public static function setupNewGame($players, $options)
+  {
+    $isSolo = count($players) == 1;
+    static::setSolo($isSolo);
+    static::setFirstPlayer(array_keys($players)[0]);
+  }
+
+
 
   protected static string $table = 'global_variables';
   protected static string $primary = 'name';
@@ -196,9 +154,7 @@ class Globals extends DB_Manager
         }
 
         self::$data[$name] = $value;
-        if (Globals::getMode() == MODE_APPLY || self::$isDebugMode) {
-          self::DB()->update(['value' => \addslashes(\json_encode($value))], $name);
-        }
+        self::DB()->update(['value' => \addslashes(\json_encode($value))], $name);
         return $value;
       } elseif ($match[1] == 'inc') {
         if (self::$variables[$name] != 'int') {
@@ -221,22 +177,5 @@ class Globals extends DB_Manager
     debug_print_backtrace();
     throw new \feException(print_r("ERROR"));
     return null;
-  }
-
-  /*
-   * Setup new game
-   */
-  public static function setupNewGame($players, $options)
-  {
-    $isSolo = count($players) == 1;
-    static::setSolo($isSolo);
-    static::setFirstPlayer(array_keys($players)[0]);
-    static::setScenario($options[OPTION_ADVENTURE]);
-    static::setAstraLevel($options[OPTION_ASTRA_LEVEL] ?? 0);
-  }
-
-  public static function isStandard()
-  {
-    return !self::isSolo();
   }
 }
