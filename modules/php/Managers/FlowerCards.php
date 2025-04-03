@@ -31,16 +31,21 @@ class FlowerCards extends CachedPieces
 
   public static function setupNewGame()
   {
-    $cards = [];
     shuffle(self::$allCards);
-    foreach (self::$allCards as $flowerCardArray) {
-      $cards[] = [
-        'flower_a' => $flowerCardArray[0],
-        'flower_b' => $flowerCardArray[1] ?? null,
-        'flower_c' => $flowerCardArray[2] ?? null
-      ];
-    }
 
-    self::create($cards, 'deck');
+    $cardsInDeck = (Players::count() * 2) + 1;
+    // 9 decks
+    for ($i = 1; $i <= 9; $i++) {
+      $values = [];
+      for ($k = 0; $k < $cardsInDeck; $k++) {
+        $card = array_pop(self::$allCards);
+        $values[] = [
+          'flower_a' => $card[0],
+          'flower_b' => $card[1] ?? null,
+          'flower_c' => $card[2] ?? null
+        ];
+      }
+      self::create($values, 'deck' . $i);
+    }
   }
 }

@@ -12,11 +12,11 @@
 CREATE TABLE IF NOT EXISTS `flower_cards`
 (
     `card_id`       smallint unsigned NOT NULL AUTO_INCREMENT,
-    `card_location` varchar(32) DEFAULT '',
-    `card_state`    tinyint     DEFAULT 0,
-    `flower_a`      varchar(1)  DEFAULT NULL,
-    `flower_b`      varchar(1)  DEFAULT NULL,
-    `flower_c`      varchar(1)  DEFAULT NULL,
+    `card_location` varchar(5)        NOT NULL,
+    `card_state`    tinyint           NOT NULL,
+    `flower_a`      varchar(1) DEFAULT NULL,
+    `flower_b`      varchar(1) DEFAULT NULL,
+    `flower_c`      varchar(1) DEFAULT NULL,
     PRIMARY KEY (`card_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
