@@ -45,7 +45,7 @@ class Globals extends DB_Manager
         break;
 
       case OPTION_VARIANT_SCENARIO:
-        $boards = SCENARIOS[$scenario];
+        $boards = SCENARIOS[$scenario]['boards'];
         break;
 
       default:
