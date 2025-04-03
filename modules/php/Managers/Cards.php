@@ -25,6 +25,7 @@ class Cards extends CachedDB_Manager
       'flower_b',
       'flower_c',
     ]);
+    shuffle(self::$allCards);
     foreach (self::$allCards as $flowerCardArray) {
       if (count($flowerCardArray) < 3) {
         $flowerCardArray = [$flowerCardArray[0], $flowerCardArray[1] ?? null, $flowerCardArray[2] ?? null];
