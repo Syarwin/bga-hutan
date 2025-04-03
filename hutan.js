@@ -34,6 +34,7 @@ define([
       this.setupCentralArea();
 
       this.setupPlayers();
+      this.setupFlowerCards();
       this.inherited(arguments);
     },
 
@@ -42,6 +43,7 @@ define([
         'beforeend',
         `
   <div id="hutan-main-container">
+        <div id="flower-cards-container"></div>
   </div>
     
   <svg style="display:none" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="map-marker-question" role="img" xmlns="http://www.w3.org/2000/svg">
@@ -49,6 +51,62 @@ define([
     </symbol>
   </svg>`
       );
+    },
+
+    /////////////////////////////////
+    //      ____              _
+    //     / ___|__ _ _ __ __| |___
+    //    | |   / _` | '__/ _` / __|
+    //    | |__| (_| | | | (_| \__ \
+    //     \____\__,_|_|  \__,_|___/
+    /////////////////////////////////
+    // This function is refreshUI compatible
+    setupFlowerCards() {
+      let cardIds = this.gamedatas.flowerCards.map((card) => {
+        if (!$(`flower-card-${card.id}`)) {
+          this.addFlowerCard(card);
+        }
+
+        let o = $(`flower-card-${card.id}`);
+        if (!o) return null;
+
+        let container = this.getFlowerCardContainer(card);
+        if (o.parentNode != $(container)) {
+          dojo.place(o, container);
+        }
+
+        return card.id;
+      });
+      //   document.querySelectorAll('.hutan-card').forEach((oCard) => {
+      //     if (!cardIds.includes(oCard.getAttribute('data-id'))) {
+      //       this.destroy(oCard);
+      //     }
+      //   });
+    },
+
+    addFlowerCard(card, container = null) {
+      if (container == null) {
+        container = this.getFlowerCardContainer(card);
+      }
+
+      let o = this.place('tplFlowerCard', card, container);
+      if (o !== undefined) {
+        let tooltip = JSON.stringify(card);
+        this.addCustomTooltip(o.id, tooltip, { midSize: false });
+      }
+    },
+
+    getFlowerCardContainer(card) {
+      return $('flower-cards-container');
+    },
+
+    tplFlowerCard(card, tooltip = false) {
+      let uid = 'flower-card-' + card.id;
+      let type = card.flowers.join('');
+
+      return `<div id="${uid}" class='hutan-flower-card' data-id='${card.id}' data-type='${type}'>
+          <div class='hutan-flower-card-wrapper'></div>
+        </div>`;
     },
   });
 });

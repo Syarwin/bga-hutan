@@ -26,7 +26,8 @@
   font-style: normal;
   font-display: swap; }
 :root {
-  --hutanBoardScale: 0.6; }
+  --hutanBoardScale: 0.6;
+  --hutanFlowerCardScale: 0.5; }
 
 .icon-container {
   display: inline-block;
@@ -322,5 +323,125 @@
         .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="7"]::before {
           background-color: white;
           border-color: black; }
+
+.hutan-flower-card {
+  width: calc(var(--hutanFlowerCardScale) * 238px);
+  height: calc(var(--hutanFlowerCardScale) * 374px);
+  margin: 5px; }
+  .hutan-flower-card .hutan-flower-card-wrapper {
+    scale: var(--hutanFlowerCardScale);
+    transform-origin: top left;
+    width: 230px;
+    height: 366px;
+    background-image: url("img/flowers-cards.jpg");
+    background-size: 700% 400%;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px 1px black;
+    border: 4px solid white; }
+  .hutan-flower-card[data-type=""] .hutan-flower-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 0%; }
+  .hutan-flower-card[data-type="bb"] .hutan-flower-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 0%; }
+  .hutan-flower-card[data-type="yy"] .hutan-flower-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 0%; }
+  .hutan-flower-card[data-type="rr"] .hutan-flower-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 0%; }
+  .hutan-flower-card[data-type="ww"] .hutan-flower-card-wrapper {
+    background-position-x: 66.6666666667%;
+    background-position-y: 0%; }
+  .hutan-flower-card[data-type="gg"] .hutan-flower-card-wrapper {
+    background-position-x: 83.3333333333%;
+    background-position-y: 0%; }
+  .hutan-flower-card[data-type="by"] .hutan-flower-card-wrapper {
+    background-position-x: 100%;
+    background-position-y: 0%; }
+  .hutan-flower-card[data-type="rw"] .hutan-flower-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 33.3333333333%; }
+  .hutan-flower-card[data-type="bw"] .hutan-flower-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 33.3333333333%; }
+  .hutan-flower-card[data-type="bg"] .hutan-flower-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 33.3333333333%; }
+  .hutan-flower-card[data-type="gr"] .hutan-flower-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 33.3333333333%; }
+  .hutan-flower-card[data-type="br"] .hutan-flower-card-wrapper {
+    background-position-x: 66.6666666667%;
+    background-position-y: 33.3333333333%; }
+  .hutan-flower-card[data-type="yg"] .hutan-flower-card-wrapper {
+    background-position-x: 83.3333333333%;
+    background-position-y: 33.3333333333%; }
+  .hutan-flower-card[data-type="gw"] .hutan-flower-card-wrapper {
+    background-position-x: 100%;
+    background-position-y: 33.3333333333%; }
+  .hutan-flower-card[data-type="yr"] .hutan-flower-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 66.6666666667%; }
+  .hutan-flower-card[data-type="yw"] .hutan-flower-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 66.6666666667%; }
+  .hutan-flower-card[data-type="gbr"] .hutan-flower-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 66.6666666667%; }
+  .hutan-flower-card[data-type="ybr"] .hutan-flower-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 66.6666666667%; }
+  .hutan-flower-card[data-type="wbr"] .hutan-flower-card-wrapper {
+    background-position-x: 66.6666666667%;
+    background-position-y: 66.6666666667%; }
+  .hutan-flower-card[data-type="ybg"] .hutan-flower-card-wrapper {
+    background-position-x: 83.3333333333%;
+    background-position-y: 66.6666666667%; }
+  .hutan-flower-card[data-type="ybw"] .hutan-flower-card-wrapper {
+    background-position-x: 100%;
+    background-position-y: 66.6666666667%; }
+  .hutan-flower-card[data-type="gbw"] .hutan-flower-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 100%; }
+  .hutan-flower-card[data-type="yrg"] .hutan-flower-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 100%; }
+  .hutan-flower-card[data-type="wrg"] .hutan-flower-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 100%; }
+  .hutan-flower-card[data-type="wry"] .hutan-flower-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 100%; }
+  .hutan-flower-card[data-type="wgy"] .hutan-flower-card-wrapper {
+    background-position-x: 66.6666666667%;
+    background-position-y: 100%; }
+  .hutan-flower-card[data-type="j"] .hutan-flower-card-wrapper {
+    background-position-x: 83.3333333333%;
+    background-position-y: 100%; }
+
+#flower-cards-container {
+  display: flex;
+  flex-wrap: wrap; }
+
+#ebd-body.help-mode .tooltipable {
+  cursor: help; }
+
+.help-marker {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  z-index: 900;
+  border: 1px solid black;
+  border-radius: 50%; }
+  .help-marker svg {
+    width: 20px;
+    height: 20px; }
+
+#ebd-body:not(.help-mode) .help-marker {
+  opacity: 0;
+  pointer-events: none; }
 
 /*# sourceMappingURL=hutan.css.map */

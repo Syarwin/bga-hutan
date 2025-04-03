@@ -574,5 +574,90 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
       await new Promise((resolve) => setTimeout(resolve, duration));
       dojo.destroy(element);
     },
+
+    addCustomTooltip(id, html, config = {}) {
+      config = Object.assign(
+        {
+          delay: 400,
+          midSize: true,
+          forceRecreate: false,
+        },
+        config
+      );
+
+      // Handle dynamic content out of the box
+      let getContent = () => {
+        let content = typeof html === 'function' ? html() : html;
+        if (config.midSize) {
+          content = '<div class="midSizeDialog">' + content + '</div>';
+        }
+        return content;
+      };
+
+      if (this.tooltips[id] && !config.forceRecreate) {
+        this.tooltips[id].getContent = getContent;
+        return;
+      }
+
+      let tooltip = new dijit.Tooltip({
+        //        connectId: [id],
+        getContent,
+        position: this.defaultTooltipPosition,
+        showDelay: config.delay,
+      });
+      this.tooltips[id] = tooltip;
+      dojo.addClass(id, 'tooltipable');
+      dojo.place(
+        `<div class='help-marker'>
+            <svg><use href="#help-marker-svg" /></svg>
+          </div>`,
+        id
+      );
+
+      dojo.connect($(id), 'click', (evt) => {
+        if (!this._helpMode) {
+          tooltip.close();
+        } else {
+          evt.stopPropagation();
+
+          if (tooltip.state == 'SHOWING') {
+            this.closeCurrentTooltip();
+          } else {
+            this.closeCurrentTooltip();
+            tooltip.open($(id));
+            this._displayedTooltip = tooltip;
+          }
+        }
+      });
+
+      tooltip.showTimeout = null;
+      dojo.connect($(id), 'mouseenter', (evt) => {
+        evt.stopPropagation();
+        if (!this._helpMode && !this._dragndropMode) {
+          if (tooltip.showTimeout != null) clearTimeout(tooltip.showTimeout);
+
+          tooltip.showTimeout = setTimeout(() => {
+            if ($(id)) tooltip.open($(id));
+          }, config.delay);
+        }
+      });
+
+      dojo.connect($(id), 'mouseleave', (evt) => {
+        evt.stopPropagation();
+        if (!this._helpMode && !this._dragndropMode) {
+          tooltip.close();
+          if (tooltip.showTimeout != null) clearTimeout(tooltip.showTimeout);
+        }
+      });
+    },
+
+    destroy(elem) {
+      if (this.tooltips[elem.id]) {
+        this.tooltips[elem.id].destroy();
+        delete this.tooltips[elem.id];
+      }
+
+      elem.remove();
+    },
   });
 });

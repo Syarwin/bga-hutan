@@ -9,15 +9,14 @@
 -- dbmodel.sql
 
 
-CREATE TABLE IF NOT EXISTS `cards`
+CREATE TABLE IF NOT EXISTS `flower_cards`
 (
     `card_id`       smallint unsigned NOT NULL AUTO_INCREMENT,
+    `card_location` varchar(32) DEFAULT '',
+    `card_state`    tinyint     DEFAULT 0,
     `flower_a`      varchar(1)  DEFAULT NULL,
     `flower_b`      varchar(1)  DEFAULT NULL,
     `flower_c`      varchar(1)  DEFAULT NULL,
-    -- TODO: Remove card_location and card_state defaults, add NOT NULL and define those fields in the setup of Cards.php
-    `card_location` varchar(32) DEFAULT '',
-    `card_state`    tinyint     DEFAULT 0,
     PRIMARY KEY (`card_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
