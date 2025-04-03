@@ -13,214 +13,314 @@
  * Hutan stylesheet
  *
  */
+@font-face {
+  font-family: "DK Sensory Overload";
+  src: url("img/fonts/DKSensoryOverload.woff2") format("woff2"), url("img/fonts/DKSensoryOverload.woff") format("woff"), url("img/fonts/DKSensoryOverload.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; }
+@font-face {
+  font-family: "Hawlers Two";
+  src: url("img/fonts/HawlersTwo-Rough.woff2") format("woff2"), url("img/fonts/HawlersTwo-Rough.woff") format("woff"), url("img/fonts/HawlersTwo-Rough.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap; }
+:root {
+  --hutanBoardScale: 0.6; }
+
 .icon-container {
   display: inline-block;
   vertical-align: middle;
   margin: 0 0.08em;
-  font-size: 1em;
-}
+  font-size: 1em; }
 
-.brass-icon {
+.hutan-icon {
   background: url("img/icons.png");
-  background-repeat: no-repeat;
-}
-.brass-icon.icon-animal-cassowary {
-  background: url("img/icons.png") no-repeat;
-  background-position: 11.8918918919% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-animal-hornbill {
-  background: url("img/icons.png") no-repeat;
-  background-position: 23.6756756757% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-animal-orangutan {
-  background: url("img/icons.png") no-repeat;
-  background-position: 35.4594594595% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-animal-rhinoceros {
-  background: url("img/icons.png") no-repeat;
-  background-position: 47.2432432432% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-animal-tiger {
-  background: url("img/icons.png") no-repeat;
-  background-position: 59.027027027% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-flower-black {
-  background: url("img/icons.png") no-repeat;
-  background-position: 70.8108108108% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-flower-blue {
-  background: url("img/icons.png") no-repeat;
-  background-position: 82.5945945946% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-flower-joker {
-  background: url("img/icons.png") no-repeat;
-  background-position: 97.5469728601% 2.2321428571%;
-  background-size: 1551.5151515152%;
-  aspect-ratio: 132/128;
-}
-.brass-icon.icon-flower-red {
-  background: url("img/icons.png") no-repeat;
-  background-position: 94.3783783784% 40.3147699758%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-flower-white {
-  background: url("img/icons.png") no-repeat;
-  background-position: 1.0810810811% 67.7966101695%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-flower-yellow {
-  background: url("img/icons.png") no-repeat;
-  background-position: 12.8648648649% 67.7966101695%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/198;
-}
-.brass-icon.icon-nok {
-  background: url("img/icons.png") no-repeat;
-  background-position: 93.9195979899% 17.3913043478%;
-  background-size: 3531.0344827586%;
-  aspect-ratio: 58/58;
-}
-.brass-icon.icon-ok {
-  background: url("img/icons.png") no-repeat;
-  background-position: 97.8391959799% 17.3913043478%;
-  background-size: 3531.0344827586%;
-  aspect-ratio: 58/58;
-}
-.brass-icon.icon-paw {
-  background: url("img/icons.png") no-repeat;
-  background-position: 78.3783783784% 2.4539877301%;
-  background-size: 1034.3434343434%;
-  aspect-ratio: 198/209;
-}
-.brass-icon.icon-player {
-  background: url("img/icons.png") no-repeat;
-  background-position: 67.4911660777% 58.2120582121%;
-  background-size: 3056.7164179104%;
-  aspect-ratio: 67/62;
-}
-.brass-icon.icon-tree {
-  background: url("img/icons.png") no-repeat;
-  background-position: 66.6486778198% 2.4844720497%;
-  background-size: 1050.2564102564%;
-  aspect-ratio: 195/219;
-}
-.brass-icon.icon-tree-1 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 12.0042872454% 2.7322404372%;
-  background-size: 1125.2747252747%;
-  aspect-ratio: 182/292;
-}
-.brass-icon.icon-tree-2 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 1.0729613734% 2.7359781122%;
-  background-size: 1113.0434782609%;
-  aspect-ratio: 184/293;
-}
-.brass-icon.icon-tree-3 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 22.8909188608% 2.6350461133%;
-  background-size: 1095.1871657754%;
-  aspect-ratio: 187/265;
-}
-.brass-icon.icon-tree-4 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 33.9046598822% 2.6315789474%;
-  background-size: 1131.4917127072%;
-  aspect-ratio: 181/264;
-}
-.brass-icon.icon-tree-5 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 44.6705945367% 2.541296061%;
-  background-size: 1131.4917127072%;
-  aspect-ratio: 181/237;
-}
-.brass-icon.icon-tree-6 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 55.4068522484% 2.538071066%;
-  background-size: 1137.7777777778%;
-  aspect-ratio: 180/236;
-}
-.brass-icon.icon-tree-7 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 1.0706638116% 40.758873929%;
-  background-size: 1137.7777777778%;
-  aspect-ratio: 180/207;
-}
-.brass-icon.icon-tree-8 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 89.3411890734% 2.4509803922%;
-  background-size: 1131.4917127072%;
-  aspect-ratio: 181/208;
-}
-.brass-icon.icon-zone-2 {
-  background: url("img/icons.png") no-repeat;
-  background-position: 72.3209751143% 56.9105691057%;
-  background-size: 2592.4050632911%;
-  aspect-ratio: 79/40;
-}
-.brass-icon.icon-zone-3I {
-  background: url("img/icons.png") no-repeat;
-  background-position: 78.8710512688% 56.9105691057%;
-  background-size: 1750.4273504274%;
-  aspect-ratio: 117/40;
-}
-.brass-icon.icon-zone-3L {
-  background: url("img/icons.png") no-repeat;
-  background-position: 36.9730827831% 59.1966173362%;
-  background-size: 2592.4050632911%;
-  aspect-ratio: 79/78;
-}
-.brass-icon.icon-zone-4L {
-  background: url("img/icons.png") no-repeat;
-  background-position: 42.827550492% 59.1966173362%;
-  background-size: 1750.4273504274%;
-  aspect-ratio: 117/78;
-}
-.brass-icon.icon-zone-4O {
-  background: url("img/icons.png") no-repeat;
-  background-position: 48.9588623667% 59.1966173362%;
-  background-size: 2592.4050632911%;
-  aspect-ratio: 79/78;
-}
-.brass-icon.icon-zone-4S {
-  background: url("img/icons.png") no-repeat;
-  background-position: 55.0491973071% 59.1966173362%;
-  background-size: 1750.4273504274%;
-  aspect-ratio: 117/78;
-}
-.brass-icon.icon-zone-4T {
-  background: url("img/icons.png") no-repeat;
-  background-position: 62.1439668566% 59.1966173362%;
-  background-size: 1750.4273504274%;
-  aspect-ratio: 117/78;
-}
-.brass-icon.icon-zone-5L {
-  background: url("img/icons.png") no-repeat;
-  background-position: 23.602484472% 61.7420066152%;
-  background-size: 1765.5172413793%;
-  aspect-ratio: 116/117;
-}
-.brass-icon.icon-zone-5S {
-  background: url("img/icons.png") no-repeat;
-  background-position: 30.6418219462% 61.7420066152%;
-  background-size: 1765.5172413793%;
-  aspect-ratio: 116/117;
-}
+  background-repeat: no-repeat; }
+  .hutan-icon.icon-animal-cassowary {
+    background: url("img/icons.png") no-repeat;
+    background-position: 11.891891891891893% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-animal-hornbill {
+    background: url("img/icons.png") no-repeat;
+    background-position: 23.675675675675674% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-animal-orangutan {
+    background: url("img/icons.png") no-repeat;
+    background-position: 35.45945945945946% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-animal-rhinoceros {
+    background: url("img/icons.png") no-repeat;
+    background-position: 47.24324324324324% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-animal-tiger {
+    background: url("img/icons.png") no-repeat;
+    background-position: 59.027027027027025% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-flower-black {
+    background: url("img/icons.png") no-repeat;
+    background-position: 70.8108108108108% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-flower-blue {
+    background: url("img/icons.png") no-repeat;
+    background-position: 82.5945945945946% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-flower-joker {
+    background: url("img/icons.png") no-repeat;
+    background-position: 97.54697286012527% 2.232142857142857%;
+    background-size: 1551.5151515151515%;
+    aspect-ratio: 132 / 128; }
+  .hutan-icon.icon-flower-red {
+    background: url("img/icons.png") no-repeat;
+    background-position: 94.37837837837839% 40.31476997578692%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-flower-white {
+    background: url("img/icons.png") no-repeat;
+    background-position: 1.0810810810810811% 67.79661016949152%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-flower-yellow {
+    background: url("img/icons.png") no-repeat;
+    background-position: 12.864864864864863% 67.79661016949152%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 198; }
+  .hutan-icon.icon-nok {
+    background: url("img/icons.png") no-repeat;
+    background-position: 93.91959798994975% 17.391304347826086%;
+    background-size: 3531.0344827586205%;
+    aspect-ratio: 58 / 58; }
+  .hutan-icon.icon-ok {
+    background: url("img/icons.png") no-repeat;
+    background-position: 97.8391959798995% 17.391304347826086%;
+    background-size: 3531.0344827586205%;
+    aspect-ratio: 58 / 58; }
+  .hutan-icon.icon-paw {
+    background: url("img/icons.png") no-repeat;
+    background-position: 78.37837837837837% 2.4539877300613497%;
+    background-size: 1034.3434343434344%;
+    aspect-ratio: 198 / 209; }
+  .hutan-icon.icon-player {
+    background: url("img/icons.png") no-repeat;
+    background-position: 67.49116607773851% 58.21205821205822%;
+    background-size: 3056.7164179104475%;
+    aspect-ratio: 67 / 62; }
+  .hutan-icon.icon-tree {
+    background: url("img/icons.png") no-repeat;
+    background-position: 66.64867781975175% 2.484472049689441%;
+    background-size: 1050.2564102564102%;
+    aspect-ratio: 195 / 219; }
+  .hutan-icon.icon-tree-1 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 12.004287245444802% 2.73224043715847%;
+    background-size: 1125.2747252747254%;
+    aspect-ratio: 182 / 292; }
+  .hutan-icon.icon-tree-2 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 1.0729613733905579% 2.7359781121751023%;
+    background-size: 1113.0434782608695%;
+    aspect-ratio: 184 / 293; }
+  .hutan-icon.icon-tree-3 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 22.89091886082751% 2.635046113306983%;
+    background-size: 1095.187165775401%;
+    aspect-ratio: 187 / 265; }
+  .hutan-icon.icon-tree-4 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 33.9046598821639% 2.631578947368421%;
+    background-size: 1131.4917127071822%;
+    aspect-ratio: 181 / 264; }
+  .hutan-icon.icon-tree-5 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 44.670594536689876% 2.5412960609911055%;
+    background-size: 1131.4917127071822%;
+    aspect-ratio: 181 / 237; }
+  .hutan-icon.icon-tree-6 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 55.406852248394% 2.5380710659898478%;
+    background-size: 1137.7777777777778%;
+    aspect-ratio: 180 / 236; }
+  .hutan-icon.icon-tree-7 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 1.070663811563169% 40.758873929008566%;
+    background-size: 1137.7777777777778%;
+    aspect-ratio: 180 / 207; }
+  .hutan-icon.icon-tree-8 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 89.34118907337975% 2.450980392156863%;
+    background-size: 1131.4917127071822%;
+    aspect-ratio: 181 / 208; }
+  .hutan-icon.icon-zone-2 {
+    background: url("img/icons.png") no-repeat;
+    background-position: 72.3209751142712% 56.91056910569105%;
+    background-size: 2592.4050632911394%;
+    aspect-ratio: 79 / 40; }
+  .hutan-icon.icon-zone-3I {
+    background: url("img/icons.png") no-repeat;
+    background-position: 78.87105126877265% 56.91056910569105%;
+    background-size: 1750.4273504273506%;
+    aspect-ratio: 117 / 40; }
+  .hutan-icon.icon-zone-3L {
+    background: url("img/icons.png") no-repeat;
+    background-position: 36.97308278313865% 59.19661733615222%;
+    background-size: 2592.4050632911394%;
+    aspect-ratio: 79 / 78; }
+  .hutan-icon.icon-zone-4L {
+    background: url("img/icons.png") no-repeat;
+    background-position: 42.82755049197307% 59.19661733615222%;
+    background-size: 1750.4273504273506%;
+    aspect-ratio: 117 / 78; }
+  .hutan-icon.icon-zone-4O {
+    background: url("img/icons.png") no-repeat;
+    background-position: 48.9588623666836% 59.19661733615222%;
+    background-size: 2592.4050632911394%;
+    aspect-ratio: 79 / 78; }
+  .hutan-icon.icon-zone-4S {
+    background: url("img/icons.png") no-repeat;
+    background-position: 55.049197307094765% 59.19661733615222%;
+    background-size: 1750.4273504273506%;
+    aspect-ratio: 117 / 78; }
+  .hutan-icon.icon-zone-4T {
+    background: url("img/icons.png") no-repeat;
+    background-position: 62.14396685655102% 59.19661733615222%;
+    background-size: 1750.4273504273506%;
+    aspect-ratio: 117 / 78; }
+  .hutan-icon.icon-zone-5L {
+    background: url("img/icons.png") no-repeat;
+    background-position: 23.60248447204969% 61.742006615215%;
+    background-size: 1765.5172413793102%;
+    aspect-ratio: 116 / 117; }
+  .hutan-icon.icon-zone-5S {
+    background: url("img/icons.png") no-repeat;
+    background-position: 30.641821946169774% 61.742006615215%;
+    background-size: 1765.5172413793102%;
+    aspect-ratio: 116 / 117; }
+
+#hutan-main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap; }
+
+.hutan-player-board-resizable {
+  width: calc(var(--hutanBoardScale) * 1024px);
+  height: calc(var(--hutanBoardScale) * 1064px);
+  margin: 5px; }
+  .hutan-player-board-resizable .hutan-player-board {
+    scale: var(--hutanBoardScale);
+    transform-origin: top left;
+    width: 1020px;
+    height: 1060px;
+    border: 2px solid black;
+    position: relative;
+    background: #ebd5bd;
+    box-shadow: 1px 1px 3px black;
+    border-radius: 12px;
+    overflow: hidden; }
+    .hutan-player-board-resizable .hutan-player-board .hutan-board-player-name {
+      height: 39px;
+      font-weight: bold;
+      border-bottom: 1px solid black;
+      font-family: "Hawlers Two";
+      font-size: 30px;
+      line-height: 48px;
+      text-align: center; }
+    .hutan-player-board-resizable .hutan-player-board .hutan-board-grid {
+      width: 1020px;
+      height: 1020px;
+      display: grid;
+      grid-template-columns: repeat(6, 170px);
+      grid-template-rows: repeat(6, 170px); }
+      .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell {
+        background: transparent;
+        border: 2px solid transparent;
+        box-sizing: border-box;
+        width: 170px;
+        height: 170px;
+        position: relative;
+        z-index: 2; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell:hover {
+          background: rgba(0, 0, 255, 0.4); }
+      .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant {
+        grid-row-end: span 3;
+        grid-column-end: span 3;
+        background-size: 100% 100%;
+        transform-origin: center center;
+        position: relative; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant::before {
+          content: "";
+          display: block;
+          position: absolute;
+          top: 8px;
+          left: 8px;
+          width: 10px;
+          height: 10px;
+          border: 1px solid white;
+          border-radius: 2px; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-quadrant="0"] {
+          grid-row-start: 1;
+          grid-column-start: 1; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-quadrant="1"] {
+          grid-row-start: 1;
+          grid-column-start: 4; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-quadrant="2"] {
+          grid-row-start: 4;
+          grid-column-start: 4; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-quadrant="3"] {
+          grid-row-start: 4;
+          grid-column-start: 1; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-orientation="0"] {
+          rotate: 0deg; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-orientation="1"] {
+          rotate: 90deg; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-orientation="2"] {
+          rotate: 180deg; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-orientation="3"] {
+          rotate: 270deg; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="0"] {
+          background-image: url("img/board-0.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="1"] {
+          background-image: url("img/board-1.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="2"] {
+          background-image: url("img/board-2.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="3"] {
+          background-image: url("img/board-3.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="4"] {
+          background-image: url("img/board-4.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"] {
+          background-image: url("img/board-5.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="6"] {
+          background-image: url("img/board-6.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="7"] {
+          background-image: url("img/board-7.jpg"); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="0"]::before {
+          background-color: #f680c6;
+          border-radius: 50%; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="1"]::before {
+          background-color: #ed1c24;
+          border-radius: 50%; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="2"]::before {
+          background-color: #1b4a96;
+          border-radius: 50%; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="3"]::before {
+          background-color: white;
+          border-color: black;
+          border-radius: 50%; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="4"]::before {
+          background-color: #f680c6; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"]::before {
+          background-color: #ed1c24; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="6"]::before {
+          background-color: #1b4a96; }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="7"]::before {
+          background-color: white;
+          border-color: black; }
 
 /*# sourceMappingURL=hutan.css.map */

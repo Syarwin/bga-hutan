@@ -67,6 +67,7 @@ class Game extends \Table
   {
     return [
       'boards' => Globals::getBoards(),
+      'players' => Players::getUiData(),
     ];
   }
 

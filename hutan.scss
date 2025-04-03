@@ -13,4 +13,29 @@
  *
  */
 
-@import 'modules/css/icons';
+@font-face {
+  font-family: "DK Sensory Overload";
+  src:
+    url("img/fonts/DKSensoryOverload.woff2") format("woff2"),
+    url("img/fonts/DKSensoryOverload.woff") format("woff"),
+    url("img/fonts/DKSensoryOverload.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Hawlers Two";
+  src:
+    url("img/fonts/HawlersTwo-Rough.woff2") format("woff2"),
+    url("img/fonts/HawlersTwo-Rough.woff") format("woff"),
+    url("img/fonts/HawlersTwo-Rough.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@import "modules/css/variable";
+@import "modules/css/icons";
+@import "modules/css/layout";
+@import "modules/css/player-board";
