@@ -2,14 +2,13 @@
 
 namespace Bga\Games\Hutan\Helpers;
 
-use Bga\Games\Hutan\Helpers\Collection;
-
 class CachedDB_Manager extends DB_Manager
 {
   protected static string $table = "";
   protected static string $primary = "";
   protected static bool $log = true;
   protected static ?Collection $datas = null;
+
   protected static function cast($row)
   {
     return $row;

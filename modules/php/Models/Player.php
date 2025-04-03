@@ -2,10 +2,8 @@
 
 namespace Bga\Games\Hutan\Models;
 
-use Bga\Games\Hutan\Core\Stats;
 use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Helpers\DB_Model;
-use Bga\Games\Hutan\Helpers\Utils;
 
 /*
  * Player: all utility functions concerning a player
