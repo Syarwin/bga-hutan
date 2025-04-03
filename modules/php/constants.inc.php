@@ -246,3 +246,10 @@ const SCENARIOS = [
     'score' => 150
   ],
 ];
+
+const FLOWER_BLUE = 'b';
+const FLOWER_YELLOW = 'y';
+const FLOWER_RED = 'r';
+const FLOWER_WHITE = 'w';
+const FLOWER_GRAY = 'g';
+const FLOWER_JOKER = 'j';

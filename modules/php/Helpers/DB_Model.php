@@ -2,8 +2,6 @@
 
 namespace Bga\Games\Hutan\Helpers;
 
-use Bga\Games\Hutan\Core\Globals;
-
 abstract class DB_Model extends \APP_DbObject implements \JsonSerializable
 {
   protected string $table = "";

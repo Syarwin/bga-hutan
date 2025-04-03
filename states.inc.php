@@ -18,30 +18,29 @@
 require_once "modules/php/constants.inc.php";
 
 $machinestates = [
-    // The initial state. Please do not modify.
-    ST_GAME_SETUP => [
-        'name' => 'gameSetup',
-        'description' => '',
-        'type' => 'manager',
-        'action' => 'stGameSetup',
-        'transitions' => ['' => ST_GENERIC_STATE],
-    ],
+  // The initial state. Please do not modify.
+  ST_GAME_SETUP => [
+    'name' => 'gameSetup',
+    'description' => '',
+    'type' => 'manager',
+    'action' => 'stGameSetup',
+    'transitions' => ['' => ST_GENERIC_STATE],
+  ],
 
-    ST_GENERIC_STATE => [
-        'name' => 'foo',
-        'description' => '',
-        'descriptionmyturn' => '',
-        'type' => 'activeplayer',
-    ],
+  ST_GENERIC_STATE => [
+    'name' => 'foo',
+    'description' => 'Nothing happens here yet',
+    'descriptionmyturn' => 'Nothing happens here yet',
+    'type' => 'activeplayer',
+  ],
 
-
-    // Final state.
-    // Please do not modify (and do not overload action/args methods).
-    ST_END_GAME => [
-        'name' => 'gameEnd',
-        'description' => clienttranslate('End of game'),
-        'type' => 'manager',
-        'action' => 'stGameEnd',
-        'args' => 'argGameEnd',
-    ],
+  // Final state.
+  // Please do not modify (and do not overload action/args methods).
+  ST_END_GAME => [
+    'name' => 'gameEnd',
+    'description' => clienttranslate('End of game'),
+    'type' => 'manager',
+    'action' => 'stGameEnd',
+    'args' => 'argGameEnd',
+  ],
 ];

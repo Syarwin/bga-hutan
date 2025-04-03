@@ -20,6 +20,7 @@
 namespace Bga\Games\Hutan;
 
 use Bga\Games\Hutan\Core\Globals;
+use Bga\Games\Hutan\Managers\Cards;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\Games\Hutan\States\TurnTrait;
 use Bga\Games\Hutan\Core\Stats;
@@ -56,6 +57,7 @@ class Game extends \Table
   {
     Stats::setupNewGame();
     Players::setupNewGame($players, $options);
+    Cards::setupNewGame();
     Globals::setupNewGame($players, $options);
     $this->activeNextPlayer();
   }
@@ -94,7 +96,7 @@ class Game extends \Table
   public function zombieTurn($state, $active_player): void
   {
     switch ($state['name']) {
-        // TODO
+      // TODO
     }
   }
 
@@ -142,6 +144,6 @@ class Game extends \Table
   public static function a()
   {
     // Method to debug something. Just type "a()" in the table chat
-    //        var_dump(Stack::get());
+    var_dump(Cards::get(2));
   }
 }
