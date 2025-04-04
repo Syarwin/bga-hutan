@@ -3,7 +3,9 @@
 namespace Bga\Games\Hutan\Models;
 
 use Bga\Games\Hutan\Game;
+use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Helpers\DB_Model;
+use Bga\Games\Hutan\Managers\Meeples;
 
 /*
  * Player: all utility functions concerning a player
@@ -27,7 +29,8 @@ class Player extends DB_Model
 
   public function getUiData()
   {
-    return parent::getUiData();
+    $data = parent::getUiData();
+    return $data;
   }
 
   public function getId(): int
@@ -38,6 +41,20 @@ class Player extends DB_Model
   public function getPref(int $prefId)
   {
     return Game::get()->getGameUserPreference($this->id, $prefId);
+  }
+
+  public function getMeeples(): Collection
+  {
+    return Meeples::getFiltered($this->id);
+  }
+
+  protected Board $board;
+  public function board(): Board
+  {
+    if (!isset($this->board)) {
+      $this->board = new Board($this);
+    }
+    return $this->board;
   }
 
   // public function getStat($name)

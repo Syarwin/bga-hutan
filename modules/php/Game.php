@@ -31,6 +31,7 @@ require_once APP_GAMEMODULE_PATH . 'module/table/table.game.php';
 
 class Game extends \Table
 {
+  use DebugTrait;
   use TurnTrait;
   use PhaseOneTrait;
 

@@ -13,11 +13,13 @@ class Meeple extends DB_Model
     'location' => 'meeple_location',
     'state' => 'meeple_state',
     'type' => ['type', 'str'],
+    'pId' => ['player_id', 'int']
   ];
   protected int $id;
   protected string $location;
   protected int $state;
   protected string $type;
+  protected ?int $pId;
 
   public function getId()
   {

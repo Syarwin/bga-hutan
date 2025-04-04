@@ -10,7 +10,7 @@ class Meeples extends CachedPieces
 {
   protected static string $table = 'meeples';
   protected static string $prefix = 'meeple_';
-  protected static array $customFields = ['type'];
+  protected static array $customFields = ['type', 'player_id'];
   protected static null|Collection $datas = null;
   protected static bool $autoremovePrefix = false;
   protected static bool $autoIncrement = true;
