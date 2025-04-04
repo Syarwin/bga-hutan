@@ -15,7 +15,9 @@ const OPTION_SCENARIO = 111;
  * State constants
  */
 const ST_GAME_SETUP = 1;
-const ST_GENERIC_STATE = 2;
+const ST_PREPARE_MARKET = 2;
+const ST_PHASE_ONE_CHOOSE_FLOWER_CARD = 3;
+const ST_PHASE_ONE_PLACE_FLOWERS = 4;
 const ST_END_GAME = 99;
 
 
@@ -247,9 +249,14 @@ const SCENARIOS = [
   ],
 ];
 
+// Flower types
 const FLOWER_BLUE = 'b';
 const FLOWER_YELLOW = 'y';
 const FLOWER_RED = 'r';
 const FLOWER_WHITE = 'w';
 const FLOWER_GRAY = 'g';
 const FLOWER_JOKER = 'j';
+
+// Locations
+const LOCATION_DECK = 'deck';
+const LOCATION_TABLE = 'table';

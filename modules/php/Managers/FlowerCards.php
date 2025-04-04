@@ -33,8 +33,8 @@ class FlowerCards extends CachedPieces
   {
     shuffle(self::$allCards);
 
-    $cardsInDeck = (Players::count() * 2) + 1;
-    // 9 decks
+    $cardsInDeck = (Players::count() * 2) - 1;
+    // 9 stacks / decks
     for ($i = 1; $i <= 9; $i++) {
       $values = [];
       for ($k = 0; $k < $cardsInDeck; $k++) {
@@ -45,7 +45,12 @@ class FlowerCards extends CachedPieces
           'flower_c' => $card[2] ?? null
         ];
       }
-      self::create($values, 'deck' . $i);
+      self::create($values, LOCATION_DECK . $i);
     }
+  }
+
+  public static function moveDeckToBoard(int $deckNumber): void
+  {
+    self::moveAllInLocation(LOCATION_DECK . $deckNumber, LOCATION_TABLE);
   }
 }

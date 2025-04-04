@@ -6,7 +6,7 @@ use Bga\Games\Hutan\Helpers\DB_Model;
 
 class FlowerCard extends DB_Model
 {
-  protected string $table = 'cards';
+  protected string $table = 'flower_cards';
   protected string $primary = 'card_id';
   protected array $attributes = [
     'id' => 'card_id',

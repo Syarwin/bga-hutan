@@ -24,14 +24,35 @@ $machinestates = [
     'description' => '',
     'type' => 'manager',
     'action' => 'stGameSetup',
-    'transitions' => ['' => ST_GENERIC_STATE],
+    'transitions' => ['' => ST_PREPARE_MARKET],
   ],
 
-  ST_GENERIC_STATE => [
-    'name' => 'foo',
-    'description' => 'Nothing happens here yet',
-    'descriptionmyturn' => 'Nothing happens here yet',
+  ST_PREPARE_MARKET => [
+    'name' => 'prepareMarket',
+    'description' => clienttranslate('Preparing market for the next round'),
+    'type' => 'game',
+    'action' => 'stPrepareMarket',
+    'transitions' => ['' => ST_PHASE_ONE_CHOOSE_FLOWER_CARD],
+  ],
+
+  ST_PHASE_ONE_CHOOSE_FLOWER_CARD => [
+    'name' => 'chooseFlowerCard',
+    'description' => clienttranslate('${actplayer} must choose a Flower card'),
+    'descriptionmyturn' => clienttranslate('${you} must choose a Flower card'),
     'type' => 'activeplayer',
+    'args' => 'argsChooseFlowerCard',
+    'possibleactions' => ['actChooseFlowerCard'],
+    'transitions' => ['' => ST_PHASE_ONE_PLACE_FLOWERS],
+  ],
+
+  ST_PHASE_ONE_PLACE_FLOWERS => [
+    'name' => 'placeFlowers',
+    'description' => clienttranslate('${actplayer} must place flowers from the chosen card'),
+    'descriptionmyturn' => clienttranslate('${you} must place flowers from the chosen card'),
+    'type' => 'activeplayer',
+    'args' => 'argsPlaceFlowers',
+    'possibleactions' => ['actPlaceFlower'],
+//    'transitions' => ['' => ],
   ],
 
   // Final state.

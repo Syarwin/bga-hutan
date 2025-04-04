@@ -60,7 +60,6 @@ class Globals extends DB_Manager
         break;
     }
     static::setBoards($boards);
-    static::setTurn(1);
   }
 
   protected static string $table = 'global_variables';

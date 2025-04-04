@@ -13,7 +13,8 @@
  *
  */
 var isDebug = window.location.host === 'studio.boardgamearena.com' || window.location.hash.indexOf('debug') > -1;
-var debug = isDebug ? console.info.bind(window.console) : function () {};
+var debug = isDebug ? console.info.bind(window.console) : function () {
+};
 
 define([
   'dojo',
@@ -23,8 +24,9 @@ define([
   g_gamethemeurl + 'modules/js/playerboard.js',
   g_gamethemeurl + 'modules/js/common.js',
   g_gamethemeurl + 'modules/js/lexemes.js',
+  g_gamethemeurl + 'modules/js/States/PhaseOne.js',
 ], function (dojo, declare) {
-  return declare('bgagame.hutan', [customgame.game, hutan.playerboard, hutan.common, hutan.lexemes], {
+  return declare('bgagame.hutan', [customgame.game, hutan.playerboard, hutan.common, hutan.lexemes, hutan.phaseOne], {
     constructor() {
       // this.default_viewport = 'width=990';
     },
@@ -34,7 +36,6 @@ define([
       this.setupCentralArea();
 
       this.setupPlayers();
-      this.setupFlowerCards();
       this.inherited(arguments);
     },
 
@@ -60,29 +61,6 @@ define([
     //    | |__| (_| | | | (_| \__ \
     //     \____\__,_|_|  \__,_|___/
     /////////////////////////////////
-    // This function is refreshUI compatible
-    setupFlowerCards() {
-      let cardIds = this.gamedatas.flowerCards.map((card) => {
-        if (!$(`flower-card-${card.id}`)) {
-          this.addFlowerCard(card);
-        }
-
-        let o = $(`flower-card-${card.id}`);
-        if (!o) return null;
-
-        let container = this.getFlowerCardContainer(card);
-        if (o.parentNode != $(container)) {
-          dojo.place(o, container);
-        }
-
-        return card.id;
-      });
-      //   document.querySelectorAll('.hutan-card').forEach((oCard) => {
-      //     if (!cardIds.includes(oCard.getAttribute('data-id'))) {
-      //       this.destroy(oCard);
-      //     }
-      //   });
-    },
 
     addFlowerCard(card, container = null) {
       if (container == null) {
@@ -92,7 +70,7 @@ define([
       let o = this.place('tplFlowerCard', card, container);
       if (o !== undefined) {
         let tooltip = JSON.stringify(card);
-        this.addCustomTooltip(o.id, tooltip, { midSize: false });
+        this.addCustomTooltip(o.id, tooltip, {midSize: false});
       }
     },
 
