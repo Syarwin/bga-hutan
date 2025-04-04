@@ -25,6 +25,7 @@ use Bga\Games\Hutan\Managers\Players;
 use Bga\Games\Hutan\States\PhaseOneTrait;
 use Bga\Games\Hutan\States\TurnTrait;
 use Bga\Games\Hutan\Core\Stats;
+use Bga\Games\Hutan\Managers\Meeples;
 
 require_once APP_GAMEMODULE_PATH . 'module/table/table.game.php';
 
@@ -60,6 +61,7 @@ class Game extends \Table
     Stats::setupNewGame();
     Players::setupNewGame($players, $options);
     FlowerCards::setupNewGame();
+    Meeples::setupNewGame();
     Globals::setupNewGame($players, $options);
     $this->activeNextPlayer();
   }
@@ -71,7 +73,10 @@ class Game extends \Table
   {
     return [
       'boards' => Globals::getBoards(),
+      'meeples' => Meeples::getUiData(),
       'players' => Players::getUiData(),
+
+      'turn' => Globals::getTurn(),
     ];
   }
 
@@ -98,7 +103,7 @@ class Game extends \Table
   public function zombieTurn($state, $active_player): void
   {
     switch ($state['name']) {
-      // TODO
+        // TODO
     }
   }
 

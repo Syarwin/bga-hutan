@@ -260,3 +260,13 @@ const FLOWER_JOKER = 'j';
 // Locations
 const LOCATION_DECK = 'deck';
 const LOCATION_TABLE = 'table';
+const LOCATION_RESERVE = 'reserve';
+
+// Meeples types
+const TREE = 'tree';
+const ANIMAL_CASSOWARY = 'animal-cassowary';
+const ANIMAL_HORNBILL = 'animal-hornbill';
+const ANIMAL_ORANGUTAN = 'animal-orangutan';
+const ANIMAL_RHINOCEROS = 'animal-rhinoceros';
+const ANIMAL_TIGER = 'animal-tiger';
+const ANIMALS = [ANIMAL_CASSOWARY, ANIMAL_HORNBILL, ANIMAL_ORANGUTAN, ANIMAL_RHINOCEROS, ANIMAL_TIGER];
