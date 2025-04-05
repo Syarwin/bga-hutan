@@ -31,6 +31,14 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       });
     },
 
+    onEnteringStateChooseFlowerColor(args) {
+      args.colors.forEach((color) => {
+        this.addPrimaryActionButton(color, this.tplFlowerIcon(color), (element) => {
+          this.bgaPerformAction('actChooseFlowerColor', {colorClass: color});
+        });
+      })
+    },
+
     notif_flowerCardChosen(n) {
       debug('Notif: flowerCardChosen ', n);
     },

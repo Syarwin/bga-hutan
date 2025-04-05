@@ -153,6 +153,25 @@ abstract class Utils extends \APP_DbObject
 
     return $result;
   }
+
+  const COLORS_CLASSES = [
+    FLOWER_BLUE => 'icon-flower-blue',
+    FLOWER_YELLOW => 'icon-flower-yellow',
+    FLOWER_RED => 'icon-flower-red',
+    FLOWER_WHITE => 'icon-flower-white',
+    FLOWER_GREY => 'icon-flower-grey',
+    FLOWER_JOKER => 'icon-flower-joker',
+  ];
+
+  public static function colorToClass(string $color): string
+  {
+    return self::COLORS_CLASSES[$color];
+  }
+
+  public static function classToColor(string $class): string
+  {
+    return array_search($class, self::COLORS_CLASSES);
+  }
 }
 
 function array_uunique($array, $comparator)

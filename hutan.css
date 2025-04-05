@@ -73,7 +73,7 @@
   background-size: 1034.3434343434%;
   aspect-ratio: 198/198;
 }
-.hutan-icon.icon-flower-black {
+.hutan-icon.icon-flower-grey {
   background: url("img/icons.png") no-repeat;
   background-position: 70.8108108108% 40.3147699758%;
   background-size: 1034.3434343434%;
@@ -240,6 +240,9 @@
   background-position: 30.6418219462% 61.7420066152%;
   background-size: 1765.5172413793%;
   aspect-ratio: 116/117;
+}
+.hutan-icon.log-icon {
+  width: 30px;
 }
 
 #hutan-main-container {

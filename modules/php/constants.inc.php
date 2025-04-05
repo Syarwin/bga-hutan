@@ -255,8 +255,10 @@ const FLOWER_BLUE = 'b';
 const FLOWER_YELLOW = 'y';
 const FLOWER_RED = 'r';
 const FLOWER_WHITE = 'w';
-const FLOWER_GRAY = 'g';
+const FLOWER_GREY = 'g';
 const FLOWER_JOKER = 'j';
+
+const ALL_COLORS = [FLOWER_BLUE, FLOWER_YELLOW, FLOWER_RED, FLOWER_WHITE, FLOWER_GREY];
 
 // Locations
 const LOCATION_DECK = 'deck';

@@ -10,7 +10,8 @@ class Notifications
   public static function flowerCardChosen(Player $player, int $id)
   {
     // TODO: Parametrise according to card flowers
-    $iconsText = '{whiteFlowerIcon}, {blueFlowerIcon}';
+    // must be mapped to css classes .icon-flower-blue, .icon-flower-white, etc. Use Utils::colorToClass()
+    $iconsText = '{icon-flower-blue}, {icon-flower-white}';
     $msg = str_replace('{icons}', $iconsText, clienttranslate('${player_name} chooses a card with {icons}'));
     self::notifyAll('flowerCardChosen', $msg, ['player' => $player, 'flowerCardId' => $id]);
   }

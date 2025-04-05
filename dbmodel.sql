@@ -9,7 +9,11 @@
 -- dbmodel.sql
 
 ALTER TABLE `player`
-    ADD `player_flower_card_id` TINYINT DEFAULT 0;
+    ADD `player_flower_card_id` TINYINT DEFAULT -1;
+ALTER TABLE `player`
+    ADD `player_flower_card_counter` TINYINT DEFAULT -1;
+ALTER TABLE `player`
+    ADD `player_flower_color` varchar(1) DEFAULT '';
 
 CREATE TABLE IF NOT EXISTS `meeples`
 (
