@@ -6,6 +6,7 @@ use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Helpers\DB_Model;
 use Bga\Games\Hutan\Managers\Meeples;
+use Bga\Games\Hutan\Managers\Players;
 
 /*
  * Player: all utility functions concerning a player
@@ -24,8 +25,10 @@ class Player extends DB_Model
     'score' => ['player_score', 'int'],
     'scoreAux' => ['player_score_aux', 'int'],
     'zombie' => 'player_zombie',
+    'flowerCardId' => 'player_flower_card_id'
   ];
   protected int $id;
+  protected int $flowerCardId;
 
   public function getUiData()
   {
@@ -49,12 +52,23 @@ class Player extends DB_Model
   }
 
   protected Board $board;
+
   public function board(): Board
   {
     if (!isset($this->board)) {
       $this->board = new Board($this);
     }
     return $this->board;
+  }
+
+  public function getFlowerCardId(): int
+  {
+    return $this->flowerCardId;
+  }
+
+  public function setFlowerCardId(int $id): void
+  {
+    Players::setFlowerCardId($this->id, $id);
   }
 
   // public function getStat($name)

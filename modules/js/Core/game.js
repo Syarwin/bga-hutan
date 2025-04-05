@@ -1,5 +1,6 @@
 var isDebug = window.location.host === 'studio.boardgamearena.com' || window.location.hash.indexOf('debug') > -1;
-var debug = isDebug ? console.info.bind(window.console) : function () {};
+var debug = isDebug ? console.info.bind(window.console) : function () {
+};
 
 define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
   return declare('customgame.game', [ebg.core.gamegui], {
@@ -47,7 +48,6 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
      */
     setup(gamedatas) {
       this.setupNotifications();
-      this.addBoard();
       dojo.connect(this.notifqueue, 'addToLog', () => {
         this.checkLogCancel(this._last_notif);
       });
@@ -58,10 +58,6 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
      */
     isReadOnly() {
       return this.isSpectator || typeof g_replayFrom != 'undefined' || g_archive_mode;
-    },
-
-    takeAction(action, data = {}) {
-      this.bgaPerformAction(action, data);
     },
 
     /*
@@ -408,7 +404,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
         console.error(log, args, 'Exception thrown', e.stack);
       }
 
-      return this.inherited({ callee: this.format_string_recursive }, arguments);
+      return this.inherited({callee: this.format_string_recursive}, arguments);
     },
 
     getLogIcons(list) {
@@ -428,7 +424,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
     },
 
     getLogIcon(type) {
-      return this.format_block('jstpl_resource_icon_log', { type: type });
+      return this.format_block('jstpl_resource_icon_log', {type: type});
     },
 
     cancelLogs(notifIds) {

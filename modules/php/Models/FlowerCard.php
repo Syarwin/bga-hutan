@@ -40,4 +40,9 @@ class FlowerCard extends DB_Model
   {
     return ['id' => $this->id, 'flowers' => $this->flowers];
   }
+
+  public function getFlowers()
+  {
+    return $this->flowers;
+  }
 }

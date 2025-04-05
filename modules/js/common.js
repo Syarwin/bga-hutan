@@ -4,8 +4,9 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       // this._notifications.push(['locationsDrawn', 1]);
     },
 
-    addBoard() {
-      // dojo.place(this.format_block('jstpl_board', {}), 'game_play_area');
+    extractId(element, prefix) {
+      const unparsed = element.getAttribute('id').replace(`${prefix}-`, '');
+      return isNaN(parseInt(unparsed)) ? unparsed : parseInt(unparsed);
     },
   });
 });

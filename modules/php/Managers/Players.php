@@ -123,4 +123,9 @@ class Players extends CachedDB_Manager
     } while ($p != $firstPlayer);
     return $order;
   }
+
+  public static function setFlowerCardId(int $pId, int $id): void
+  {
+    self::DB()->update(['player_flower_card_id' => $id])->wherePlayer($pId)->run();
+  }
 }

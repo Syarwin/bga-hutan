@@ -1,16 +1,20 @@
 define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
   return declare('hutan.phaseOne', null, {
     constructor() {
-      // this._notifications.push(['cardChosen', 1]);
+      this._notifications.push(['flowerCardChosen', 1]);
     },
 
     onEnteringStateChooseFlowerCard(args) {
-      this.placeFlowerCards(args.cards);
+      const cards = this.placeFlowerCards(args.cards);
+      this.makeAllSelectableAndClickable(cards, (card) => {
+        const id = this.extractId(card, 'flower-card');
+        this.bgaPerformAction('actChooseFlowerCard', {id: id});
+      })
     },
 
 
     placeFlowerCards(cards) {
-      let cardIds = cards.map((card) => {
+      return cards.map((card) => {
         if (!$(`flower-card-${card.id}`)) {
           this.addFlowerCard(card);
         }
@@ -23,8 +27,12 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           dojo.place(o, container);
         }
 
-        return card.id;
+        return o;
       });
+    },
+
+    notif_flowerCardChosen(n) {
+      debug('Notif: flowerCardChosen ', n);
     },
   });
 });

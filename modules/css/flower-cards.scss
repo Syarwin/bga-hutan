@@ -1,3 +1,5 @@
+@import "variable";
+
 .hutan-flower-card {
   width: calc(var(--hutanFlowerCardScale) * 238px);
   height: calc(var(--hutanFlowerCardScale) * 374px);
@@ -20,6 +22,14 @@
     &[data-type="#{$type}"] .hutan-flower-card-wrapper {
       background-position-x: ($i % 7) * 100% / 6;
       background-position-y: (($i - ($i % 7)) / 7) * 100% / 3;
+    }
+  }
+
+  &.selectable {
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.04);
     }
   }
 }

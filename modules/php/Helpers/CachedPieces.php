@@ -3,7 +3,6 @@
 namespace Bga\Games\Hutan\Helpers;
 
 
-
 /*
  * This is a generic class to manage game pieces.
  *
@@ -131,7 +130,9 @@ class CachedPieces extends DB_Manager
 
     $extra = $like ? '%' : '';
     if (preg_match("/^[A-Za-z0-9$extra-][A-Za-z_0-9$extra-]*$/", $location) == 0) {
-      throw new \BgaVisibleSystemException("Class Pieces: location must be alphanum and underscore non empty string '$location'");
+      throw new \BgaVisibleSystemException(
+        "Class Pieces: location must be alphanum and underscore non empty string '$location'"
+      );
     }
   }
 
@@ -197,7 +198,7 @@ class CachedPieces extends DB_Manager
   /**
    * Get specific piece by id
    */
-  public static function get($id, $raiseExceptionIfNotEnough = true)
+  public static function get(int $id, bool $raiseExceptionIfNotEnough = true)
   {
     $result = self::getMany($id, $raiseExceptionIfNotEnough);
     return $result->count() == 1 ? $result->first() : $result;
@@ -224,7 +225,9 @@ class CachedPieces extends DB_Manager
       $searched = count($ids);
       // throw new \feException(print_r(\debug_print_backtrace()));
       throw new \feException(
-        "Class Pieces: getMany, some pieces have not been found ! ($found on $searched)(" . json_encode($ids) . " et " . json_encode($result->getIds())
+        "Class Pieces: getMany, some pieces have not been found ! ($found on $searched)(" . json_encode(
+          $ids
+        ) . " et " . json_encode($result->getIds())
       );
     }
 
@@ -380,7 +383,9 @@ class CachedPieces extends DB_Manager
     ) {
       $missing = $nbr - count($pieces);
       self::reformDeckFromDiscard($fromLocation);
-      $pieces = $pieces->merge(self::pickForLocation($missing, $fromLocation, $toLocation, $state, false)); // Note: block another deck reform
+      $pieces = $pieces->merge(
+        self::pickForLocation($missing, $fromLocation, $toLocation, $state, false)
+      ); // Note: block another deck reform
     }
 
     return $pieces;
@@ -398,7 +403,9 @@ class CachedPieces extends DB_Manager
   {
     self::checkLocation($fromLocation);
     if (!array_key_exists($fromLocation, static::$autoreshuffleCustom)) {
-      throw new \BgaVisibleSystemException("Class Pieces:reformDeckFromDiscard: Unknown discard location for $fromLocation !");
+      throw new \BgaVisibleSystemException(
+        "Class Pieces:reformDeckFromDiscard: Unknown discard location for $fromLocation !"
+      );
     }
 
     $discard = static::$autoreshuffleCustom[$fromLocation];

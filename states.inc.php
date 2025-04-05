@@ -42,6 +42,19 @@ $machinestates = [
     'type' => 'activeplayer',
     'args' => 'argsChooseFlowerCard',
     'possibleactions' => ['actChooseFlowerCard'],
+    'transitions' => [
+      ST_PHASE_ONE_PLACE_FLOWERS => ST_PHASE_ONE_PLACE_FLOWERS,
+      ST_PHASE_ONE_CHOOSE_FLOWER_COLOR => ST_PHASE_ONE_CHOOSE_FLOWER_COLOR
+    ],
+  ],
+
+  ST_PHASE_ONE_CHOOSE_FLOWER_COLOR => [
+    'name' => 'chooseFlowerColor',
+    'description' => clienttranslate('${actplayer} must choose a color of the flower before placing it'),
+    'descriptionmyturn' => clienttranslate('${you} must choose a color of the flower before placing it'),
+    'type' => 'activeplayer',
+    'args' => 'argsChooseFlowerColor',
+    'possibleactions' => ['actChooseFlowerColor'],
     'transitions' => ['' => ST_PHASE_ONE_PLACE_FLOWERS],
   ],
 

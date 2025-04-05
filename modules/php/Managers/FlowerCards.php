@@ -53,4 +53,9 @@ class FlowerCards extends CachedPieces
   {
     self::moveAllInLocation(LOCATION_DECK . $deckNumber, LOCATION_TABLE);
   }
+
+  public static function get(int $id, bool $raiseExceptionIfNotEnough = true): FlowerCard
+  {
+    return parent::get($id, $raiseExceptionIfNotEnough);
+  }
 }
