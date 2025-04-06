@@ -104,12 +104,13 @@ trait PhaseOneTrait
     $placedFlowersCoords = array_map(function (Flower $flower) {
       return $flower->getCoordinates();
     }, $player->getFlowers());
+    $waterSpaces = $player->board()->getWaterSpaces();
 
     $availableCoords = [];
     for ($x = 0; $x < 6; $x++) {
       for ($y = 0; $y < 6; $y++) {
         $coords = ['x' => $x, 'y' => $y];
-        if (!in_array($coords, $placedFlowersCoords)) { // TODO: Add water as unavailable cell
+        if (!in_array($coords, $placedFlowersCoords) && !in_array($coords, $waterSpaces)) {
           $availableCoords[] = $coords;
         }
       }

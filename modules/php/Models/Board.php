@@ -10,14 +10,15 @@ class Board
   protected array $cells;
   protected array $cellsZone;
   protected array $zones;
+  private array $waterSpaces;
 
   public function __construct(Player $player)
   {
     $this->player = $player;
 
     // Compute zones according to boards
-    $boads = Globals::getBoards();
-    foreach ($boads as $k => [$boardId, $orientation]) {
+    $boards = Globals::getBoards();
+    foreach ($boards as $k => [$boardId, $orientation]) {
       $board = BOARDS[$boardId];
 
       // For each of the 3x3 cell
@@ -60,6 +61,7 @@ class Board
             $this->zones[$zoneId]['cells'][] = ['x' => $x, 'y' => $y];
             $this->cellsZone[$x][$y] = $zoneId;
           } else {
+            $this->waterSpaces[] = ['x' => $x, 'y' => $y];
             $this->cellsZone[$x][$y] = WATER;
           }
         }
@@ -92,5 +94,10 @@ class Board
   public function isEmpty(int $x, int $y): bool
   {
     return empty($this->cells[$x][$y]);
+  }
+
+  public function getWaterSpaces()
+  {
+    return $this->waterSpaces;
   }
 }
