@@ -95,11 +95,6 @@ class Board
     foreach ($this->player->getMeeples() as $meeple) {
       $this->cells[$meeple->getX()][$meeple->getY()][] = $meeple;
     }
-
-    /** @var Flower $flower */
-    foreach ($this->player->getFlowers() as $flower) {
-      $this->cells[$flower->getCoordinates()['x']][$flower->getCoordinates()['y']][] = $flower;
-    }
   }
 
   public function isEmpty(int $x, int $y): bool

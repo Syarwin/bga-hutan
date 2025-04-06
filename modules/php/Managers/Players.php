@@ -124,21 +124,6 @@ class Players extends CachedDB_Manager
     return $order;
   }
 
-  public static function setFlowerCardId(int $pId, int $id): void
-  {
-    self::DB()->update(['player_flower_card_id' => $id])->wherePlayer($pId)->run();
-  }
-
-  public static function setFlowerCardCounter(int $pId, int $count): void
-  {
-    self::DB()->update(['player_flower_card_counter' => $count])->wherePlayer($pId)->run();
-  }
-
-  public static function setJokerColor(int $pId, string $color): void
-  {
-    self::DB()->update(['player_joker_color' => $color])->wherePlayer($pId)->run();
-  }
-
   public static function resetCounters()
   {
     self::DB()->update(

@@ -5,7 +5,7 @@ namespace Bga\Games\Hutan\States;
 use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Helpers\Utils;
 use Bga\Games\Hutan\Managers\FlowerCards;
-use Bga\Games\Hutan\Managers\Flowers;
+use Bga\Games\Hutan\Managers\Meeples;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\Games\Hutan\Models\Flower;
 use Bga\Games\Hutan\Models\Player;
@@ -85,7 +85,7 @@ trait PhaseOneTrait
     }
     $isTree = !$player->board()->isEmpty($x, $y);
     $currentFlowerColor = $isTree ? TREE : $currentFlowerColor;
-    $flowerOrTree = Flowers::placeFlower($player->getId(), $x, $y, $currentFlowerColor);
+    $flowerOrTree = Meeples::placeFlower($player->getId(), $x, $y, $currentFlowerColor);
     $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
 
     $nextFlowerCount = $player->getFlowerCardCounter() + 1;
@@ -115,7 +115,7 @@ trait PhaseOneTrait
         if ($justOneFlower) {
           /** @var Flower $flowerAtCell */
           $flowerAtCell = $itemsAtCell[0];
-          $justOneMatchingFlower = $flowerAtCell->getColor() === $currentFlowerColor;
+          $justOneMatchingFlower = $flowerAtCell->getType() === $currentFlowerColor;
         }
         $coords = ['x' => $x, 'y' => $y];
         if ((!in_array($coords, $waterSpaces) && $empty) || $justOneMatchingFlower) {

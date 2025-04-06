@@ -57,6 +57,12 @@ class Player extends DB_Model
     return Meeples::getFiltered($this->id);
   }
 
+  public function getFlowers()
+  {
+    return $this->getMeeples()->where('type', ALL_COLORS);
+  }
+
+
   protected Board $board;
 
   public function board(): Board
@@ -65,44 +71,6 @@ class Player extends DB_Model
       $this->board = new Board($this);
     }
     return $this->board;
-  }
-
-  public function getFlowerCardId(): int
-  {
-    return $this->flowerCardId;
-  }
-
-  public function setFlowerCardId(int $id): void
-  {
-    $this->flowerCardId = $id;
-    Players::setFlowerCardId($this->id, $id);
-  }
-
-  public function getFlowerCardCounter(): int
-  {
-    return $this->flowerCardCounter;
-  }
-
-  public function setFlowerCardCounter(int $count): void
-  {
-    $this->flowerCardCounter = $count;
-    Players::setFlowerCardCounter($this->id, $count);
-  }
-
-  public function getJokerColor(): string
-  {
-    return $this->jokerColor;
-  }
-
-  public function setJokerColor(string $color): void
-  {
-    $this->jokerColor = $color;
-    Players::setJokerColor($this->id, $color);
-  }
-
-  public function getFlowers()
-  {
-    return Flowers::getByPlayer($this->id)->toArray();
   }
 
   // public function getStat($name)

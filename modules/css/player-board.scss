@@ -41,9 +41,17 @@
         height: 170px;
         position: relative;
         z-index: 2;
+        font-size: 80px;
 
         &:hover {
           background: rgba(0, 0, 255, 0.4);
+        }
+
+        .hutan-meeple {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          translate: -50% -50%;
         }
       }
 

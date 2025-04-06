@@ -3,7 +3,7 @@
 namespace Bga\Games\Hutan\Core;
 
 use Bga\Games\Hutan\Game;
-use Bga\Games\Hutan\Models\Flower;
+use Bga\Games\Hutan\Models\Meeple;
 use Bga\Games\Hutan\Models\Player;
 
 class Notifications
@@ -17,12 +17,12 @@ class Notifications
     self::notifyAll('flowerCardChosen', $msg, ['player' => $player, 'flowerCardId' => $id]);
   }
 
-  public static function flowerPlaced(Player $player, Flower $flower)
+  public static function flowerPlaced(Player $player, Meeple $flower)
   {
     self::notifyAll('flowerPlaced', '', ['player' => $player, 'flower' => $flower]);
   }
 
-  public static function treePlaced(Player $player, Flower $flower)
+  public static function treePlaced(Player $player, Meeple $flower)
   {
     self::notifyAll('treePlaced', '', ['player' => $player, 'tree' => $flower]);
   }
