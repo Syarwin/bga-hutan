@@ -378,7 +378,12 @@
     @include icon-zone-5S;
   }
 
-  &.log-icon {
+  &.status-bar-icon {
     width: 30px;
+    display: inline-block;
+  }
+
+  &:not(.button-icon) {
+    position: absolute;
   }
 }

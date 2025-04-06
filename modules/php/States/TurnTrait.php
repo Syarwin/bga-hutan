@@ -15,4 +15,13 @@ trait TurnTrait
     Players::resetCounters();
     $this->gamestate->nextState('');
   }
+
+  public function stEndOfTurnCleanup()
+  {
+    $player = Players::getActive();
+    FlowerCards::move($player->getFlowerCardId(), LOCATION_DISCARD);
+    // Do we need a notification about card being discarded? It will disappear from the UI anyway
+    $this->activeNextPlayer();
+    $this->gamestate->nextState('');
+  }
 }

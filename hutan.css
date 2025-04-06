@@ -241,8 +241,12 @@
   background-size: 1765.5172413793%;
   aspect-ratio: 116/117;
 }
-.hutan-icon.log-icon {
+.hutan-icon.status-bar-icon {
   width: 30px;
+  display: inline-block;
+}
+.hutan-icon:not(.button-icon) {
+  position: absolute;
 }
 
 #hutan-main-container {

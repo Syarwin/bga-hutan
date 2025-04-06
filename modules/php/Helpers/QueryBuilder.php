@@ -46,7 +46,7 @@ class QueryBuilder extends \APP_DbObject
   public function insert($fields = [], $overwriteIfExists = false)
   {
     $this->multipleInsert(array_keys($fields), $overwriteIfExists)->values([array_values($fields)]);
-    return self::DbGetLastId();
+    return self::DbGetLastId(); // This doesn't work because Log inserts new rows in values() method
   }
 
   /*
@@ -57,8 +57,8 @@ class QueryBuilder extends \APP_DbObject
   {
     $keys = implode('`, `', array_values($fields));
     $this->sql = ($overwriteIfExists ?
-      'REPLACE' :
-      'INSERT') . " INTO `{$this->table}` (`{$keys}`) VALUES";
+        'REPLACE' :
+        'INSERT') . " INTO `{$this->table}` (`{$keys}`) VALUES";
     $this->insertPrimaryIndex = array_search($this->primary, $fields);
     return $this;
   }
@@ -124,8 +124,8 @@ class QueryBuilder extends \APP_DbObject
     $values = [];
     foreach ($fields as $column => $field) {
       $values[] = "`$column` = " . (is_null($field) ?
-        'NULL' :
-        "'$field'");
+          'NULL' :
+          "'$field'");
     }
 
     $this->operation = 'update';
@@ -223,7 +223,7 @@ class QueryBuilder extends \APP_DbObject
   /*
    * get : run a select query and fetch values
    */
-  public function get($returnValueIfOnlyOneRow = false, $debug = false)
+  public function get($returnValueIfOnlyOneRow = false, $debug = false, $cast = true)
   {
     $select = $this->columns ?? "*, {$this->primary} AS `result_associative_index`";
     $this->sql = "SELECT $select FROM `$this->table`";
@@ -239,12 +239,14 @@ class QueryBuilder extends \APP_DbObject
       unset($row['result_associative_index']);
 
       $val = $row;
-      if (is_callable($this->cast)) {
-        $val = forward_static_call($this->cast, $row);
-      } elseif (is_string($this->cast)) {
-        $val = $this->cast == 'object' ?
-          ((object)$row) :
-          new $this->cast($row);
+      if ($cast) {
+        if (is_callable($this->cast)) {
+          $val = forward_static_call($this->cast, $row);
+        } elseif (is_string($this->cast)) {
+          $val = $this->cast == 'object' ?
+            ((object)$row) :
+            new $this->cast($row);
+        }
       }
 
       $oRes[$id] = $val;
@@ -476,8 +478,8 @@ class QueryBuilder extends \APP_DbObject
   public function limit($limit, $offset = null)
   {
     $this->limit = " LIMIT {$limit}" . (is_null($offset) ?
-      '' :
-      " OFFSET {$offset}");
+        '' :
+        " OFFSET {$offset}");
     return $this;
   }
 

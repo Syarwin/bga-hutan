@@ -5,6 +5,7 @@ namespace Bga\Games\Hutan\Models;
 use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Helpers\DB_Model;
+use Bga\Games\Hutan\Managers\Flowers;
 use Bga\Games\Hutan\Managers\Meeples;
 use Bga\Games\Hutan\Managers\Players;
 
@@ -37,6 +38,7 @@ class Player extends DB_Model
   public function getUiData()
   {
     $data = parent::getUiData();
+    $data['flowers'] = $this->getFlowers();
     return $data;
   }
 
@@ -96,6 +98,11 @@ class Player extends DB_Model
   {
     $this->flowerCardColor = $color;
     Players::setFlowerCardColor($this->id, $color);
+  }
+
+  public function getFlowers()
+  {
+    return Flowers::getByPlayer($this->id)->toArray();
   }
 
   // public function getStat($name)

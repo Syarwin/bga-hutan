@@ -59,13 +59,33 @@ $machinestates = [
   ],
 
   ST_PHASE_ONE_PLACE_FLOWERS => [
-    'name' => 'placeFlowers',
+    'name' => 'placeFlower',
     'description' => clienttranslate('${actplayer} must place flowers from the chosen card'),
-    'descriptionmyturn' => clienttranslate('${you} must place flowers from the chosen card'),
+    'descriptionmyturn' => clienttranslate('${you} must place a {flower}'),
     'type' => 'activeplayer',
-    'args' => 'argsPlaceFlowers',
+    'args' => 'argsPlaceFlower',
     'possibleactions' => ['actPlaceFlower'],
-//    'transitions' => ['' => ],
+    'transitions' => [
+      ST_PHASE_ONE_PLACE_FLOWERS => ST_PHASE_ONE_PLACE_FLOWERS,
+      ST_PHASE_TWO_CHECK_FOR_GROWN_TREES => ST_PHASE_TWO_CHECK_FOR_GROWN_TREES,
+      ST_END_OF_TURN_CLEANUP => ST_END_OF_TURN_CLEANUP,
+    ],
+  ],
+
+  ST_PHASE_TWO_CHECK_FOR_GROWN_TREES => [
+    'name' => 'checkTrees',
+    'description' => clienttranslate('Placing a tree'),
+    'type' => 'game',
+    'action' => 'stCheckTrees',
+    'transitions' => ['' => ST_PHASE_ONE_PLACE_FLOWERS],
+  ],
+
+  ST_END_OF_TURN_CLEANUP => [
+    'name' => 'prepareMarket',
+    'description' => clienttranslate('Cleaning up at the end of turn'),
+    'type' => 'game',
+    'action' => 'stEndOfTurnCleanup',
+    'transitions' => ['' => ST_PHASE_ONE_CHOOSE_FLOWER_CARD],
   ],
 
   // Final state.

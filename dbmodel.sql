@@ -30,12 +30,23 @@ CREATE TABLE IF NOT EXISTS `meeples`
 CREATE TABLE IF NOT EXISTS `flower_cards`
 (
     `card_id`       smallint unsigned NOT NULL AUTO_INCREMENT,
-    `card_location` varchar(5)        NOT NULL,
+    `card_location` varchar(7)        NOT NULL,
     `card_state`    tinyint           NOT NULL,
     `flower_a`      varchar(1) DEFAULT NULL,
     `flower_b`      varchar(1) DEFAULT NULL,
     `flower_c`      varchar(1) DEFAULT NULL,
     PRIMARY KEY (`card_id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS `flowers`
+(
+    `id`        smallint unsigned NOT NULL AUTO_INCREMENT,
+    `player_id` int               NOT NULL,
+    `x`         tinyint           NOT NULL,
+    `y`         tinyint           NOT NULL,
+    `color`     varchar(1)        NOT NULL,
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 

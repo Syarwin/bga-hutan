@@ -66,8 +66,9 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
    `;
     },
 
-    tplFlowerIcon(type) {
-      return `<div class="hutan-icon ${type} log-icon"></div>`
+    tplFlowerIcon(type, isButton = false) {
+      const buttonClass = isButton ? ' button-icon' : '';
+      return `<div class="hutan-icon ${type}${buttonClass} status-bar-icon"></div>`
     },
   });
 });

@@ -3,6 +3,7 @@
 namespace Bga\Games\Hutan\Core;
 
 use Bga\Games\Hutan\Game;
+use Bga\Games\Hutan\Models\Flower;
 use Bga\Games\Hutan\Models\Player;
 
 class Notifications
@@ -14,6 +15,11 @@ class Notifications
     $iconsText = '{icon-flower-blue}, {icon-flower-white}';
     $msg = str_replace('{icons}', $iconsText, clienttranslate('${player_name} chooses a card with {icons}'));
     self::notifyAll('flowerCardChosen', $msg, ['player' => $player, 'flowerCardId' => $id]);
+  }
+
+  public static function flowerPlaced(Player $player, Flower $flower)
+  {
+    self::notifyAll('flowerPlaced', '', ['player' => $player, 'flower' => $flower]);
   }
 
   ///////////////////////////////////////////////////////////////////////////////////
