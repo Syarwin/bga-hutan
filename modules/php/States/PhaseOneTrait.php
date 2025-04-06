@@ -89,7 +89,7 @@ trait PhaseOneTrait
     $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
 
     $nextFlowerCount = $player->getFlowerCardCounter() + 1;
-    $flowerCardFlowers = FlowerCards::get($flowerCardId)->getFlowers();
+    $flowerCardFlowers = FlowerCards::getSingle($flowerCardId)->getFlowers();
     if (count($flowerCardFlowers) > $nextFlowerCount) {
       $player->setFlowerCardCounter($nextFlowerCount);
       $this->gamestate->nextState(ST_PHASE_ONE_PLACE_FLOWERS);

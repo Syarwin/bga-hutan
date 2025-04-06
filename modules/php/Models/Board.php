@@ -4,6 +4,13 @@ namespace Bga\Games\Hutan\Models;
 
 use Bga\Games\Hutan\Core\Globals;
 
+const DIRECTIONS = [
+  ['x' => 0, 'y' => 1],
+  ['x' => 0, 'y' => -1],
+  ['x' => 1, 'y' => 0],
+  ['x' => -1, 'y' => 0],
+];
+
 class Board
 {
   protected Player $player;
@@ -105,5 +112,86 @@ class Board
   public function getItemsAt(int $x, int $y): array
   {
     return $this->cells[$x][$y];
+  }
+
+
+  public function getPlacableColorsAtCell(int $x, int $y, ?array $availableColors = null): array
+  {
+    $availableColors = $availableColors ?? ALL_COLORS;
+    $meeples = $this->getItemsAt($x, $y);
+
+    // Full cell => nothing can be placed here
+    if (count($meeples) == 2) {
+      return [];
+    }
+    // Empty cell => can place any clors
+    if (empty($meeples)) {
+      return $availableColors;
+    }
+
+    // A flower here => only same color
+    $color = $meeples[0]->getType();
+    return in_array($color, $availableColors) ? [$color] : [];
+  }
+
+  protected function canPlayCardAtCellAux(int $x, int $y, array $colorsToPlace, array $visited)
+  {
+    // Already visited => can't put another flower here
+    if (in_array("{$x}_{$y}", $visited)) {
+      return false;
+    }
+
+    // Can we place at least one of the flowers here?
+    $colors = $this->getPlacableColorsAtCell($x, $y);
+    if (empty($colors)) {
+      return false;
+    }
+
+    // For each possible color
+    $visited[] = "{$x}_{$y}";
+    foreach ($colors as $color) {
+      $key = array_search($color, $colorsToPlace);
+      unset($colorsToPlace[$key]);
+
+      // We placed all the colors!
+      if (empty($colorsToPlace)) {
+        return true;
+      }
+
+      // Otherwise check neighbour to place the other ones
+      foreach (DIRECTIONS as $dir) {
+        $nx = $x + $dir['x'];
+        $ny = $y + $dir['y'];
+        if ($nx < 0 || $nx > 5 || $ny < 0 || $ny > 5) continue;
+
+        if ($this->canPlayCardAtCellAux($nx, $ny, $colorsToPlace, $visited)) {
+          return true;
+        }
+      }
+
+      // No success with this color, put in back into the array
+      $colorsToPlace[$key] = $color;
+    }
+
+    // If we are here, we havent found any possibility
+    return false;
+  }
+
+  public function canPlayCard(FlowerCard $card): bool
+  {
+    $colors = $card->getFlowers();
+    if (count($colors) == 1) {
+      return true; // It's impossible to completely fill the board so single joker can always be placed
+    }
+
+    for ($x = 0; $x < 6; $x++) {
+      for ($y = 0; $y < 6; $y++) {
+        if ($this->canPlayCardAtCellAux($x, $y, $colors, [])) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 }
