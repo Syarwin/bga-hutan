@@ -71,6 +71,11 @@ class Board
     $this->refresh();
   }
 
+  public function getWaterSpaces()
+  {
+    return $this->waterSpaces;
+  }
+
   public function getZones(): array
   {
     return $this->zones;
@@ -86,8 +91,14 @@ class Board
     }
 
     // Add meeples
+    /** @var Meeple $meeple */
     foreach ($this->player->getMeeples() as $meeple) {
       $this->cells[$meeple->getX()][$meeple->getY()][] = $meeple;
+    }
+
+    /** @var Flower $flower */
+    foreach ($this->player->getFlowers() as $flower) {
+      $this->cells[$flower->getCoordinates()['x']][$flower->getCoordinates()['y']][] = $flower;
     }
   }
 
@@ -96,8 +107,8 @@ class Board
     return empty($this->cells[$x][$y]);
   }
 
-  public function getWaterSpaces()
+  public function getItemsAt(int $x, int $y): array
   {
-    return $this->waterSpaces;
+    return $this->cells[$x][$y];
   }
 }

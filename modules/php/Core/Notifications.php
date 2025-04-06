@@ -22,6 +22,11 @@ class Notifications
     self::notifyAll('flowerPlaced', '', ['player' => $player, 'flower' => $flower]);
   }
 
+  public static function treePlaced(Player $player, Flower $flower)
+  {
+    self::notifyAll('treePlaced', '', ['player' => $player, 'tree' => $flower]);
+  }
+
   ///////////////////////////////////////////////////////////////////////////////////
   //   ____                      _        __  __      _   _               _     
   //  / ___| ___ _ __   ___ _ __(_) ___  |  \/  | ___| |_| |__   ___   __| |___ 

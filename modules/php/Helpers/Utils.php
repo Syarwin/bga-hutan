@@ -161,6 +161,7 @@ abstract class Utils extends \APP_DbObject
     FLOWER_WHITE => 'icon-flower-white',
     FLOWER_GREY => 'icon-flower-grey',
     FLOWER_JOKER => 'icon-flower-joker',
+    TREE => 'icon-tree',
   ];
 
   public static function colorToClass(string $color): string

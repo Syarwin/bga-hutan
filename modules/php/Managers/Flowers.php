@@ -18,11 +18,7 @@ class Flowers extends CachedDB_Manager
   public static function placeFlower(int $pId, int $x, int $y, string $color)
   {
     self::DB()->insert(['player_id' => $pId, 'x' => $x, 'y' => $y, 'color' => $color]);
-    $id = self::DB()->select(['id'])->where('player_id', $pId)->where('x', $x)->where('y', $y)->get(
-      true,
-      false,
-      false
-    )['id'];
+    $id = self::DB()->select(['id'])->orderBy('id', 'DESC')->limit(1)->get(true, false, false)['id'];
     return self::get((int)$id);
   }
 
@@ -36,6 +32,6 @@ class Flowers extends CachedDB_Manager
 
   public static function getUiData(int $pId): array
   {
-    self::getByPlayer($pId)->ui();
+    return self::getByPlayer($pId)->ui();
   }
 }

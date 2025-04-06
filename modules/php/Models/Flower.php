@@ -37,6 +37,11 @@ class Flower extends DB_Model
     return $this->coordinates;
   }
 
+  public function getColor()
+  {
+    return $this->color;
+  }
+
   public function jsonSerialize(): array
   {
     return ['id' => $this->id, 'coordinates' => $this->coordinates, 'color' => Utils::colorToClass($this->color)];

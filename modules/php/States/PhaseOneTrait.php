@@ -34,11 +34,12 @@ trait PhaseOneTrait
       return [];
     }
     $flowerCardId = $player->getFlowerCardId();
+    $currentFlowerColor = $this->getFlowerColor($player, $flowerCardId);
     return [
       'flowerCardId' => $flowerCardId,
       'flowerCardCounter' => $player->getFlowerCardCounter(),
-      'flowerColor' => Utils::colorToClass($this->getFlowerColor($player, $flowerCardId)),
-      'availableCoordinates' => $this->getAvailableCoords($player),
+      'flowerColor' => Utils::colorToClass($currentFlowerColor),
+      'availableCoordinates' => $this->getAvailableCoords($player, $currentFlowerColor),
     ];
   }
 
@@ -46,7 +47,7 @@ trait PhaseOneTrait
   {
     $cardFlowers = FlowerCards::get($flowerCardId)->getFlowers();
     if (in_array(FLOWER_JOKER, $cardFlowers)) {
-      return $player->getFlowerCardColor();
+      return $player->getJokerColor();
     } else {
       return $cardFlowers[$player->getFlowerCardCounter()];
     }
@@ -68,29 +69,30 @@ trait PhaseOneTrait
   public function actChooseFlowerColor(string $colorClass): void
   {
     $player = Players::getCurrent();
-    $player->setFlowerCardColor(Utils::classToColor($colorClass));
+    $player->setJokerColor(Utils::classToColor($colorClass));
     $this->gamestate->nextState('');
   }
 
   public function actPlaceFlower(int $x, int $y): void
   {
     $player = Players::getCurrent();
-    if (!in_array(['x' => $x, 'y' => $y], $this->getAvailableCoords($player))) {
+    $flowerCardId = $player->getFlowerCardId();
+    $currentFlowerColor = $this->getFlowerColor($player, $flowerCardId);
+    if (!in_array(['x' => $x, 'y' => $y], $this->getAvailableCoords($player, $currentFlowerColor))) {
       throw new \BgaVisibleSystemException(
         "You cannot place a flower at coordinates $x, $y. If you see this - please report as a bug"
       );
     }
-    $color = $this->getFlowerColor($player, $player->getFlowerCardId());
-    $flower = Flowers::placeFlower($player->getId(), $x, $y, $color);
-    Notifications::flowerPlaced($player, $flower);
+    $isTree = !$player->board()->isEmpty($x, $y);
+    $currentFlowerColor = $isTree ? TREE : $currentFlowerColor;
+    $flowerOrTree = Flowers::placeFlower($player->getId(), $x, $y, $currentFlowerColor);
+    $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
 
     $nextFlowerCount = $player->getFlowerCardCounter() + 1;
-    $flowerCardFlowers = FlowerCards::get($player->getFlowerCardId())->getFlowers();
+    $flowerCardFlowers = FlowerCards::get($flowerCardId)->getFlowers();
     if (count($flowerCardFlowers) > $nextFlowerCount) {
       $player->setFlowerCardCounter($nextFlowerCount);
       $this->gamestate->nextState(ST_PHASE_ONE_PLACE_FLOWERS);
-      // TODO: Check if tree is growing
-      // $this->gamestate->nextState(ST_PHASE_TWO_CHECK_FOR_GROWN_TREES);
     } else {
       // TODO: Phase 3 should be here
       // $this->gamestate->nextState(ST_PHASE_THREE_...);
@@ -98,19 +100,25 @@ trait PhaseOneTrait
     }
   }
 
-  private function getAvailableCoords(Player $player)
+  private function getAvailableCoords(Player $player, string $currentFlowerColor)
   {
-    // TODO: add ability to place flowers on top of matching flowers to grow trees. Not possible at the moment
-    $placedFlowersCoords = array_map(function (Flower $flower) {
-      return $flower->getCoordinates();
-    }, $player->getFlowers());
-    $waterSpaces = $player->board()->getWaterSpaces();
+    $board = $player->board();
+    $waterSpaces = $board->getWaterSpaces();
 
     $availableCoords = [];
     for ($x = 0; $x < 6; $x++) {
       for ($y = 0; $y < 6; $y++) {
+        $empty = $board->isEmpty($x, $y);
+        $itemsAtCell = $board->getItemsAt($x, $y);
+        $justOneFlower = count($itemsAtCell) === 1;
+        $justOneMatchingFlower = false;
+        if ($justOneFlower) {
+          /** @var Flower $flowerAtCell */
+          $flowerAtCell = $itemsAtCell[0];
+          $justOneMatchingFlower = $flowerAtCell->getColor() === $currentFlowerColor;
+        }
         $coords = ['x' => $x, 'y' => $y];
-        if (!in_array($coords, $placedFlowersCoords) && !in_array($coords, $waterSpaces)) {
+        if ((!in_array($coords, $waterSpaces) && $empty) || $justOneMatchingFlower) {
           $availableCoords[] = $coords;
         }
       }

@@ -3,7 +3,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     constructor() {
       this._notifications.push(['flowerCardChosen', 1]);
       this._notifications.push(['flowerPlaced', 1]);
-
+      this._notifications.push(['treePlaced', 1]);
     },
 
     onEnteringStateChooseFlowerCard(args) {
@@ -65,6 +65,10 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
     notif_flowerPlaced(n) {
       debug('Notif: flowerPlaced', n);
+    },
+
+    notif_treePlaced(n) {
+      debug('Notif: treePlaced', n);
     },
   });
 });

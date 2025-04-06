@@ -28,12 +28,12 @@ class Player extends DB_Model
     'zombie' => 'player_zombie',
     'flowerCardId' => 'player_flower_card_id',
     'flowerCardCounter' => 'player_flower_card_counter',
-    'flowerCardColor' => 'player_flower_color'
+    'jokerColor' => 'player_joker_color'
   ];
   protected int $id;
   protected int $flowerCardId;
   protected int $flowerCardCounter;
-  protected string $flowerCardColor;
+  protected string $jokerColor;
 
   public function getUiData()
   {
@@ -89,15 +89,15 @@ class Player extends DB_Model
     Players::setFlowerCardCounter($this->id, $count);
   }
 
-  public function getFlowerCardColor(): string
+  public function getJokerColor(): string
   {
-    return $this->flowerCardColor;
+    return $this->jokerColor;
   }
 
-  public function setFlowerCardColor(string $color): void
+  public function setJokerColor(string $color): void
   {
-    $this->flowerCardColor = $color;
-    Players::setFlowerCardColor($this->id, $color);
+    $this->jokerColor = $color;
+    Players::setJokerColor($this->id, $color);
   }
 
   public function getFlowers()
