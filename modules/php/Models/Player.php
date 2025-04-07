@@ -27,12 +27,10 @@ class Player extends DB_Model
     'scoreAux' => ['player_score_aux', 'int'],
     'zombie' => 'player_zombie',
     'flowerCardId' => 'player_flower_card_id',
-    'flowerCardCounter' => 'player_flower_card_counter',
     'jokerColor' => 'player_joker_color'
   ];
   protected int $id;
   protected int $flowerCardId;
-  protected int $flowerCardCounter;
   protected string $jokerColor;
 
   public function getUiData()

@@ -2,13 +2,15 @@
 
 namespace Bga\Games\Hutan\States;
 
+use Bga\GameFramework\Actions\Types\JsonParam;
 use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Helpers\Utils;
 use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Managers\Meeples;
 use Bga\Games\Hutan\Managers\Players;
-use Bga\Games\Hutan\Models\Flower;
+use Bga\Games\Hutan\Models\Meeple;
 use Bga\Games\Hutan\Models\Player;
+use function Bga\Games\Hutan\Helpers\array_uunique;
 
 trait PhaseOneTrait
 {
@@ -27,29 +29,32 @@ trait PhaseOneTrait
     ];
   }
 
-  public function argsPlaceFlower()
+  public function argsPlaceFlowers()
   {
     $player = Players::getCurrent();
     if (Players::getActiveId() !== $player->getId()) {
       return [];
     }
     $flowerCardId = $player->getFlowerCardId();
-    $currentFlowerColor = $this->getFlowerColor($player, $flowerCardId);
+    $flowerCard = FlowerCards::get($flowerCardId)->getUiData();
+    $allFlowerColors = array_unique($this->getFlowersColors($player, $flowerCardId));
+    $coords = [];
+    foreach ($allFlowerColors as $color) {
+      $coords[$color] = $this->getAvailableCoords($player, $color);
+    }
     return [
-      'flowerCardId' => $flowerCardId,
-      'flowerCardCounter' => $player->getFlowerCardCounter(),
-      'flowerColor' => Utils::colorToClass($currentFlowerColor),
-      'availableCoordinates' => $this->getAvailableCoords($player, $currentFlowerColor),
+      'flowerCard' => $flowerCard,
+      'availableCoordinates' => $coords,
     ];
   }
 
-  private function getFlowerColor(Player $player, int $flowerCardId)
+  private function getFlowersColors(Player $player, int $flowerCardId)
   {
     $cardFlowers = FlowerCards::get($flowerCardId)->getFlowers();
     if (in_array(FLOWER_JOKER, $cardFlowers)) {
-      return $player->getJokerColor();
+      return [$player->getJokerColor()];
     } else {
-      return $cardFlowers[$player->getFlowerCardCounter()];
+      return $cardFlowers;
     }
   }
 
@@ -57,7 +62,6 @@ trait PhaseOneTrait
   {
     $player = Players::getCurrent();
     $player->setFlowerCardId($id);
-    $player->setFlowerCardCounter(0);
     Notifications::flowerCardChosen($player, $id);
     if (in_array(FLOWER_JOKER, FlowerCards::get($id)->getFlowers())) {
       $this->gamestate->nextState(ST_PHASE_ONE_CHOOSE_FLOWER_COLOR);
@@ -73,34 +77,36 @@ trait PhaseOneTrait
     $this->gamestate->nextState('');
   }
 
-  public function actPlaceFlower(int $x, int $y): void
+  /**
+   * @throws \BgaVisibleSystemException
+   */
+  public function actPlaceFlowers(#[JsonParam] array $flowers): void
   {
     $player = Players::getCurrent();
     $flowerCardId = $player->getFlowerCardId();
-    $currentFlowerColor = $this->getFlowerColor($player, $flowerCardId);
-    if (!in_array(['x' => $x, 'y' => $y], $this->getAvailableCoords($player, $currentFlowerColor))) {
-      throw new \BgaVisibleSystemException(
-        "You cannot place a flower at coordinates $x, $y. If you see this - please report as a bug"
-      );
-    }
-    $isTree = !$player->board()->isEmpty($x, $y);
-    $currentFlowerColor = $isTree ? TREE : $currentFlowerColor;
-    $flowerOrTree = Meeples::placeFlower($player->getId(), $x, $y, $currentFlowerColor);
-    $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
+    $flowers = array_map(function ($flower) {
+      return [...$flower, 'color' => Utils::classToColor($flower['color'])];
+    }, $flowers);
+    $cardFlowers = $this->getFlowersColors($player, $flowerCardId);
 
-    $nextFlowerCount = $player->getFlowerCardCounter() + 1;
-    $flowerCardFlowers = FlowerCards::getSingle($flowerCardId)->getFlowers();
-    if (count($flowerCardFlowers) > $nextFlowerCount) {
-      $player->setFlowerCardCounter($nextFlowerCount);
-      $this->gamestate->nextState(ST_PHASE_ONE_PLACE_FLOWERS);
-    } else {
-      // TODO: Phase 3 should be here
-      // $this->gamestate->nextState(ST_PHASE_THREE_...);
-      $this->gamestate->nextState(ST_END_OF_TURN_CLEANUP);
+    $this->verifyParams($flowers, $cardFlowers);
+
+    // Actual placing
+    foreach ($flowers as $flower) {
+      $x = $flower['x'];
+      $y = $flower['y'];
+      $isTree = !$player->board()->isEmpty($x, $y);
+      $flowerType = $isTree ? TREE : $flower['color'];
+      $flowerOrTree = Meeples::place($player->getId(), $x, $y, $flowerType);
+      $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
     }
+
+    // TODO: Phase 3 should be here
+    // $this->gamestate->nextState(ST_PHASE_THREE_...);
+    $this->gamestate->nextState('');
   }
 
-  private function getAvailableCoords(Player $player, string $currentFlowerColor)
+  private function getAvailableCoords(Player $player, string $flowerColor)
   {
     $board = $player->board();
     $waterSpaces = $board->getWaterSpaces();
@@ -113,9 +119,9 @@ trait PhaseOneTrait
         $justOneFlower = count($itemsAtCell) === 1;
         $justOneMatchingFlower = false;
         if ($justOneFlower) {
-          /** @var Flower $flowerAtCell */
+          /** @var Meeple $flowerAtCell */
           $flowerAtCell = $itemsAtCell[0];
-          $justOneMatchingFlower = $flowerAtCell->getType() === $currentFlowerColor;
+          $justOneMatchingFlower = $flowerAtCell->getType() === $flowerColor;
         }
         $coords = ['x' => $x, 'y' => $y];
         if ((!in_array($coords, $waterSpaces) && $empty) || $justOneMatchingFlower) {
@@ -124,5 +130,56 @@ trait PhaseOneTrait
       }
     }
     return $availableCoords;
+  }
+
+  /**
+   * @throws \BgaVisibleSystemException
+   */
+  private function verifyParams(array $flowers, array $cardFlowers)
+  {
+    $flowersCount = count($flowers);
+    $cardFlowersCount = count($cardFlowers);
+    if ($flowersCount !== $cardFlowersCount) {
+      throw new \BgaVisibleSystemException(
+        "Incorrect amount of flowers: expected $cardFlowersCount, actual $flowersCount"
+      );
+    }
+
+    foreach ($flowers as $i => $flower) {
+      $color = $flower['color'];
+      $cardFlowerColor = $cardFlowers[$i];
+      if ($color !== $cardFlowers[$i]) {
+        throw new \BgaVisibleSystemException(
+          "Incorrect flowers received: expected $cardFlowerColor, actual $color at index $i"
+        );
+      }
+    }
+
+    $coords = array_map(function ($flower) {
+      return "${flower['x']},${flower['y']}";
+    }, $flowers);
+    if (count($coords) !== count(array_unique($coords))) {
+      throw new \BgaVisibleSystemException("You cannot place two flowers at the same position in a single turn");
+    }
+
+    // Each flower should have either x+-1 from one another or y+-1
+    foreach ($flowers as $flower) {
+      $x = $flower['x'];
+      $y = $flower['y'];
+      $otherFlowers = array_filter($flowers, function ($flower) use ($x, $y) {
+        return $flower['x'] !== $x || $flower['y'] !== $y;
+      });
+      $adjacentFlowers = array_filter($otherFlowers, function ($flower) use ($x, $y) {
+        return ($flower['x'] === $x + 1 && $flower['y'] === $y) ||
+          ($flower['x'] === $x - 1 && $flower['y'] === $y) ||
+          ($flower['x'] === $x && $flower['y'] === $y + 1) ||
+          ($flower['x'] === $x && $flower['y'] === $y - 1);
+      });
+      if (count($adjacentFlowers) === 0) {
+        throw new \BgaVisibleSystemException(
+          "You cannot place flowers which are not adjacent orthogonally to any other flower from this card"
+        );
+      }
+    }
   }
 }

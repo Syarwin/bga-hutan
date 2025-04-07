@@ -3,6 +3,7 @@
 namespace Bga\Games\Hutan\Models;
 
 use Bga\Games\Hutan\Helpers\DB_Model;
+use Bga\Games\Hutan\Helpers\Utils;
 
 class FlowerCard extends DB_Model
 {
@@ -38,7 +39,13 @@ class FlowerCard extends DB_Model
 
   public function jsonSerialize(): array
   {
-    return ['id' => $this->id, 'flowers' => $this->flowers];
+    return [
+      'id' => $this->id,
+      'flowers' => $this->flowers,
+      'flowersClasses' => array_map(function ($color) {
+        return Utils::colorToClass($color);
+      }, $this->flowers)
+    ];
   }
 
   public function getFlowers()

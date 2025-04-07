@@ -127,7 +127,7 @@ class Players extends CachedDB_Manager
   public static function resetCounters()
   {
     self::DB()->update(
-      ['player_flower_card_id' => -1, 'player_flower_card_counter' => -1, 'player_joker_color' => '']
+      ['player_flower_card_id' => -1, 'player_joker_color' => '']
     )->run();
   }
 }

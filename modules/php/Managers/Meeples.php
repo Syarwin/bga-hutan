@@ -35,7 +35,7 @@ class Meeples extends CachedPieces
     self::create($meeples, LOCATION_RESERVE);
   }
 
-  public static function placeFlower(int $pId, int $x, int $y, string $color): Meeple
+  public static function place(int $pId, int $x, int $y, string $color): Meeple
   {
     return self::singleCreate(['location' => 'board', 'type' => $color, 'player_id' => $pId, 'x' => $x, 'y' => $y]);
   }

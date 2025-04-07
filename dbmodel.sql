@@ -11,8 +11,6 @@
 ALTER TABLE `player`
     ADD `player_flower_card_id` TINYINT DEFAULT -1;
 ALTER TABLE `player`
-    ADD `player_flower_card_counter` TINYINT DEFAULT -1;
-ALTER TABLE `player`
     ADD `player_joker_color` varchar(1) DEFAULT '';
 
 CREATE TABLE IF NOT EXISTS `meeples`
@@ -22,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `meeples`
     `meeple_state`    tinyint           NOT NULL,
     `type`            varchar(32) DEFAULT NULL,
     `player_id`       int(10)           NULL,
-    `x`         tinyint           NOT NULL,
-    `y`         tinyint           NOT NULL,
+    `x`               tinyint           NOT NULL,
+    `y`               tinyint           NOT NULL,
     PRIMARY KEY (`meeple_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

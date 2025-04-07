@@ -42,21 +42,75 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       })
     },
 
-    onEnteringStatePlaceFlower(args) {
+    onEnteringStatePlaceFlowers(args) {
       if (this.isCurrentPlayerActive()) {
-        const state = this.gamedatas.gamestate;
-        const flowerIcon = this.tplFlowerIcon(args.flowerColor);
-        ['description', 'descriptionmyturn'].forEach((description) => {
-          state[description] = state[description].replace('{flower}', flowerIcon);
+        const flowersColors = args.flowerCard.flowersClasses;
+        const flowersElements = flowersColors.map((flower) => {
+          return this.tplFlowerIcon(flower, true)
         });
-        this.updatePageTitle(state);
 
-        args.availableCoordinates.forEach(coordinates => {
-          const cell = $(`cell-${this.player_id}-${coordinates.x}-${coordinates.y}`);
-          this.addSelectableClass(cell);
-          this.dojoConnect(cell, () => this.bgaPerformAction('actPlaceFlower', {x: coordinates.x, y: coordinates.y}));
-        });
+        // *** All this block should be replaced with the client logic. Here are all possible correct and incorrect placements
+        const x = 0;
+        const y = 2
+        if (flowersColors.length === 1) {
+          this.addPrimaryActionButton('one', `${flowersElements[0]} -> ${x},${y}`, () => {
+            const flowerObject = this.getFlowerObject(flowersColors[0], x, y);
+            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify([flowerObject])});
+          });
+          this.addPrimaryActionButton('incorr', `Incorrect amount`, () => {
+            const flowerObject = this.getFlowerObject(flowersColors[0], x, y);
+            const fakeObject = this.getFlowerObject(flowersColors[0], 0, 1);
+            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify([flowerObject, fakeObject])});
+          });
+        }
+
+        if (flowersColors.length > 1) {
+          this.addPrimaryActionButton('incorrectcolor', `Incorrect color`, () => {
+            const incorrectColor = flowersColors[0] === 'icon-flower-red' ? 'icon-flower-blue' : 'icon-flower-red';
+            const flowers = [
+              this.getFlowerObject(incorrectColor, x, y),
+              this.getFlowerObject(flowersColors[1], x + 1, y)
+            ];
+            if (flowersColors.length > 2) {
+              flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
+            }
+            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+          });
+          this.addPrimaryActionButton('onenotadjacent', `One not adjacent`, () => {
+            const flowers = [
+              this.getFlowerObject(flowersColors[0], x, y),
+              this.getFlowerObject(flowersColors[1], x + 3, y)
+            ];
+            if (flowersColors.length > 2) {
+              flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
+            }
+            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+          });
+          if (flowersColors[0] === flowersColors[1]) {
+            this.addPrimaryActionButton('two-same', `Two same to same coords`, () => {
+              const flowers = [
+                this.getFlowerObject(flowersColors[0], x, y),
+                this.getFlowerObject(flowersColors[1], x, y)
+              ];
+              this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+            });
+          }
+          this.addPrimaryActionButton('Allcorrect', `All correct`, () => {
+            const flowerObject0 = this.getFlowerObject(flowersColors[0], x, y);
+            const flowerObject1 = this.getFlowerObject(flowersColors[1], x + 1, y);
+            const flowers = [flowerObject0, flowerObject1];
+            if (flowersColors.length > 2) {
+              flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
+            }
+            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+          });
+        }
+        // *** End of block
       }
+    },
+
+    getFlowerObject(color, x, y) {
+      return {color: color, x: x, y: y};
     },
 
     notif_flowerCardChosen(n) {
