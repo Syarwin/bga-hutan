@@ -13,7 +13,11 @@ class Notifications
     // TODO: Parametrise according to card flowers
     // must be mapped to css classes .icon-flower-blue, .icon-flower-white, etc. Use Utils::colorToClass()
     $iconsText = '{icon-flower-blue}, {icon-flower-white}';
-    $msg = str_replace('{icons}', $iconsText, clienttranslate('${player_name} chooses a card with {icons}'));
+    if ($id === 0) {
+      $msg = clienttranslate('${player_name} chooses the pangolin token from the market');
+    } else {
+      $msg = str_replace('{icons}', $iconsText, clienttranslate('${player_name} chooses a card with {icons}'));
+    }
     self::notifyAll('flowerCardChosen', $msg, ['player' => $player, 'flowerCardId' => $id]);
   }
 
@@ -25,6 +29,12 @@ class Notifications
   public static function treePlaced(Player $player, Meeple $flower)
   {
     self::notifyAll('treePlaced', '', ['player' => $player, 'tree' => $flower]);
+  }
+
+  public static function pangolinMovedToMarket(Player $player)
+  {
+    $msg = clienttranslate('${player_name} places the pangolin token to the market');
+    self::notifyAll('pangolinMovedToMarket', $msg, ['player' => $player]);
   }
 
   ///////////////////////////////////////////////////////////////////////////////////

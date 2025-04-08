@@ -75,7 +75,10 @@ $machinestates = [
     'description' => clienttranslate('Cleaning up at the end of turn'),
     'type' => 'game',
     'action' => 'stEndOfTurnCleanup',
-    'transitions' => ['' => ST_PHASE_ONE_CHOOSE_FLOWER_CARD],
+    'transitions' => [
+      ST_PHASE_ONE_CHOOSE_FLOWER_CARD => ST_PHASE_ONE_CHOOSE_FLOWER_CARD,
+      ST_PREPARE_MARKET => ST_PREPARE_MARKET
+    ],
   ],
 
   // Final state.

@@ -3,6 +3,7 @@
 namespace Bga\Games\Hutan\States;
 
 use Bga\GameFramework\Actions\Types\JsonParam;
+use Bga\Games\Hutan\Core\Globals;
 use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Helpers\Utils;
 use Bga\Games\Hutan\Managers\FlowerCards;
@@ -21,9 +22,7 @@ trait PhaseOneTrait
   public function argsChooseFlowerColor()
   {
     return [
-      'colors' => array_map(function ($color) {
-        return Utils::colorToClass($color);
-      }, ALL_COLORS),
+      'colors' => Utils::allColorsToClasses(ALL_COLORS),
       'flowerCardId' => Players::getCurrent()->getFlowerCardId(),
     ];
   }
@@ -35,22 +34,21 @@ trait PhaseOneTrait
       return [];
     }
     $flowerCardId = $player->getFlowerCardId();
-    $flowerCard = FlowerCards::get($flowerCardId)->getUiData();
-    $allFlowerColors = array_unique($this->getFlowersColors($player, $flowerCardId));
+    $allFlowerColors = $this->getFlowersColors($player, $flowerCardId);
     $coords = [];
-    foreach ($allFlowerColors as $color) {
+    foreach (array_unique($allFlowerColors) as $color) {
       $coords[$color] = $this->getAvailableCoords($player, $color);
     }
     return [
-      'flowerCard' => $flowerCard,
+      'flowersClasses' => Utils::allColorsToClasses($allFlowerColors),
       'availableCoordinates' => $coords,
     ];
   }
 
   private function getFlowersColors(Player $player, int $flowerCardId)
   {
-    $cardFlowers = FlowerCards::get($flowerCardId)->getFlowers();
-    if (in_array(FLOWER_JOKER, $cardFlowers)) {
+    $cardFlowers = $flowerCardId === 0 ? null : FlowerCards::get($flowerCardId)->getFlowers();
+    if ($flowerCardId === 0 || in_array(FLOWER_JOKER, $cardFlowers)) {
       return [$player->getJokerColor()];
     } else {
       return $cardFlowers;
@@ -61,8 +59,11 @@ trait PhaseOneTrait
   {
     $player = Players::getCurrent();
     $player->setFlowerCardId($id);
+    if ($id === 0) {
+      Globals::setPangolinLocation($player->getId());
+    }
     Notifications::flowerCardChosen($player, $id);
-    if (in_array(FLOWER_JOKER, FlowerCards::get($id)->getFlowers())) {
+    if ($id === 0 || in_array(FLOWER_JOKER, FlowerCards::get($id)->getFlowers())) {
       $this->gamestate->nextState(ST_PHASE_ONE_CHOOSE_FLOWER_COLOR);
     } else {
       $this->gamestate->nextState(ST_PHASE_ONE_PLACE_FLOWERS);
@@ -162,19 +163,18 @@ trait PhaseOneTrait
     }
 
     // Each flower should have either x+-1 from one another or y+-1
-    foreach ($flowers as $flower) {
-      $x = $flower['x'];
-      $y = $flower['y'];
-      $otherFlowers = array_filter($flowers, function ($flower) use ($x, $y) {
-        return $flower['x'] !== $x || $flower['y'] !== $y;
-      });
-      $adjacentFlowers = array_filter($otherFlowers, function ($flower) use ($x, $y) {
-        return abs($flower['x'] - $x) + abs($flower['y'] - $y) === 1;
-      });
-      if (count($adjacentFlowers) === 0) {
-        throw new \BgaVisibleSystemException(
-          "You cannot place flowers which are not adjacent orthogonally to any other flower from this card"
-        );
+    if (count($flowers) > 1) {
+      foreach ($flowers as $flower) {
+        $x = $flower['x'];
+        $y = $flower['y'];
+        $adjacentFlowers = array_filter($flowers, function ($flower) use ($x, $y) {
+          return abs($flower['x'] - $x) + abs($flower['y'] - $y) === 1;
+        });
+        if (count($adjacentFlowers) === 0) {
+          throw new \BgaVisibleSystemException(
+            "You cannot place flowers which are not adjacent orthogonally to any other flower from this card"
+          );
+        }
       }
     }
   }

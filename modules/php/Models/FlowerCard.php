@@ -42,9 +42,7 @@ class FlowerCard extends DB_Model
     return [
       'id' => $this->id,
       'flowers' => $this->flowers,
-      'flowersClasses' => array_map(function ($color) {
-        return Utils::colorToClass($color);
-      }, $this->flowers)
+      'flowersClasses' => Utils::allColorsToClasses($this->flowers),
     ];
   }
 

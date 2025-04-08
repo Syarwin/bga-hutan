@@ -164,6 +164,13 @@ abstract class Utils extends \APP_DbObject
     TREE => 'icon-tree',
   ];
 
+  public static function allColorsToClasses(array $colors): array
+  {
+    return array_map(function ($color) {
+      return Utils::colorToClass($color);
+    }, $colors);
+  }
+
   public static function colorToClass(string $color): string
   {
     return self::COLORS_CLASSES[$color];

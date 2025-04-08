@@ -16,6 +16,8 @@ class Globals extends DB_Manager
 
     'firstPlayer' => 'int',
     'turn' => 'int',
+    'pangolinLocation' => 'str',
+    'pangolinPlayedThisTurn' => 'bool',
 
     // Setup
     'scenario' => 'int',
@@ -33,6 +35,7 @@ class Globals extends DB_Manager
     $isSolo = count($players) == 1;
     static::setSolo($isSolo);
     static::setFirstPlayer(array_keys($players)[0]);
+    static::setPangolinLocation(array_keys($players)[0]);
 
     $scenario = $options[OPTION_SCENARIO] ?? 0;
     static::setScenario($scenario);
@@ -91,7 +94,7 @@ class Globals extends DB_Manager
     foreach (
       self::DB()
         ->select(['value', 'name'])
-        ->get(false)
+        ->get()
       as $name => $variable
     ) {
       if (\array_key_exists($name, self::$variables)) {

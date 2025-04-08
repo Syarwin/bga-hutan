@@ -1,4 +1,6 @@
 define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
+  const LOCATION_TABLE = 'table';
+
   return declare('hutan.phaseOne', null, {
     constructor() {
       this._notifications.push(['flowerCardChosen', 1]);
@@ -9,10 +11,17 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     onEnteringStateChooseFlowerCard(args) {
       this.destroyAll('.hutan-flower-card');
       const cards = this.placeFlowerCards(args.cards);
-      this.makeAllSelectableAndClickable(cards, (card) => {
-        const id = this.extractId(card, 'flower-card');
-        this.bgaPerformAction('actChooseFlowerCard', {id: id});
-      })
+      if (this.isCurrentPlayerActive()) {
+        this.makeAllSelectableAndClickable(cards, (card) => {
+          const id = this.extractId(card, 'flower-card');
+          this.bgaPerformAction('actChooseFlowerCard', {id: id});
+        })
+        if (this.gamedatas.pangolin === LOCATION_TABLE) {
+          this.addPrimaryActionButton('pangolin', `Take Pangolin`, () => {
+            this.bgaPerformAction('actChooseFlowerCard', {id: 0});
+          });
+        }
+      }
     },
 
 
@@ -44,7 +53,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
     onEnteringStatePlaceFlowers(args) {
       if (this.isCurrentPlayerActive()) {
-        const flowersColors = args.flowerCard.flowersClasses;
+        const flowersColors = args.flowersClasses;
         const flowersElements = flowersColors.map((flower) => {
           return this.tplFlowerIcon(flower, true)
         });
@@ -115,6 +124,9 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
     notif_flowerCardChosen(n) {
       debug('Notif: flowerCardChosen', n);
+      if (n.args.flowerCardId === 0) {
+        this.gamedatas.pangolin = n.active_player;
+      }
     },
 
     notif_flowerPlaced(n) {
