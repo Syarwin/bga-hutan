@@ -25,6 +25,7 @@ define([
   g_gamethemeurl + 'modules/js/lexemes.js',
   g_gamethemeurl + 'modules/js/tpls.js',
   g_gamethemeurl + 'modules/js/States/PhaseOne.js',
+  g_gamethemeurl + 'modules/js/States/Turn.js',
 ], function (dojo, declare) {
   const ANIMAL_CASSOWARY = 'animal-cassowary';
   const ANIMAL_HORNBILL = 'animal-hornbill';
@@ -35,7 +36,7 @@ define([
 
   return declare(
     'bgagame.hutan',
-    [customgame.game, hutan.playerboard, hutan.common, hutan.lexemes, hutan.phaseOne, hutan.htmltemplates],
+    [customgame.game, hutan.playerboard, hutan.common, hutan.lexemes, hutan.phaseOne, hutan.turn, hutan.htmltemplates],
     {
       constructor() {
         // this.default_viewport = 'width=990';
@@ -48,6 +49,7 @@ define([
         this.setupPlayers();
         this.setupInfoPanel();
         this.setupMeeples();
+        this.setupFlowerCards();
         this.inherited(arguments);
       },
 
@@ -62,6 +64,28 @@ define([
       //    | |__| (_| | | | (_| \__ \
       //     \____\__,_|_|  \__,_|___/
       /////////////////////////////////
+
+      setupFlowerCards() {
+        this.placeFlowerCards(this.gamedatas.flowerCards);
+      },
+
+      placeFlowerCards(cards) {
+        return cards.map((card) => {
+          if (!$(`flower-card-${card.id}`)) {
+            this.addFlowerCard(card);
+          }
+
+          let o = $(`flower-card-${card.id}`);
+          if (!o) return null;
+
+          let container = this.getFlowerCardContainer(card);
+          if (o.parentNode !== $(container)) {
+            dojo.place(o, container);
+          }
+
+          return o;
+        });
+      },
 
       addFlowerCard(card, container = null) {
         if (container == null) {
@@ -111,6 +135,10 @@ define([
             this.destroy(oMeeple);
           }
         });
+
+        if (!$('meeple-pangolin')) {
+          this.addMeeple({ id: 'pangolin', location: this.gamedatas.pangolin, type: 'pangolin' });
+        }
       },
 
       addMeeple(meeple, location = null) {
@@ -131,6 +159,11 @@ define([
       },
 
       getMeepleContainer(meeple) {
+        // Pangolin
+        if (meeple.type == 'pangolin') {
+          if (meeple.location == 'table') return $('flower-cards-container');
+          else return $(`pangolin-${meeple.location}`);
+        }
         // Reserve
         if (meeple.location == 'reserve') {
           return $(`animal-reserve-${meeple.type}`);
@@ -199,6 +232,37 @@ define([
         this.gamedatas.turn = args.turn;
         this.updateTurnNumber();
         return this.wait(800);
+      },
+
+      ////////////////////////////////////////////////////////////
+      // _____                          _   _   _
+      // |  ___|__  _ __ _ __ ___   __ _| |_| |_(_)_ __   __ _
+      // | |_ / _ \| '__| '_ ` _ \ / _` | __| __| | '_ \ / _` |
+      // |  _| (_) | |  | | | | | | (_| | |_| |_| | | | | (_| |
+      // |_|  \___/|_|  |_| |_| |_|\__,_|\__|\__|_|_| |_|\__, |
+      //                                                 |___/
+      ////////////////////////////////////////////////////////////
+
+      /**
+       * Replace some expressions by corresponding html formating
+       */
+      formatIcon(name, n = null, lowerCase = true) {
+        let type = lowerCase ? name.toLowerCase() : name;
+
+        let text = n == null ? '' : `<span>${n}</span>`;
+        return `${text}<div class="icon-container icon-container-${type}">
+            <div class="hutan-icon icon-${type}"></div>
+          </div>`;
+      },
+
+      formatString(str) {
+        const ICONS = [];
+
+        ICONS.forEach((name) => {
+          str = str.replaceAll(new RegExp('<' + name + '>', 'g'), this.formatIcon(name));
+        });
+
+        return str;
       },
     }
   );

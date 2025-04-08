@@ -14,6 +14,48 @@
   height: 2em;
 }
 
+.flowerBtn {
+  padding: 1px 3px;
+  font-size: 19px;
+
+  &.placed {
+    background: #8ef98e; // TODO : better
+    pointer-events: none;
+  }
+}
+
+.hutan-meeple {
+  &.tmp {
+    opacity: 0.7;
+  }
+}
+
+#meeple-pangolin {
+  background-image: url("img/pangolin.png");
+  background-size: 100% 100%;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 2px 2px 5px 1px black;
+
+  &.selectable {
+    box-shadow: 1px 1px 5px 1px red;
+    cursor: pointer;
+    &:hover {
+      scale: 1.1;
+    }
+  }
+
+  &.selected {
+    box-shadow: 1px 1px 7px 5px lime;
+  }
+}
+.hutan-pangolin-holder {
+  #meeple-pangolin {
+    width: 30px;
+    height: 30px;
+  }
+}
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////
@@ -385,14 +427,5 @@
 
   &.icon-zone-5S {
     @include icon-zone-5S;
-  }
-
-  &.status-bar-icon {
-    width: 30px;
-    display: inline-block;
-  }
-
-  &:not(.button-icon) {
-    position: absolute;
   }
 }

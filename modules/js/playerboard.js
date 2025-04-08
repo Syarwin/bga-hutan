@@ -21,6 +21,51 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
         this.place('tplPlayerPanel', player, `overall_player_board_${player.id}`);
         $(`overall_player_board_${player.id}`).addEventListener('click', () => this.goToPlayerBoard(player.id));
       });
+
+      // Init grid for clientside logic
+      this._board = {};
+      for (let x = 0; x < 6; x++) {
+        this._board[x] = {};
+        for (let y = 0; y < 6; y++) {
+          this._board[x][y] = [];
+        }
+      }
+    },
+
+    getCell(cell) {
+      return $(`cell-${this.player_id}-${cell.x}-${cell.y}`);
+    },
+
+    getFlowerValidPosition(color, previousFlowers) {
+      let previousCells = Object.values(previousFlowers);
+      let cells = [];
+      for (let x = 0; x < 6; x++) {
+        for (let y = 0; y < 6; y++) {
+          // Board already full
+          if (this._board[x][y].length == 2) continue;
+
+          // If there is one flower here, check the color
+          if (this._board[x][y].length == 1) {
+            if (this._board[x][y][0] != color) continue;
+          }
+
+          // Check adjacency to other ongoing flowers
+          if (previousCells.length > 0) {
+            let isValid = false;
+            previousCells.forEach((cell) => {
+              if (Math.abs(cell.x - x) + Math.abs(cell.y - y) == 1) {
+                isValid = true;
+              }
+            });
+
+            if (!isValid) continue;
+          }
+
+          cells.push({ x, y });
+        }
+      }
+
+      return cells;
     },
 
     onChangePlayerBoardsLayoutSetting(v) {
@@ -70,37 +115,6 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       if (pId == -1) return;
       $(`player-board-${this._focusedPlayer}`).querySelector('.buildings-helper').classList.remove('open', 'closedAnim');
       this.goToPlayerBoard(pId);
-    },
-
-    tplPlayerBoard(player) {
-      let boards = this.gamedatas.boards;
-      let grid = '';
-
-      for (let i = 0; i < 4; i++) {
-        let board = boards[i];
-        grid += `<div class='board-quadrant' data-quadrant='${i}' data-board='${board[0]}' data-orientation='${board[1]}'></div>`;
-      }
-
-      for (let x = 0; x < 6; x++) {
-        for (let y = 0; y < 6; y++) {
-          grid += `<div class='board-cell' id='cell-${player.id}-${x}-${y}' style='grid-row-start:${x + 1}; grid-column-start:${y + 1}'></div>`;
-        }
-      }
-
-      return `<div class='hutan-player-board-resizable' id='player-board-resizable-${player.id}'>
-            <div class='hutan-player-board' id='player-board-${player.id}'>
-                <div class='hutan-board-player-name' style="color:#${player.color}">
-                    ${player.name}
-                </div>
-                <div class='hutan-board-grid'>
-                    ${grid}
-                </div>
-            </div>
-          </div>`;
-    },
-
-    tplPlayerPanel(player) {
-      return `<div class='player-info'></div>`;
     },
   });
 });

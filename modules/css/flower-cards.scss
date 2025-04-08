@@ -27,9 +27,18 @@
 
   &.selectable {
     cursor: pointer;
+    .hutan-flower-card-wrapper {
+      box-shadow: 1px 1px 5px 2px red;
+    }
 
     &:hover {
       transform: scale(1.04);
+    }
+  }
+  &.selected {
+    .hutan-flower-card-wrapper {
+      border-color: #fffb00;
+      box-shadow: 0px 0px 5px 3px yellow;
     }
   }
 }

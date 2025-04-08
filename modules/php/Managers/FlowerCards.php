@@ -26,7 +26,7 @@ class FlowerCards extends CachedPieces
 
   public static function getUiData(): array
   {
-    return self::getAll()->ui();
+    return self::getInLocation(LOCATION_TABLE)->ui();
   }
 
   public static function setupNewGame()

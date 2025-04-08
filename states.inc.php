@@ -32,53 +32,61 @@ $machinestates = [
     'description' => clienttranslate('Preparing market for the next round'),
     'type' => 'game',
     'action' => 'stPrepareMarket',
-    'transitions' => ['' => ST_PHASE_ONE_CHOOSE_FLOWER_CARD],
+    // 'transitions' => ['' => ST_PHASE_ONE_CHOOSE_FLOWER_CARD],
+    'transitions' => ['' => ST_TURN],
   ],
 
-  ST_PHASE_ONE_CHOOSE_FLOWER_CARD => [
-    'name' => 'chooseFlowerCard',
-    'description' => clienttranslate('${actplayer} must choose a Flower card'),
-    'descriptionmyturn' => clienttranslate('${you} must choose a Flower card'),
+  ST_TURN => [
+    'name' => 'turn',
+    'description' => clienttranslate('${actplayer} must choose a Flower card and place the corresponding Flowers'),
+    'descriptionmyturn' => clienttranslate('${you} must choose a Flower card and place the corresponding Flowers'),
     'type' => 'activeplayer',
-    'args' => 'argsChooseFlowerCard',
-    'possibleactions' => ['actChooseFlowerCard'],
-    'transitions' => [
-      ST_PHASE_ONE_PLACE_FLOWERS => ST_PHASE_ONE_PLACE_FLOWERS,
-      ST_PHASE_ONE_CHOOSE_FLOWER_COLOR => ST_PHASE_ONE_CHOOSE_FLOWER_COLOR
-    ],
+    'args' => 'argsTurn',
+    'possibleactions' => ['actTakeTurn'],
+    'transitions' => ['' => ST_END_OF_TURN_CLEANUP],
   ],
 
-  ST_PHASE_ONE_CHOOSE_FLOWER_COLOR => [
-    'name' => 'chooseFlowerColor',
-    'description' => clienttranslate('${actplayer} must choose a color of the flower before placing it'),
-    'descriptionmyturn' => clienttranslate('${you} must choose a color of the flower before placing it'),
-    'type' => 'activeplayer',
-    'args' => 'argsChooseFlowerColor',
-    'possibleactions' => ['actChooseFlowerColor'],
-    'transitions' => ['' => ST_PHASE_ONE_PLACE_FLOWERS],
-  ],
 
-  ST_PHASE_ONE_PLACE_FLOWERS => [
-    'name' => 'placeFlowers',
-    'description' => clienttranslate('${actplayer} must place flowers from the chosen card'),
-    'descriptionmyturn' => clienttranslate('${you} must place flowers from the chosen card'),
-    'type' => 'activeplayer',
-    'args' => 'argsPlaceFlowers',
-    'possibleactions' => ['actPlaceFlowers'],
-    'transitions' => [
-      '' => ST_END_OF_TURN_CLEANUP,
-    ],
-  ],
+  // ST_PHASE_ONE_CHOOSE_FLOWER_CARD => [
+  //   'name' => 'chooseFlowerCard',
+  //   'description' => clienttranslate('${actplayer} must choose a Flower card'),
+  //   'descriptionmyturn' => clienttranslate('${you} must choose a Flower card'),
+  //   'type' => 'activeplayer',
+  //   'args' => 'argsChooseFlowerCard',
+  //   'possibleactions' => ['actChooseFlowerCard'],
+  //   'transitions' => [
+  //     ST_PHASE_ONE_PLACE_FLOWERS => ST_PHASE_ONE_PLACE_FLOWERS,
+  //     ST_PHASE_ONE_CHOOSE_FLOWER_COLOR => ST_PHASE_ONE_CHOOSE_FLOWER_COLOR
+  //   ],
+  // ],
+
+  // ST_PHASE_ONE_CHOOSE_FLOWER_COLOR => [
+  //   'name' => 'chooseFlowerColor',
+  //   'description' => clienttranslate('${actplayer} must choose a color of the flower before placing it'),
+  //   'descriptionmyturn' => clienttranslate('${you} must choose a color of the flower before placing it'),
+  //   'type' => 'activeplayer',
+  //   'args' => 'argsChooseFlowerColor',
+  //   'possibleactions' => ['actChooseFlowerColor'],
+  //   'transitions' => ['' => ST_PHASE_ONE_PLACE_FLOWERS],
+  // ],
+
+  // ST_PHASE_ONE_PLACE_FLOWERS => [
+  //   'name' => 'placeFlowers',
+  //   'description' => clienttranslate('${actplayer} must place flowers from the chosen card'),
+  //   'descriptionmyturn' => clienttranslate('${you} must place flowers from the chosen card'),
+  //   'type' => 'activeplayer',
+  //   'args' => 'argsPlaceFlowers',
+  //   'possibleactions' => ['actPlaceFlowers'],
+  //   'transitions' => [
+  //     '' => ST_END_OF_TURN_CLEANUP,
+  //   ],
+  // ],
 
   ST_END_OF_TURN_CLEANUP => [
     'name' => 'prepareMarket',
     'description' => clienttranslate('Cleaning up at the end of turn'),
     'type' => 'game',
     'action' => 'stEndOfTurnCleanup',
-    'transitions' => [
-      ST_PHASE_ONE_CHOOSE_FLOWER_CARD => ST_PHASE_ONE_CHOOSE_FLOWER_CARD,
-      ST_PREPARE_MARKET => ST_PREPARE_MARKET
-    ],
   ],
 
   // Final state.

@@ -71,6 +71,12 @@ class Player extends DB_Model
     return $this->board;
   }
 
+  public function canPlayCard(FlowerCard $card): bool
+  {
+    return $this->board()->canPlayCard($card);
+  }
+
+
   // public function getStat($name)
   // {
   //   $name = 'get' . Utils::ucfirst($name);

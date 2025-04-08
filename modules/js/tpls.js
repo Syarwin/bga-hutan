@@ -83,5 +83,38 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       const buttonClass = isButton ? ' button-icon' : '';
       return `<div class="hutan-icon ${type}${buttonClass} status-bar-icon"></div>`;
     },
+
+    tplPlayerBoard(player) {
+      let boards = this.gamedatas.boards;
+      let grid = '';
+
+      for (let i = 0; i < 4; i++) {
+        let board = boards[i];
+        grid += `<div class='board-quadrant' data-quadrant='${i}' data-board='${board[0]}' data-orientation='${board[1]}'></div>`;
+      }
+
+      for (let x = 0; x < 6; x++) {
+        for (let y = 0; y < 6; y++) {
+          grid += `<div class='board-cell' id='cell-${player.id}-${x}-${y}' style='grid-row-start:${x + 1}; grid-column-start:${y + 1}'></div>`;
+        }
+      }
+
+      return `<div class='hutan-player-board-resizable' id='player-board-resizable-${player.id}'>
+            <div class='hutan-player-board' id='player-board-${player.id}'>
+                <div class='hutan-board-player-name' style="color:#${player.color}">
+                    ${player.name}
+                </div>
+                <div class='hutan-board-grid'>
+                    ${grid}
+                </div>
+            </div>
+          </div>`;
+    },
+
+    tplPlayerPanel(player) {
+      return `<div class='player-info'>
+        <div class="hutan-pangolin-holder" id="pangolin-${player.id}"></div>
+      </div>`;
+    },
   });
 });

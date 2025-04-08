@@ -33,7 +33,7 @@ class Notifications
 
   public static function pangolinMovedToMarket(Player $player)
   {
-    $msg = clienttranslate('${player_name} places the pangolin token to the market');
+    $msg = clienttranslate('${player_name} places the pangolin token back to the market');
     self::notifyAll('pangolinMovedToMarket', $msg, ['player' => $player]);
   }
 

@@ -75,6 +75,7 @@ class Game extends \Table
     return [
       'boards' => Globals::getBoards(),
       'meeples' => Meeples::getUiData(),
+      'flowerCards' => FlowerCards::getUiData(),
       'players' => Players::getUiData(),
       'pangolin' => Globals::getPangolinLocation(),
 
@@ -105,7 +106,7 @@ class Game extends \Table
   public function zombieTurn($state, $active_player): void
   {
     switch ($state['name']) {
-      // TODO
+        // TODO
     }
   }
 

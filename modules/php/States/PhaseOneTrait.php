@@ -14,123 +14,123 @@ use Bga\Games\Hutan\Models\Player;
 
 trait PhaseOneTrait
 {
-  public function argsChooseFlowerCard()
-  {
-    return ['cards' => FlowerCards::getInLocation(LOCATION_TABLE)->toArray()];
-  }
+  // public function argsChooseFlowerCard()
+  // {
+  //   return ['cards' => FlowerCards::getInLocation(LOCATION_TABLE)->toArray()];
+  // }
 
-  public function argsChooseFlowerColor()
-  {
-    return [
-      'colors' => Utils::allColorsToClasses(ALL_COLORS),
-      'flowerCardId' => Players::getCurrent()->getFlowerCardId(),
-    ];
-  }
+  // public function argsChooseFlowerColor()
+  // {
+  //   return [
+  //     'colors' => Utils::allColorsToClasses(ALL_COLORS),
+  //     'flowerCardId' => Players::getCurrent()->getFlowerCardId(),
+  //   ];
+  // }
 
-  public function argsPlaceFlowers()
-  {
-    $player = Players::getCurrent();
-    if (Players::getActiveId() !== $player->getId()) {
-      return [];
-    }
-    $flowerCardId = $player->getFlowerCardId();
-    $allFlowerColors = $this->getFlowersColors($player, $flowerCardId);
-    $coords = [];
-    foreach (array_unique($allFlowerColors) as $color) {
-      $coords[$color] = $this->getAvailableCoords($player, $color);
-    }
-    return [
-      'flowersClasses' => Utils::allColorsToClasses($allFlowerColors),
-      'availableCoordinates' => $coords,
-    ];
-  }
+  // public function argsPlaceFlowers()
+  // {
+  //   $player = Players::getCurrent();
+  //   if (Players::getActiveId() !== $player->getId()) {
+  //     return [];
+  //   }
+  //   $flowerCardId = $player->getFlowerCardId();
+  //   $allFlowerColors = $this->getFlowersColors($player, $flowerCardId);
+  //   $coords = [];
+  //   foreach (array_unique($allFlowerColors) as $color) {
+  //     $coords[$color] = $this->getAvailableCoords($player, $color);
+  //   }
+  //   return [
+  //     'flowersClasses' => Utils::allColorsToClasses($allFlowerColors),
+  //     'availableCoordinates' => $coords,
+  //   ];
+  // }
 
-  private function getFlowersColors(Player $player, int $flowerCardId)
-  {
-    $cardFlowers = $flowerCardId === 0 ? null : FlowerCards::get($flowerCardId)->getFlowers();
-    if ($flowerCardId === 0 || in_array(FLOWER_JOKER, $cardFlowers)) {
-      return [$player->getJokerColor()];
-    } else {
-      return $cardFlowers;
-    }
-  }
+  // private function getFlowersColors(Player $player, int $flowerCardId)
+  // {
+  //   $cardFlowers = $flowerCardId === 0 ? null : FlowerCards::get($flowerCardId)->getFlowers();
+  //   if ($flowerCardId === 0 || in_array(FLOWER_JOKER, $cardFlowers)) {
+  //     return [$player->getJokerColor()];
+  //   } else {
+  //     return $cardFlowers;
+  //   }
+  // }
 
-  public function actChooseFlowerCard(int $id): void
-  {
-    $player = Players::getCurrent();
-    $player->setFlowerCardId($id);
-    if ($id === 0) {
-      Globals::setPangolinLocation($player->getId());
-    }
-    Notifications::flowerCardChosen($player, $id);
-    if ($id === 0 || in_array(FLOWER_JOKER, FlowerCards::get($id)->getFlowers())) {
-      $this->gamestate->nextState(ST_PHASE_ONE_CHOOSE_FLOWER_COLOR);
-    } else {
-      $this->gamestate->nextState(ST_PHASE_ONE_PLACE_FLOWERS);
-    }
-  }
+  // public function actChooseFlowerCard(int $id): void
+  // {
+  //   $player = Players::getCurrent();
+  //   $player->setFlowerCardId($id);
+  //   if ($id === 0) {
+  //     Globals::setPangolinLocation($player->getId());
+  //   }
+  //   Notifications::flowerCardChosen($player, $id);
+  //   if ($id === 0 || in_array(FLOWER_JOKER, FlowerCards::get($id)->getFlowers())) {
+  //     $this->gamestate->nextState(ST_PHASE_ONE_CHOOSE_FLOWER_COLOR);
+  //   } else {
+  //     $this->gamestate->nextState(ST_PHASE_ONE_PLACE_FLOWERS);
+  //   }
+  // }
 
-  public function actChooseFlowerColor(string $colorClass): void
-  {
-    $player = Players::getCurrent();
-    $player->setJokerColor(Utils::classToColor($colorClass));
-    $this->gamestate->nextState('');
-  }
+  // public function actChooseFlowerColor(string $colorClass): void
+  // {
+  //   $player = Players::getCurrent();
+  //   $player->setJokerColor(Utils::classToColor($colorClass));
+  //   $this->gamestate->nextState('');
+  // }
 
-  /**
-   * @throws \BgaVisibleSystemException
-   */
-  public function actPlaceFlowers(#[JsonParam] array $flowers): void
-  {
-    $player = Players::getCurrent();
-    $flowerCardId = $player->getFlowerCardId();
-    $flowers = array_map(function ($flower) {
-      return [...$flower, 'color' => Utils::classToColor($flower['color'])];
-    }, $flowers);
-    $cardFlowers = $this->getFlowersColors($player, $flowerCardId);
+  // /**
+  //  * @throws \BgaVisibleSystemException
+  //  */
+  // public function actPlaceFlowers(#[JsonParam] array $flowers): void
+  // {
+  //   $player = Players::getCurrent();
+  //   $flowerCardId = $player->getFlowerCardId();
+  //   $flowers = array_map(function ($flower) {
+  //     return [...$flower, 'color' => Utils::classToColor($flower['color'])];
+  //   }, $flowers);
+  //   $cardFlowers = $this->getFlowersColors($player, $flowerCardId);
 
-    $this->verifyParams($flowers, $cardFlowers);
+  //   $this->verifyParams($flowers, $cardFlowers);
 
-    // Actual placing
-    foreach ($flowers as $flower) {
-      $x = $flower['x'];
-      $y = $flower['y'];
-      $isTree = !$player->board()->isEmpty($x, $y);
-      $flowerType = $isTree ? TREE : $flower['color'];
-      $flowerOrTree = Meeples::place($player->getId(), $x, $y, $flowerType);
-      $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
-    }
+  //   // Actual placing
+  //   foreach ($flowers as $flower) {
+  //     $x = $flower['x'];
+  //     $y = $flower['y'];
+  //     $isTree = !$player->board()->isEmpty($x, $y);
+  //     $flowerType = $isTree ? TREE : $flower['color'];
+  //     $flowerOrTree = Meeples::place($player->getId(), $x, $y, $flowerType);
+  //     $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
+  //   }
 
-    // TODO: Phase 3 should be here
-    // $this->gamestate->nextState(ST_PHASE_THREE_...);
-    $this->gamestate->nextState('');
-  }
+  //   // TODO: Phase 3 should be here
+  //   // $this->gamestate->nextState(ST_PHASE_THREE_...);
+  //   $this->gamestate->nextState('');
+  // }
 
-  private function getAvailableCoords(Player $player, string $flowerColor)
-  {
-    $board = $player->board();
-    $waterSpaces = $board->getWaterSpaces();
+  // private function getAvailableCoords(Player $player, string $flowerColor)
+  // {
+  //   $board = $player->board();
+  //   $waterSpaces = $board->getWaterSpaces();
 
-    $availableCoords = [];
-    for ($x = 0; $x < 6; $x++) {
-      for ($y = 0; $y < 6; $y++) {
-        $empty = $board->isEmpty($x, $y);
-        $itemsAtCell = $board->getItemsAt($x, $y);
-        $justOneFlower = count($itemsAtCell) === 1;
-        $justOneMatchingFlower = false;
-        if ($justOneFlower) {
-          /** @var Meeple $flowerAtCell */
-          $flowerAtCell = $itemsAtCell[0];
-          $justOneMatchingFlower = $flowerAtCell->getType() === $flowerColor;
-        }
-        $coords = ['x' => $x, 'y' => $y];
-        if ((!in_array($coords, $waterSpaces) && $empty) || $justOneMatchingFlower) {
-          $availableCoords[] = $coords;
-        }
-      }
-    }
-    return $availableCoords;
-  }
+  //   $availableCoords = [];
+  //   for ($x = 0; $x < 6; $x++) {
+  //     for ($y = 0; $y < 6; $y++) {
+  //       $empty = $board->isEmpty($x, $y);
+  //       $itemsAtCell = $board->getItemsAt($x, $y);
+  //       $justOneFlower = count($itemsAtCell) === 1;
+  //       $justOneMatchingFlower = false;
+  //       if ($justOneFlower) {
+  //         /** @var Meeple $flowerAtCell */
+  //         $flowerAtCell = $itemsAtCell[0];
+  //         $justOneMatchingFlower = $flowerAtCell->getType() === $flowerColor;
+  //       }
+  //       $coords = ['x' => $x, 'y' => $y];
+  //       if ((!in_array($coords, $waterSpaces) && $empty) || $justOneMatchingFlower) {
+  //         $availableCoords[] = $coords;
+  //       }
+  //     }
+  //   }
+  //   return $availableCoords;
+  // }
 
   /**
    * @throws \BgaVisibleSystemException
@@ -155,9 +155,7 @@ trait PhaseOneTrait
       }
     }
 
-    $coords = array_map(function ($flower) {
-      return "${flower['x']},${flower['y']}";
-    }, $flowers);
+    $coords = array_map(fn($flower) => $flower['x'] . "," . $flower['y'], $flowers);
     if (count($coords) !== count(array_unique($coords))) {
       throw new \BgaVisibleSystemException("You cannot place two flowers at the same position in a single turn");
     }

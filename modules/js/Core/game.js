@@ -1,6 +1,5 @@
 var isDebug = window.location.host === 'studio.boardgamearena.com' || window.location.hash.indexOf('debug') > -1;
-var debug = isDebug ? console.info.bind(window.console) : function () {
-};
+var debug = isDebug ? console.info.bind(window.console) : function () {};
 
 define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
   return declare('customgame.game', [ebg.core.gamegui], {
@@ -47,6 +46,10 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
      * Setup:
      */
     setup(gamedatas) {
+      // Create a new div for buttons to avoid BGA auto clearing it
+      dojo.place("<div id='customActions' style='display:inline-block'></div>", $('generalactions'), 'after');
+      dojo.place("<div id='restartAction' style='display:inline-block'></div>", $('customActions'), 'after');
+
       this.setupNotifications();
       dojo.connect(this.notifqueue, 'addToLog', () => {
         this.checkLogCancel(this._last_notif);
@@ -130,6 +133,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
 
     clearPossible() {
       this.removeActionButtons();
+      this.clearActionButtons();
 
       this._connections.forEach(dojo.disconnect);
       this._connections = [];
@@ -138,6 +142,8 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
       });
       this._selectableNodes = [];
       dojo.query('.unselectable').removeClass('unselectable');
+      dojo.query('.selected').removeClass('selected');
+      dojo.query('.tmp').forEach((o) => this.destroy(o));
     },
 
     /*
@@ -172,16 +178,20 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
     /*
      * Add a blue/grey button if it doesn't already exists
      */
-    addPrimaryActionButton(id, text, callback) {
-      if (!$(id)) this.addActionButton(id, text, callback, null, false, 'blue');
+    addPrimaryActionButton(id, text, callback, zone = 'customActions') {
+      if (!$(id)) this.addActionButton(id, text, callback, zone, false, 'blue');
     },
 
-    addSecondaryActionButton(id, text, callback) {
-      if (!$(id)) this.addActionButton(id, text, callback, null, false, 'gray');
+    addSecondaryActionButton(id, text, callback, zone = 'customActions') {
+      if (!$(id)) this.addActionButton(id, text, callback, zone, false, 'gray');
     },
 
-    addDangerActionButton(id, text, callback) {
-      if (!$(id)) this.addActionButton(id, text, callback, null, false, 'red');
+    addDangerActionButton(id, text, callback, zone = 'customActions') {
+      if (!$(id)) this.addActionButton(id, text, callback, zone, false, 'red');
+    },
+
+    clearActionButtons() {
+      dojo.empty('customActions');
     },
 
     slide(mobileElt, targetElt, options = {}) {
@@ -403,7 +413,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
         console.error(log, args, 'Exception thrown', e.stack);
       }
 
-      return this.inherited({callee: this.format_string_recursive}, arguments);
+      return this.inherited({ callee: this.format_string_recursive }, arguments);
     },
 
     getLogIcons(list) {
@@ -423,7 +433,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
     },
 
     getLogIcon(type) {
-      return this.format_block('jstpl_resource_icon_log', {type: type});
+      return this.format_block('jstpl_resource_icon_log', { type: type });
     },
 
     cancelLogs(notifIds) {
@@ -470,7 +480,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
       const connection = dojo.connect($(element), 'click', (evt) => {
         evt.preventDefault();
         evt.stopPropagation();
-        func();
+        func(evt);
       });
       this._connections.push(connection);
     },
@@ -644,6 +654,39 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
           if (tooltip.showTimeout != null) clearTimeout(tooltip.showTimeout);
         }
       });
+    },
+
+    onClick(node, callback, temporary = true) {
+      let safeCallback = (evt) => {
+        evt.stopPropagation();
+        if (this.isInterfaceLocked()) return false;
+        if (this._helpMode) return false;
+        callback(evt);
+      };
+
+      if (temporary) {
+        this.dojoConnect($(node), safeCallback);
+        dojo.removeClass(node, 'unselectable');
+        dojo.addClass(node, 'selectable');
+        this._selectableNodes.push(node);
+      } else {
+        dojo.connect($(node), 'click', safeCallback);
+      }
+    },
+
+    clientState(name, descriptionmyturn, args) {
+      this.setClientState(name, {
+        descriptionmyturn,
+        args,
+      });
+    },
+
+    addCancelStateBtn(text = null) {
+      if (text == null) {
+        text = _('Cancel');
+      }
+
+      this.addSecondaryActionButton('btnCancel', text, () => this.restoreServerGameState(), 'restartAction');
     },
 
     destroy(elem) {
