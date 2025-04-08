@@ -10,7 +10,6 @@ use Bga\Games\Hutan\Managers\Meeples;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\Games\Hutan\Models\Meeple;
 use Bga\Games\Hutan\Models\Player;
-use function Bga\Games\Hutan\Helpers\array_uunique;
 
 trait PhaseOneTrait
 {
@@ -170,10 +169,7 @@ trait PhaseOneTrait
         return $flower['x'] !== $x || $flower['y'] !== $y;
       });
       $adjacentFlowers = array_filter($otherFlowers, function ($flower) use ($x, $y) {
-        return ($flower['x'] === $x + 1 && $flower['y'] === $y) ||
-          ($flower['x'] === $x - 1 && $flower['y'] === $y) ||
-          ($flower['x'] === $x && $flower['y'] === $y + 1) ||
-          ($flower['x'] === $x && $flower['y'] === $y - 1);
+        return abs($flower['x'] - $x) + abs($flower['y'] - $y) === 1;
       });
       if (count($adjacentFlowers) === 0) {
         throw new \BgaVisibleSystemException(
