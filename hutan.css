@@ -52,6 +52,8 @@
 
 .hutan-meeple.tmp {
   opacity: 0.7; }
+.hutan-meeple.icon-flower-grey, .hutan-meeple.icon-flower-blue, .hutan-meeple.icon-flower-joker, .hutan-meeple.icon-flower-red, .hutan-meeple.icon-flower-white, .hutan-meeple.icon-flower-yellow {
+  height: 8em; }
 
 #meeple-pangolin {
   background-image: url("img/pangolin.png");
@@ -284,7 +286,7 @@
         height: 170px;
         position: relative;
         z-index: 2;
-        font-size: 80px; }
+        font-size: 16px; }
         .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell .hutan-meeple {
           position: absolute;
           left: 50%;

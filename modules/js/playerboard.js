@@ -32,8 +32,9 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       }
     },
 
-    getCell(cell) {
-      return $(`cell-${this.player_id}-${cell.x}-${cell.y}`);
+    getCell(cell, pId = null) {
+      if (pId == null) pId = this.player_id;
+      return $(`cell-${pId}-${cell.x}-${cell.y}`);
     },
 
     getFlowerValidPosition(color, previousFlowers) {

@@ -57,6 +57,20 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
     },
 
+    // Notif choose card
+    async notif_flowerCardChosen(args) {
+      debug('Notif: flowerCardChosen', args);
+      // Pangolin token
+      if (args.flowerCardId === 0) {
+        this.gamedatas.pangolin = args.player_id;
+        await this.slide('meeple-pangolin', $(`pangolin-${args.player_id}`));
+      }
+      // Flower card
+      else {
+        await this.slide(`flower-card-${args.flowerCardId}`, this.getVisibleTitleContainer(), { destroy: true });
+      }
+    },
+
     /////////////////////////////////////////////////////////
     // Display the ongoing choices (card, flowers, ...)
     /////////////////////////////////////////////////////////
@@ -81,19 +95,6 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         let o = this.addMeeple({ id: `tmp-${i}`, type: args.colors[i] }, this.getCell(cell));
         o.classList.add('tmp');
       });
-    },
-
-    async notif_flowerCardChosen(args) {
-      debug('Notif: flowerCardChosen', args);
-      // Pangolin token
-      if (args.flowerCardId === 0) {
-        this.gamedatas.pangolin = args.player_id;
-        await this.slide('meeple-pangolin', $(`pangolin-${args.player_id}`));
-      }
-      // Flower card
-      else {
-        await this.slide(`flower-card-${args.flowerCardId}`, this.getVisibleTitleContainer(), { destroy: true });
-      }
     },
 
     /////////////////////////////////////////////////////////
@@ -169,8 +170,16 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       });
     },
 
-    notif_flowerPlaced(n) {
-      debug('Notif: flowerPlaced', n);
+    // Notif flower placed
+    async notif_flowerPlaced(args) {
+      debug('Notif: flowerPlaced', args);
+
+      let meeple = this.addMeeple(args.flower, this.getVisibleTitleContainer());
+      let cell = this.getCell(args.flower, args.player_id);
+      await this.slide(meeple, cell);
+
+      let tmpFlower = cell.querySelector('.tmp');
+      if (tmpFlower) this.destroy(tmpFlower);
     },
 
     notif_treePlaced(n) {

@@ -28,6 +28,15 @@
   &.tmp {
     opacity: 0.7;
   }
+
+  &.icon-flower-grey,
+  &.icon-flower-blue,
+  &.icon-flower-joker,
+  &.icon-flower-red,
+  &.icon-flower-white,
+  &.icon-flower-yellow {
+    height: 8em;
+  }
 }
 
 #meeple-pangolin {

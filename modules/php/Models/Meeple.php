@@ -29,4 +29,9 @@ class Meeple extends DB_Model
   {
     return $this->id;
   }
+
+  public function getNotifCoords(): string
+  {
+    return chr(ord('A') + $this->getX()) . ($this->getY() + 1);
+  }
 }

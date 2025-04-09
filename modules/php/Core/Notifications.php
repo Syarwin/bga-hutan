@@ -23,7 +23,12 @@ class Notifications
 
   public static function flowerPlaced(Player $player, Meeple $flower)
   {
-    self::notifyAll('flowerPlaced', '', ['player' => $player, 'flower' => $flower]);
+    self::notifyAll('flowerPlaced', clienttranslate('${player_name} places a ${color_desc} on his board (${coords})'), [
+      'player' => $player,
+      'flower' => $flower,
+      'color' => $flower->getType(),
+      'coords' => $flower->getNotifCoords()
+    ]);
   }
 
   public static function treePlaced(Player $player, Meeple $flower)
@@ -53,7 +58,7 @@ class Notifications
 
   protected static function notify($player, $name, $msg, $data)
   {
-    self::updateIfNeeded($data, $name, "private");
+    //    self::updateIfNeeded($data, $name, "private");
     $pId = is_int($player) ? $player : $player->getId();
     self::updateArgs($data);
     Game::get()->notifyPlayer($pId, $name, $msg, $data);
@@ -118,18 +123,31 @@ class Notifications
       unset($data['player3']);
     }
 
+    $colorNames = [
+      FLOWER_BLUE => clienttranslate('blue flower'),
+      FLOWER_YELLOW => clienttranslate('yellow flower'),
+      FLOWER_RED => clienttranslate('red flower'),
+      FLOWER_WHITE => clienttranslate('white flower'),
+      FLOWER_GREY => clienttranslate('grey flower'),
+      FLOWER_JOKER => clienttranslate('multicolored flower'),
+    ];
+
+
+    if (isset($data['color'])) {
+      $data['color_desc'] = [
+        'log' => '${color_icon}${color_name}',
+        'args' => [
+          'i18n' => ['color_name'],
+          'color_name' => $colorNames[$data['color']],
+          'color_type' => $data['color'],
+          'color_icon' => '',
+          'preserve' => ['color_type'],
+        ],
+      ];
+    }
 
     foreach (['colors'] as $key) {
       if (isset($data[$key]) && !empty($data[$key])) {
-        $colorNames = [
-          FLOWER_BLUE => clienttranslate('blue flower'),
-          FLOWER_YELLOW => clienttranslate('yellow flower'),
-          FLOWER_RED => clienttranslate('red flower'),
-          FLOWER_WHITE => clienttranslate('white flower'),
-          FLOWER_GREY => clienttranslate('grey flower'),
-          FLOWER_JOKER => clienttranslate('multicolored flower'),
-        ];
-
         $args = [];
         $i = 0;
         foreach ($data[$key] as $type) {
