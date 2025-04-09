@@ -125,6 +125,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
     onLeavingState(stateName) {
       debug('Leaving state: ' + stateName);
       this.clearPossible();
+      dojo.query('.tmp').forEach((o) => this.destroy(o));
 
       // Call appropriate method
       var methodName = 'onLeavingState' + stateName.charAt(0).toUpperCase() + stateName.slice(1);
@@ -143,36 +144,47 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
       this._selectableNodes = [];
       dojo.query('.unselectable').removeClass('unselectable');
       dojo.query('.selected').removeClass('selected');
-      dojo.query('.tmp').forEach((o) => this.destroy(o));
     },
 
     /*
      * setupNotifications
      */
     setupNotifications() {
-      // Private state
-      this._notifications.push(['newPrivateState', 1]);
-
       this._notifications.forEach((notif) => {
-        var functionName = 'notif_' + notif[0];
+        var functionName = 'notif_' + notif;
 
-        dojo.subscribe(notif[0], this, functionName);
-        if (notif[1] !== undefined) {
-          if (notif[1] === null) {
-            this.notifqueue.setSynchronous(notif[0]);
-          } else {
-            this.notifqueue.setSynchronous(notif[0], notif[1]);
+        let wrapper = async (args) => {
+          let msg = this.formatString(this.format_string_recursive(args.log, args.args));
+          if (msg != '') {
+            this.clearPossible();
 
-            // xxxInstant notification runs same function without delay
-            dojo.subscribe(notif[0] + 'Instant', this, functionName);
-            this.notifqueue.setSynchronous(notif[0] + 'Instant', 10);
+            $('gameaction_status').innerHTML = msg;
+            $('pagemaintitletext').innerHTML = msg;
           }
-        }
 
-        if (notif[2] !== undefined) {
-          this.notifqueue.setIgnoreNotificationCheck(notif[0], notif[2]);
-        }
+          await this[functionName](args.args);
+          if (args.args && args.args.infos) {
+            this.updateInfosFromNotif(args.args.infos);
+          }
+          dojo.publish('notifEnd', null);
+        };
+
+        dojo.subscribe(notif, this, wrapper);
+        this.notifqueue.setSynchronous(notif);
+        this.notifqueue.setIgnoreNotificationCheck(notif, (n) => n.args.ignore && n.args.ignore == this.player_id);
       });
+    },
+
+    getVisibleTitleContainer() {
+      function isVisible(elem) {
+        return !!(elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length);
+      }
+
+      if (isVisible($('pagemaintitletext'))) {
+        return $('pagemaintitletext');
+      } else {
+        return $('gameaction_status');
+      }
     },
 
     /*
@@ -402,18 +414,6 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
       if (this.gamedatas.canceledNotifIds != null && this.gamedatas.canceledNotifIds.includes(notifId)) {
         this.cancelLogs([notifId]);
       }
-    },
-
-    format_string_recursive(log, args) {
-      try {
-        if (log && args && !args.processed) {
-          args.processed = true;
-        }
-      } catch (e) {
-        console.error(log, args, 'Exception thrown', e.stack);
-      }
-
-      return this.inherited({ callee: this.format_string_recursive }, arguments);
     },
 
     getLogIcons(list) {

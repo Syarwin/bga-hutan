@@ -3,7 +3,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
   return declare('hutan.common', null, {
     constructor() {
-      this._notifications.push(['pangolinMovedToMarket', 1]);
+      this._notifications.push('pangolinMovedToMarket');
     },
 
     extractId(element, prefix) {
@@ -11,8 +11,8 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       return isNaN(parseInt(unparsed)) ? unparsed : parseInt(unparsed);
     },
 
-    notif_pangolinMovedToMarket(n) {
-      debug('Notif: pangolinMovedToMarket', n);
+    notif_pangolinMovedToMarket(args) {
+      debug('Notif: pangolinMovedToMarket', args);
       this.gamedatas.pangolin = LOCATION_TABLE;
     },
   });

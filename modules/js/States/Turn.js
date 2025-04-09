@@ -9,7 +9,17 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     j: 'flower-joker',
   };
 
+  function onlyUnique(value, index, array) {
+    return array.indexOf(value) === index;
+  }
+
   return declare('hutan.turn', null, {
+    constructor() {
+      this._notifications.push('flowerCardChosen');
+      this._notifications.push('flowerPlaced');
+      this._notifications.push('treePlaced');
+    },
+
     /////////////////////////////////////////////////////////
     // Initial entry point => choose a card or the pangolin
     /////////////////////////////////////////////////////////
@@ -73,6 +83,19 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       });
     },
 
+    async notif_flowerCardChosen(args) {
+      debug('Notif: flowerCardChosen', args);
+      // Pangolin token
+      if (args.flowerCardId === 0) {
+        this.gamedatas.pangolin = args.player_id;
+        await this.slide('meeple-pangolin', $(`pangolin-${args.player_id}`));
+      }
+      // Flower card
+      else {
+        await this.slide(`flower-card-${args.flowerCardId}`, this.getVisibleTitleContainer(), { destroy: true });
+      }
+    },
+
     /////////////////////////////////////////////////////////
     // Choose the color : for the pangolin and some cards
     /////////////////////////////////////////////////////////
@@ -80,6 +103,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       this.highlightOngoingMoves(args);
 
       Object.keys(COLORS_FULL_TYPE).forEach((type, i) => {
+        // Ignore joker color
         if (type == 'j') return;
 
         let icon = this.formatIcon(COLORS_FULL_TYPE[type]);
@@ -98,14 +122,33 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     onEnteringStatePlaceFlowers(args) {
       this.highlightOngoingMoves(args);
 
+      // Callback once we picked the color we want to place
+      let callback = (i, isPlaced) => {
+        if (isPlaced) return () => {};
+        else
+          return () => {
+            let icon = this.formatIcon(COLORS_FULL_TYPE[args.colors[i]]);
+            args.i = i;
+            this.clientState('placeFlower', _('Where do you want to place that flower?') + icon, args);
+          };
+      };
+
+      let remainingColors = {};
       for (let i = 0; i < args.colors.length; i++) {
-        let icon = this.formatIcon(COLORS_FULL_TYPE[args.colors[i]]);
-        this.addSecondaryActionButton(`flower${i}`, icon, () => {
-          args.i = i;
-          this.clientState('placeFlower', _('Where do you want to place that flower?') + icon, args);
-        });
+        let color = args.colors[i];
+        let icon = this.formatIcon(COLORS_FULL_TYPE[color]);
+        let isPlaced = args.flowers[i] !== undefined;
+        this.addSecondaryActionButton(`flower${i}`, icon, callback(i, isPlaced));
         $(`flower${i}`).classList.add('flowerBtn');
-        $(`flower${i}`).classList.toggle('placed', args.flowers[i] !== undefined);
+        $(`flower${i}`).classList.toggle('placed', isPlaced);
+
+        if (!isPlaced) remainingColors[i] = color;
+      }
+
+      // Auto select if only one color type left
+      if (Object.values(remainingColors).filter(onlyUnique).length == 1) {
+        let i = Object.keys(remainingColors)[0];
+        callback(i, false)();
       }
     },
 
@@ -124,6 +167,14 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           }
         });
       });
+    },
+
+    notif_flowerPlaced(n) {
+      debug('Notif: flowerPlaced', n);
+    },
+
+    notif_treePlaced(n) {
+      debug('Notif: treePlaced', n);
     },
 
     /////////////////////////////////////////////////////////

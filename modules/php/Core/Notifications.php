@@ -3,6 +3,7 @@
 namespace Bga\Games\Hutan\Core;
 
 use Bga\Games\Hutan\Game;
+use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Models\Meeple;
 use Bga\Games\Hutan\Models\Player;
 
@@ -10,15 +11,14 @@ class Notifications
 {
   public static function flowerCardChosen(Player $player, int $id)
   {
-    // TODO: Parametrise according to card flowers
-    // must be mapped to css classes .icon-flower-blue, .icon-flower-white, etc. Use Utils::colorToClass()
-    $iconsText = '{icon-flower-blue}, {icon-flower-white}';
+    $data = ['player' => $player, 'flowerCardId' => $id];
     if ($id === 0) {
       $msg = clienttranslate('${player_name} chooses the pangolin token from the market');
     } else {
-      $msg = str_replace('{icons}', $iconsText, clienttranslate('${player_name} chooses a card with {icons}'));
+      $msg = clienttranslate('${player_name} chooses a flower card (${colors_desc})');
+      $data['colors'] = FlowerCards::getSingle($id)->getFlowers();
     }
-    self::notifyAll('flowerCardChosen', $msg, ['player' => $player, 'flowerCardId' => $id]);
+    self::notifyAll('flowerCardChosen', $msg, $data);
   }
 
   public static function flowerPlaced(Player $player, Meeple $flower)
@@ -116,6 +116,48 @@ class Notifications
       $data['player_name3'] = $data['player3']->getName();
       $data['player_id3'] = $data['player3']->getId();
       unset($data['player3']);
+    }
+
+
+    foreach (['colors'] as $key) {
+      if (isset($data[$key]) && !empty($data[$key])) {
+        $colorNames = [
+          FLOWER_BLUE => clienttranslate('blue flower'),
+          FLOWER_YELLOW => clienttranslate('yellow flower'),
+          FLOWER_RED => clienttranslate('red flower'),
+          FLOWER_WHITE => clienttranslate('white flower'),
+          FLOWER_GREY => clienttranslate('grey flower'),
+          FLOWER_JOKER => clienttranslate('multicolored flower'),
+        ];
+
+        $args = [];
+        $i = 0;
+        foreach ($data[$key] as $type) {
+          $args['i18n'][] = 'color_' . $i;
+          $args['color_' . $i] = [
+            'log' => '${color_icon}${color_name}',
+            'args' => [
+              'i18n' => ['color_name'],
+              'color_name' => $colorNames[$type],
+              'color_type' => $type,
+              'color_icon' => '',
+              'preserve' => ['color_type'],
+            ],
+          ];
+          $i++;
+        }
+        $logs = [
+          0 => '',
+          1 => '${color_0}',
+          2 => clienttranslate('${color_0} and ${color_1}'),
+          3 => clienttranslate('${color_0}, ${color_1} and ${color_2}'),
+        ];
+        $data[$key . '_desc'] = [
+          'log' => $logs[$i],
+          'args' => $args,
+        ];
+        $data['i18n'][] = $key . '_desc';
+      }
     }
   }
 }

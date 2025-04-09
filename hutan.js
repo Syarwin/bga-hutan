@@ -249,6 +249,16 @@ define([
       formatIcon(name, n = null, lowerCase = true) {
         let type = lowerCase ? name.toLowerCase() : name;
 
+        const COLORS_FULL_TYPE = {
+          b: 'flower-blue',
+          y: 'flower-yellow',
+          r: 'flower-red',
+          w: 'flower-white',
+          g: 'flower-grey',
+          j: 'flower-joker',
+        };
+        if (COLORS_FULL_TYPE[type] !== undefined) type = COLORS_FULL_TYPE[type];
+
         let text = n == null ? '' : `<span>${n}</span>`;
         return `${text}<div class="icon-container icon-container-${type}">
             <div class="hutan-icon icon-${type}"></div>
@@ -263,6 +273,30 @@ define([
         });
 
         return str;
+      },
+
+      /**
+       * Format log strings
+       *  @Override
+       */
+      format_string_recursive(log, args) {
+        try {
+          if (log && args && !args.processed) {
+            args.processed = true;
+
+            log = this.formatString(_(log));
+
+            if (args.color_icon !== undefined) {
+              args.color_icon = this.formatIcon(args.color_type);
+              args.color_name = '';
+            }
+          }
+        } catch (e) {
+          console.error(log, args, 'Exception thrown', e.stack);
+        }
+
+        let str = this.inherited(arguments);
+        return this.formatString(str);
       },
     }
   );

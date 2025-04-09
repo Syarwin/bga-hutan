@@ -2,11 +2,11 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
   const LOCATION_TABLE = 'table';
 
   return declare('hutan.phaseOne', null, {
-    constructor() {
-      this._notifications.push(['flowerCardChosen', 1]);
-      this._notifications.push(['flowerPlaced', 1]);
-      this._notifications.push(['treePlaced', 1]);
-    },
+    // constructor() {
+    //   this._notifications.push(['flowerCardChosen', 1]);
+    //   this._notifications.push(['flowerPlaced', 1]);
+    //   this._notifications.push(['treePlaced', 1]);
+    // },
 
     onEnteringStateChooseFlowerCard(args) {
       this.destroyAll('.hutan-flower-card');
@@ -14,16 +14,15 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       if (this.isCurrentPlayerActive()) {
         this.makeAllSelectableAndClickable(cards, (card) => {
           const id = this.extractId(card, 'flower-card');
-          this.bgaPerformAction('actChooseFlowerCard', {id: id});
-        })
+          this.bgaPerformAction('actChooseFlowerCard', { id: id });
+        });
         if (this.gamedatas.pangolin === LOCATION_TABLE) {
           this.addPrimaryActionButton('pangolin', `Take Pangolin`, () => {
-            this.bgaPerformAction('actChooseFlowerCard', {id: 0});
+            this.bgaPerformAction('actChooseFlowerCard', { id: 0 });
           });
         }
       }
     },
-
 
     placeFlowerCards(cards) {
       return cards.map((card) => {
@@ -46,62 +45,53 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     onEnteringStateChooseFlowerColor(args) {
       args.colors.forEach((color) => {
         this.addPrimaryActionButton(color, this.tplFlowerIcon(color, true), (element) => {
-          this.bgaPerformAction('actChooseFlowerColor', {colorClass: color});
+          this.bgaPerformAction('actChooseFlowerColor', { colorClass: color });
         });
-      })
+      });
     },
 
     onEnteringStatePlaceFlowers(args) {
       if (this.isCurrentPlayerActive()) {
         const flowersColors = args.flowersClasses;
         const flowersElements = flowersColors.map((flower) => {
-          return this.tplFlowerIcon(flower, true)
+          return this.tplFlowerIcon(flower, true);
         });
 
         // *** All this block should be replaced with the client logic. Here are all possible correct and incorrect placements
         const x = 0;
-        const y = 2
+        const y = 2;
         if (flowersColors.length === 1) {
           this.addPrimaryActionButton('one', `${flowersElements[0]} -> ${x},${y}`, () => {
             const flowerObject = this.getFlowerObject(flowersColors[0], x, y);
-            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify([flowerObject])});
+            this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify([flowerObject]) });
           });
           this.addPrimaryActionButton('incorr', `Incorrect amount`, () => {
             const flowerObject = this.getFlowerObject(flowersColors[0], x, y);
             const fakeObject = this.getFlowerObject(flowersColors[0], 0, 1);
-            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify([flowerObject, fakeObject])});
+            this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify([flowerObject, fakeObject]) });
           });
         }
 
         if (flowersColors.length > 1) {
           this.addPrimaryActionButton('incorrectcolor', `Incorrect color`, () => {
             const incorrectColor = flowersColors[0] === 'icon-flower-red' ? 'icon-flower-blue' : 'icon-flower-red';
-            const flowers = [
-              this.getFlowerObject(incorrectColor, x, y),
-              this.getFlowerObject(flowersColors[1], x + 1, y)
-            ];
+            const flowers = [this.getFlowerObject(incorrectColor, x, y), this.getFlowerObject(flowersColors[1], x + 1, y)];
             if (flowersColors.length > 2) {
               flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
             }
-            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+            this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
           });
           this.addPrimaryActionButton('onenotadjacent', `One not adjacent`, () => {
-            const flowers = [
-              this.getFlowerObject(flowersColors[0], x, y),
-              this.getFlowerObject(flowersColors[1], x + 3, y)
-            ];
+            const flowers = [this.getFlowerObject(flowersColors[0], x, y), this.getFlowerObject(flowersColors[1], x + 3, y)];
             if (flowersColors.length > 2) {
               flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
             }
-            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+            this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
           });
           if (flowersColors[0] === flowersColors[1]) {
             this.addPrimaryActionButton('two-same', `Two same to same coords`, () => {
-              const flowers = [
-                this.getFlowerObject(flowersColors[0], x, y),
-                this.getFlowerObject(flowersColors[1], x, y)
-              ];
-              this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+              const flowers = [this.getFlowerObject(flowersColors[0], x, y), this.getFlowerObject(flowersColors[1], x, y)];
+              this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
             });
           }
           this.addPrimaryActionButton('Allcorrect', `All correct`, () => {
@@ -111,7 +101,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
             if (flowersColors.length > 2) {
               flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
             }
-            this.bgaPerformAction('actPlaceFlowers', {flowers: JSON.stringify(flowers)});
+            this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
           });
         }
         // *** End of block
@@ -119,22 +109,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     },
 
     getFlowerObject(color, x, y) {
-      return {color: color, x: x, y: y};
-    },
-
-    notif_flowerCardChosen(n) {
-      debug('Notif: flowerCardChosen', n);
-      if (n.args.flowerCardId === 0) {
-        this.gamedatas.pangolin = n.active_player;
-      }
-    },
-
-    notif_flowerPlaced(n) {
-      debug('Notif: flowerPlaced', n);
-    },
-
-    notif_treePlaced(n) {
-      debug('Notif: treePlaced', n);
+      return { color: color, x: x, y: y };
     },
   });
 });

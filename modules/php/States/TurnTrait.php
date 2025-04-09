@@ -113,7 +113,7 @@ trait TurnTrait
 
   private function getFlowersColors(Player $player, int $flowerCardId)
   {
-    $cardFlowers = $flowerCardId === 0 ? null : FlowerCards::get($flowerCardId)->getFlowers();
+    $cardFlowers = $flowerCardId === 0 ? null : FlowerCards::getSingle($flowerCardId)->getFlowers();
     if ($flowerCardId === 0 || in_array(FLOWER_JOKER, $cardFlowers)) {
       return [$player->getJokerColor()];
     } else {
