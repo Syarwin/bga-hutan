@@ -110,6 +110,12 @@ trait TurnTrait
       $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
     }
 
+    // Animal
+    if (isset($turn['animal'])) {
+      var_dump($turn);
+      die("TODO: animal");
+    }
+
     $this->gamestate->nextState('');
   }
 

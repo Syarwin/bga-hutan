@@ -66,6 +66,8 @@
   height: 8em; }
 .hutan-meeple.icon-tree-1, .hutan-meeple.icon-tree-2, .hutan-meeple.icon-tree-3, .hutan-meeple.icon-tree-4, .hutan-meeple.icon-tree-5, .hutan-meeple.icon-tree-6, .hutan-meeple.icon-tree-7, .hutan-meeple.icon-tree-8 {
   height: 8em; }
+.hutan-meeple.icon-animal-cassowary, .hutan-meeple.icon-animal-hornbill, .hutan-meeple.icon-animal-orangutan, .hutan-meeple.icon-animal-rhinoceros, .hutan-meeple.icon-animal-tiger {
+  height: 8em; }
 
 #meeple-pangolin {
   background-image: url("img/pangolin.png");
@@ -309,6 +311,8 @@
           cursor: pointer; }
           .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell.selectable:hover {
             background: rgba(229, 255, 0, 0.6); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell.selected {
+          background: rgba(229, 255, 0, 0.6); }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant {
         grid-row-end: span 3;
         grid-column-end: span 3;

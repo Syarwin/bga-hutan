@@ -8,6 +8,13 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     g: 'flower-grey',
     j: 'flower-joker',
   };
+  const COLOR_ANIMAL_MAP = {
+    b: 'cassowary',
+    y: 'tiger',
+    r: 'orangutan',
+    w: 'rhinoceros',
+    g: 'hornbill',
+  };
 
   function onlyUnique(value, index, array) {
     return array.indexOf(value) === index;
@@ -110,7 +117,12 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
         // Already something here ? => Place a tree instead
         if (oCell.querySelector('.hutan-meeple')) {
-          o = this.addMeeple({ id: `tmp-${i}`, type: `tree-${+i + 1}` }, oCell);
+          // Animal placed?
+          if (args.animal && args.animal == i) {
+            o = this.addMeeple({ id: `tmp-${i}`, type: `animal-${COLOR_ANIMAL_MAP[args.colors[i]]}` }, oCell);
+          } else {
+            o = this.addMeeple({ id: `tmp-${i}`, type: `tree-${+i + 1}` }, oCell);
+          }
         }
         // Otherwise, basic flow
         else {
@@ -119,6 +131,25 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
         o.classList.add('tmp');
       });
+
+      // Place temporary flowers from fertilization
+      if (args.fertilized) {
+        Object.entries(args.fertilized).forEach(([i, cell]) => {
+          let oCell = this.getCell(cell);
+          let o;
+
+          // Already something here ? => Place a tree instead
+          if (oCell.querySelector('.hutan-meeple')) {
+            o = this.addMeeple({ id: `tmp-fertilize-${i}`, type: `tree-${+i + 1}` }, oCell);
+          }
+          // Otherwise, basic flow
+          else {
+            o = this.addMeeple({ id: `tmp-fertilize-${i}`, type: cell.color }, oCell);
+          }
+
+          o.classList.add('tmp');
+        });
+      }
     },
 
     /////////////////////////////////////////////////////////
@@ -186,7 +217,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           args.flowers[args.i] = cell;
           let isFinished = Object.values(args.flowers).length == args.colors.length;
           if (isFinished) {
-            this.clientState('confirmTurn', _('Please confirm your turn'), args);
+            this.clientState('placeAnimal', _('You may place an animal'), args);
           } else {
             this.clientState('placeFlowers', _('You must place the flowers on your board'), args);
           }
@@ -210,10 +241,134 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     },
 
     /////////////////////////////////////////////////////////
+    // Animal
+    /////////////////////////////////////////////////////////
+    onEnteringStatePlaceAnimal(args) {
+      this.highlightOngoingMoves(args);
+
+      let zones = this.gamedatas.board.zones,
+        cellsZone = this.gamedatas.board.cellsZone;
+
+      // Try to find a complete zone
+      let completeZones = {};
+      Object.entries(args.flowers).forEach(([i, cell]) => {
+        let zoneId = cellsZone[cell.x][cell.y];
+        if (completeZones[zoneId] !== undefined) return;
+
+        /// Check if the zone if full by checking how many meeples are there
+        let isFullAndValid = true,
+          color = null;
+        zones[zoneId].cells.forEach((cell2) => {
+          if (this.getCell(cell2).childNodes < 2) isFullAndValid = false;
+
+          let cellColor = this._board[cell2.x][cell2.y][0].type;
+          if (color === null) color = cellColor;
+          else if (color !== cellColor) isFullAndValid = false;
+        });
+
+        if (isFullAndValid) {
+          /// Any animal left of this type?
+          let animalType = COLOR_ANIMAL_MAP[args.colors[i]];
+          debug(`animal-reserve-animal-${animalType}-counter`);
+          let counter = $(`animal-reserve-animal-${animalType}-counter`);
+          if (parseInt(counter.innerHTML) > 0) {
+            completeZones[zoneId] = i; // Store the index to replace the tree by the animal
+          }
+        }
+      });
+
+      // No full zone => auto skip to confirm
+      if (Object.keys(completeZones).length == 0) {
+        this.clientState('confirmTurn', _('Please confirm your turn'), args);
+      }
+      // Otherwise, let the user click on the cell
+      else {
+        Object.entries(completeZones).forEach(([zoneId, i]) => {
+          let cell = args.flowers[i];
+          this.onClick(this.getCell(cell), () => {
+            args.animal = i;
+            args.animalZone = zoneId;
+            args.fertilized = {};
+            this.clientState('fertilize', _('You may fertilize adjacent spaces'), args);
+          });
+        });
+
+        this.addDangerActionButton('pass', _('Pass'), () => this.clientState('confirmTurn', _('Please confirm your turn'), args));
+      }
+    },
+
+    /////////////////////////////////////////////////////////
+    // Fertilize
+    /////////////////////////////////////////////////////////
+    onEnteringStateFertilize(args) {
+      this.highlightOngoingMoves(args);
+
+      // Cell where the animal was placed
+      let cell = args.flowers[args.animal];
+      let cells = { ...this.getFertizableCells(cell, args.flowers) };
+
+      // Remove the already fertilized one
+      Object.keys(args.fertilized).forEach((i) => delete cells[i]);
+
+      // Nothing else to fertilize => auto skip to confirm
+      if (Object.keys(cells).length == 0) {
+        this.clientState('confirmTurn', _('Please confirm your turn'), args);
+      }
+      // Otherwise, let the user click on the cell
+      else {
+        Object.entries(cells).forEach(([i, cell]) => {
+          this.onClick(this.getCell(cell), () => {
+            args.fertilizeIndex = i;
+            args.fertilizeCell = cell;
+            this.clientState('fertilizeChooseColor', _('Which flower do you want to place?'), args);
+          });
+        });
+
+        this.addDangerActionButton('pass', _('Pass'), () => this.clientState('confirmTurn', _('Please confirm your turn'), args));
+      }
+    },
+
+    /////////////////////////////////////////////////////////
+    // Fertilize choose color
+    /////////////////////////////////////////////////////////
+    onEnteringStateFertilizeChooseColor(args) {
+      this.highlightOngoingMoves(args);
+
+      this.getCell(args.fertilizeCell).classList.add('selected');
+
+      let callback = (color) => {
+        args.fertilized[args.fertilizeIndex] = {
+          x: args.fertilizeCell.x,
+          y: args.fertilizeCell.y,
+          color,
+        };
+        this.clientState('fertilize', _('You may fertilize adjacent spaces'), args);
+      };
+
+      // Only one color => auto select
+      if (args.fertilizeCell.colors.length == 1) {
+        callback(args.fertilizeCell.colors[0]);
+      }
+      // Otherwise, create buttons
+      else {
+        args.fertilizeCell.colors.forEach((type, i) => {
+          let icon = this.formatIcon(COLORS_FULL_TYPE[type]);
+          this.addSecondaryActionButton(`flower${i}`, icon, () => callback(type));
+          $(`flower${i}`).classList.add('flowerBtn');
+        });
+      }
+    },
+
+    /////////////////////////////////////////////////////////
     // Confirm the whole turn
     /////////////////////////////////////////////////////////
     onEnteringStateConfirmTurn(args) {
       this.highlightOngoingMoves(args);
+
+      delete args.fertilizeCell;
+      delete args.fertilizeIndex;
+      delete args.i;
+
       this.addPrimaryActionButton('btnConfirm', _('Confirm'), () =>
         this.bgaPerformAction('actTakeTurn', { turn: JSON.stringify(args) })
       );

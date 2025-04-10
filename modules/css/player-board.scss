@@ -58,6 +58,10 @@
             background: rgba(229, 255, 0, 0.6);
           }
         }
+
+        &.selected {
+          background: rgba(229, 255, 0, 0.6);
+        }
       }
 
       .board-quadrant {

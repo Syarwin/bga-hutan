@@ -79,6 +79,7 @@ class Game extends \Table
         'ids' => Globals::getBoards(),
         'waterSpaces' => $board->getWaterSpaces(),
         'zones' => $board->getZones(),
+        'cellsZone' => $board->getCellsZone(),
       ],
       'meeples' => Meeples::getUiData(),
       'flowerCards' => FlowerCards::getUiData(),

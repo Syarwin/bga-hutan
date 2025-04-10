@@ -90,6 +90,12 @@ class Board
     return $this->zones;
   }
 
+  public function getCellsZone(): array
+  {
+    return $this->cellsZone;
+  }
+
+
   public function refresh()
   {
     // Empty grid
