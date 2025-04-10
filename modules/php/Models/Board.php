@@ -13,13 +13,13 @@ const DIRECTIONS = [
 
 class Board
 {
-  protected Player $player;
+  protected ?Player $player;
   protected array $cells;
   protected array $cellsZone;
   protected array $zones;
   private array $waterSpaces;
 
-  public function __construct(Player $player)
+  public function __construct(?Player $player)
   {
     $this->player = $player;
 
@@ -75,7 +75,9 @@ class Board
       }
     }
 
-    $this->refresh();
+    if (!is_null($this->player)) {
+      $this->refresh();
+    }
   }
 
   public function getWaterSpaces()

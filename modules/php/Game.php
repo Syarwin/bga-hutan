@@ -26,6 +26,7 @@ use Bga\Games\Hutan\States\PhaseOneTrait;
 use Bga\Games\Hutan\States\TurnTrait;
 use Bga\Games\Hutan\Core\Stats;
 use Bga\Games\Hutan\Managers\Meeples;
+use Bga\Games\Hutan\Models\Board;
 
 require_once APP_GAMEMODULE_PATH . 'module/table/table.game.php';
 
@@ -72,8 +73,13 @@ class Game extends \Table
    */
   public function getAllDatas(): array
   {
+    $board = new Board(null);
     return [
-      'boards' => Globals::getBoards(),
+      'board' => [
+        'ids' => Globals::getBoards(),
+        'waterSpaces' => $board->getWaterSpaces(),
+        'zones' => $board->getZones(),
+      ],
       'meeples' => Meeples::getUiData(),
       'flowerCards' => FlowerCards::getUiData(),
       'players' => Players::getUiData(),

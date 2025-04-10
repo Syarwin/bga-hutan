@@ -85,7 +85,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     },
 
     tplPlayerBoard(player) {
-      let boards = this.gamedatas.boards;
+      let boards = this.gamedatas.board.ids;
       let grid = '';
 
       for (let i = 0; i < 4; i++) {

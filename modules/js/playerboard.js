@@ -41,6 +41,10 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       let cells = [];
       for (let x = 0; x < 6; x++) {
         for (let y = 0; y < 6; y++) {
+          // Water hex
+          let isWater = this.gamedatas.board.waterSpaces.findIndex((cell) => cell.x == x && cell.y == y) !== -1;
+          if (isWater) continue;
+
           // Board already full
           if (this._board[x][y].length == 2) continue;
 
