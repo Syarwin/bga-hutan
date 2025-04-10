@@ -102,18 +102,19 @@ trait TurnTrait
     $this->verifyParams($flowers, $cardFlowers);
 
     foreach ($flowers as $flower) {
-      $x = $flower['x'];
-      $y = $flower['y'];
-      $isTree = !$player->board()->isEmpty($x, $y);
-      $flowerType = $isTree ? TREE : $flower['color'];
-      $flowerOrTree = Meeples::place($player->getId(), $x, $y, $flowerType);
-      $isTree ? Notifications::treePlaced($player, $flowerOrTree) : Notifications::flowerPlaced($player, $flowerOrTree);
+      $meeple = $player->board()->addFlower($flower['x'], $flower['y'], $flower['color']);
+      Notifications::meeplePlaced($player, $meeple);
     }
 
     // Animal
     if (isset($turn['animal'])) {
-      var_dump($turn);
-      die("TODO: animal");
+      /////
+      // TODO : sanity check
+      /////
+
+      $i = $turn['animal'];
+      [$treeToRemove, $animal] = $player->board()->placeAnimal($flowers[$i]['x'], $flowers[$i]['y']);
+      Notifications::animalPlaced($player, $treeToRemove, $animal);
     }
 
     $this->gamestate->nextState('');

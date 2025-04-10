@@ -3,12 +3,21 @@
 namespace Bga\Games\Hutan\Models;
 
 use Bga\Games\Hutan\Core\Globals;
+use Bga\Games\Hutan\Managers\Meeples;
 
 const DIRECTIONS = [
   ['x' => 0, 'y' => 1],
   ['x' => 0, 'y' => -1],
   ['x' => 1, 'y' => 0],
   ['x' => -1, 'y' => 0],
+];
+
+const COLOR_ANIMAL_MAP = [
+  FLOWER_BLUE => ANIMAL_CASSOWARY,
+  FLOWER_YELLOW => ANIMAL_TIGER,
+  FLOWER_RED => ANIMAL_ORANGUTAN,
+  FLOWER_WHITE => ANIMAL_RHINOCEROS,
+  FLOWER_GREY => ANIMAL_HORNBILL
 ];
 
 class Board
@@ -110,6 +119,32 @@ class Board
     foreach ($this->player->getMeeples() as $meeple) {
       $this->cells[$meeple->getX()][$meeple->getY()][] = $meeple;
     }
+  }
+
+  public function addFlower(int $x, int $y, string $color): Meeple
+  {
+    $isTree = !$this->isEmpty($x, $y);
+    $flowerType = $isTree ? TREE : $color;
+    $meeple = Meeples::place($this->player->getId(), $x, $y, $flowerType);
+    $this->cells[$x][$y][] = $meeple;
+    return $meeple;
+  }
+
+  public function placeAnimal(int $x, int $y): array
+  {
+    $treeToRemove = array_pop($this->cells[$x][$y]);
+    if (is_null($treeToRemove) || $treeToRemove->getType() != TREE) {
+      throw new \BgaVisibleSystemException('Cant place an animal here');
+    }
+
+    $color = $this->cells[$x][$y][0]->getType();
+    $animalType = COLOR_ANIMAL_MAP[$color];
+    $animal = Meeples::getNextAvailableAnimal($animalType);
+    $animal->setX($x);
+    $animal->setY($y);
+    $animal->setLocation('board');
+    $this->cells[$x][$y][] = $animal;
+    return [$treeToRemove, $animal];
   }
 
   public function isEmpty(int $x, int $y): bool

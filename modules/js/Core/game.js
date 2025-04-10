@@ -211,7 +211,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
     slide(mobileElt, targetElt, options = {}) {
       let config = Object.assign(
         {
-          duration: 700,
+          duration: 1200,
           delay: 0,
           destroy: false,
           attach: true,

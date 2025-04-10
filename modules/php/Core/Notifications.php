@@ -33,24 +33,43 @@ class Notifications
     self::notifyAll('flowerCardChosen', $msg, $data);
   }
 
-  public static function flowerPlaced(Player $player, Meeple $flower)
+  public static function meeplePlaced(Player $player, Meeple $meeple)
   {
-    self::notifyAll('meeplePlaced', clienttranslate('${player_name} places a ${color_desc} on his board (${coords})'), [
+    $msg = clienttranslate('${player_name} places a ${color_desc} on his board (${coords})');
+    $data = [
       'player' => $player,
-      'meeple' => $flower,
-      'color' => $flower->getType(),
-      'coords' => $flower->getNotifCoords()
+      'meeple' => $meeple,
+      'color' => $meeple->getType(),
+      'coords' => $meeple->getNotifCoords()
+    ];
+
+    if ($meeple->getType() == TREE) {
+      $msg = clienttranslate('${player_name} places a tree on his board (${coords})');
+      unset($data['color']);
+    }
+    self::notifyAll('meeplePlaced', $msg, $data);
+  }
+
+  public static function animalPlaced(Player $player, Meeple $treeToRemove, Meeple $animal)
+  {
+    $animalNames = [
+      ANIMAL_CASSOWARY => clienttranslate('a Cassowary'),
+      ANIMAL_TIGER => clienttranslate('a Tiger'),
+      ANIMAL_ORANGUTAN => clienttranslate('an Orangutan'),
+      ANIMAL_RHINOCEROS => clienttranslate('a Rhinoceros'),
+      ANIMAL_HORNBILL => clienttranslate('a Hornbill'),
+    ];
+
+    self::notifyAll('animalPlaced', '${player_name} places ${animal_desc} on his board (${coords})', [
+      'player' => $player,
+      'animal' => $animal,
+      'animal_desc' => $animalNames[$animal->getType()],
+      'tree' => $treeToRemove,
+      'coords' => $animal->getNotifCoords(),
+      'i18n' => ['animal_desc']
     ]);
   }
 
-  public static function treePlaced(Player $player, Meeple $tree)
-  {
-    self::notifyAll('meeplePlaced', clienttranslate('${player_name} places a tree on his board (${coords})'), [
-      'player' => $player,
-      'meeple' => $tree,
-      'coords' => $tree->getNotifCoords()
-    ]);
-  }
 
   public static function pangolinMovedToMarket(Player $player)
   {

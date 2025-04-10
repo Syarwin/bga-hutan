@@ -25,6 +25,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       this._notifications.push('newTurn');
       this._notifications.push('flowerCardChosen');
       this._notifications.push('meeplePlaced');
+      this._notifications.push('animalPlaced');
     },
 
     async notif_newTurn(args) {
@@ -295,6 +296,22 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
         this.addDangerActionButton('pass', _('Pass'), () => this.clientState('confirmTurn', _('Please confirm your turn'), args));
       }
+    },
+
+    async notif_animalPlaced(args) {
+      debug('Notif: animal placed', args);
+
+      let animal = args.animal;
+      let cell = this.getCell(animal, args.player_id);
+      await Promise.all([
+        this.slide(`meeple-${animal.id}`, cell),
+        this.slide(`meeple-${args.tree.id}`, this.getVisibleTitleContainer(), { destroy: true }),
+      ]);
+      this._board[animal.x][animal.y].pop();
+      this._board[animal.x][animal.y].push(animal);
+
+      let tmpMeeple = cell.querySelector('.tmp');
+      if (tmpMeeple) this.destroy(tmpMeeple);
     },
 
     /////////////////////////////////////////////////////////
