@@ -198,9 +198,12 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     async notif_meeplePlaced(args) {
       debug('Notif: meeplePlaced', args);
 
-      let meeple = this.addMeeple(args.meeple, this.getVisibleTitleContainer());
-      let cell = this.getCell(args.meeple, args.player_id);
-      await this.slide(meeple, cell);
+      let meeple = args.meeple;
+      let oMeeple = this.addMeeple(meeple, this.getVisibleTitleContainer());
+      let cell = this.getCell(meeple, args.player_id);
+      await this.slide(oMeeple, cell);
+      this._board[meeple.x][meeple.y].push(meeple);
+      this._emptyBoard = false;
 
       let tmpMeeple = cell.querySelector('.tmp');
       if (tmpMeeple) this.destroy(tmpMeeple);
