@@ -53,6 +53,13 @@
 .icon-tree-8 {
   height: 2em; }
 
+.icon-animal-cassowary,
+.icon-animal-hornbill,
+.icon-animal-orangutan,
+.icon-animal-rhinoceros,
+.icon-animal-tiger {
+  height: 2em; }
+
 .flowerBtn {
   padding: 1px 3px;
   font-size: 19px; }

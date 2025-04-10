@@ -280,7 +280,7 @@ define([
       },
 
       formatString(str) {
-        const ICONS = [];
+        const ICONS = ['ANIMAL-CASSOWARY', 'ANIMAL-ORANGUTAN', 'ANIMAL-TIGER', 'ANIMAL-HORNBILL', 'ANIMAL-RHINOCEROS', 'TREE-5'];
 
         ICONS.forEach((name) => {
           str = str.replaceAll(new RegExp('<' + name + '>', 'g'), this.formatIcon(name));

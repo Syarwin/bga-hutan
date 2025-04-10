@@ -45,8 +45,8 @@ class Notifications
     ];
 
     if ($meeple->getType() == TREE) {
-      $msg = $isFertilization ? clienttranslate('Fertilization: ${player_name} places a tree on his board (${coords})') :
-        clienttranslate('${player_name} places a tree on his board (${coords})');
+      $msg = $isFertilization ? clienttranslate('Fertilization: ${player_name} places a tree <TREE-5> on his board (${coords})') :
+        clienttranslate('${player_name} places a tree <TREE-5> on his board (${coords})');
       unset($data['color']);
     }
     self::notifyAll('meeplePlaced', $msg, $data);
@@ -55,11 +55,11 @@ class Notifications
   public static function animalPlaced(Player $player, Meeple $treeToRemove, Meeple $animal)
   {
     $animalNames = [
-      ANIMAL_CASSOWARY => clienttranslate('a Cassowary'),
-      ANIMAL_TIGER => clienttranslate('a Tiger'),
-      ANIMAL_ORANGUTAN => clienttranslate('an Orangutan'),
-      ANIMAL_RHINOCEROS => clienttranslate('a Rhinoceros'),
-      ANIMAL_HORNBILL => clienttranslate('a Hornbill'),
+      ANIMAL_CASSOWARY => clienttranslate('a Cassowary <ANIMAL-CASSOWARY>'),
+      ANIMAL_TIGER => clienttranslate('a Tiger <ANIMAL-TIGER>'),
+      ANIMAL_ORANGUTAN => clienttranslate('an Orangutan <ANIMAL-ORANGUTAN>'),
+      ANIMAL_RHINOCEROS => clienttranslate('a Rhinoceros <ANIMAL-RHINOCEROS>'),
+      ANIMAL_HORNBILL => clienttranslate('a Hornbill <ANIMAL-HORNBILL>'),
     ];
 
     self::notifyAll('animalPlaced', '${player_name} places ${animal_desc} on his board (${coords})', [
