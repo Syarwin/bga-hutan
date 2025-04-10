@@ -117,6 +117,18 @@ trait TurnTrait
       Notifications::animalPlaced($player, $treeToRemove, $animal);
     }
 
+    // Fertilize
+    if (isset($turn['fertilized'])) {
+      /////
+      // TODO : sanity check
+      /////
+
+      foreach ($turn['fertilized'] as $flower) {
+        $meeple = $player->board()->addFlower($flower['x'], $flower['y'], $flower['color']);
+        Notifications::meeplePlaced($player, $meeple, true);
+      }
+    }
+
     $this->gamestate->nextState('');
   }
 

@@ -33,9 +33,10 @@ class Notifications
     self::notifyAll('flowerCardChosen', $msg, $data);
   }
 
-  public static function meeplePlaced(Player $player, Meeple $meeple)
+  public static function meeplePlaced(Player $player, Meeple $meeple, bool $isFertilization = false)
   {
-    $msg = clienttranslate('${player_name} places a ${color_desc} on his board (${coords})');
+    $msg = $isFertilization ? clienttranslate('Fertilization: ${player_name} places a ${color_desc} on his board (${coords})')
+      : clienttranslate('${player_name} places a ${color_desc} on his board (${coords})');
     $data = [
       'player' => $player,
       'meeple' => $meeple,
@@ -44,7 +45,8 @@ class Notifications
     ];
 
     if ($meeple->getType() == TREE) {
-      $msg = clienttranslate('${player_name} places a tree on his board (${coords})');
+      $msg = $isFertilization ? clienttranslate('Fertilization: ${player_name} places a tree on his board (${coords})') :
+        clienttranslate('${player_name} places a tree on his board (${coords})');
       unset($data['color']);
     }
     self::notifyAll('meeplePlaced', $msg, $data);
