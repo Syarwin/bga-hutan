@@ -3,12 +3,24 @@
 namespace Bga\Games\Hutan\Core;
 
 use Bga\Games\Hutan\Game;
+use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Models\Meeple;
 use Bga\Games\Hutan\Models\Player;
 
 class Notifications
 {
+  public static function newTurn(int $turn, Collection $cards)
+  {
+    self::notifyAll('newTurn', clienttranslate('Turn ${turn}/${maxTurn}'), [
+      'turn' => $turn,
+      'cards' => $cards->ui(),
+      'maxTurn' => Globals::isSolo() ? 18 : 9
+    ]);
+  }
+
+
+
   public static function flowerCardChosen(Player $player, int $id)
   {
     $data = ['player' => $player, 'flowerCardId' => $id];

@@ -49,9 +49,9 @@ class FlowerCards extends CachedPieces
     }
   }
 
-  public static function moveDeckToBoard(int $deckNumber): void
+  public static function moveDeckToBoard(int $deckNumber): Collection
   {
-    self::moveAllInLocation(LOCATION_DECK . $deckNumber, LOCATION_TABLE);
+    return self::moveAllInLocation(LOCATION_DECK . $deckNumber, LOCATION_TABLE);
   }
 
   public static function get(int $id, bool $raiseExceptionIfNotEnough = true): FlowerCard

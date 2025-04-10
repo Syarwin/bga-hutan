@@ -14,6 +14,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
 
       this.canceledNotifFeature = false;
       this._notif_uid_to_log_id = {};
+      this._notif_uid_to_mobile_log_id = {};
       this._last_notif = null;
     },
 
@@ -52,7 +53,8 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
 
       this.setupNotifications();
       dojo.connect(this.notifqueue, 'addToLog', () => {
-        this.checkLogCancel(this._last_notif);
+        this.checkLogCancel(this._last_notif == null ? null : this._last_notif.msg.uid);
+        this.addLogClass();
       });
     },
 
@@ -396,11 +398,15 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
      */
     onPlaceLogOnChannel(msg) {
       var currentLogId = this.notifqueue.next_log_id;
+      var currentMobileLogId = this.next_log_id;
       var res = this.inherited(arguments);
-      if (this.canceledNotifFeature) {
-        this._notif_uid_to_log_id[msg.uid] = currentLogId;
-        this._last_notif = msg.uid;
-      }
+      this._notif_uid_to_log_id[msg.uid] = currentLogId;
+      this._notif_uid_to_mobile_log_id[msg.uid] = currentMobileLogId;
+      this._last_notif = {
+        logId: currentLogId,
+        mobileLogId: currentMobileLogId,
+        msg,
+      };
       return res;
     },
 
@@ -409,10 +415,39 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
      *   strikes all log messages related to the given array of notif ids
      */
     checkLogCancel(notifId) {
-      if (!this.canceledNotifFeature) return;
-
       if (this.gamedatas.canceledNotifIds != null && this.gamedatas.canceledNotifIds.includes(notifId)) {
         this.cancelLogs([notifId]);
+      }
+    },
+
+    cancelLogs(notifIds) {
+      notifIds.forEach((uid) => {
+        if (this._notif_uid_to_log_id.hasOwnProperty(uid)) {
+          let logId = this._notif_uid_to_log_id[uid];
+          if ($('log_' + logId)) dojo.addClass('log_' + logId, 'cancel');
+        }
+        if (this._notif_uid_to_mobile_log_id.hasOwnProperty(uid)) {
+          let mobileLogId = this._notif_uid_to_mobile_log_id[uid];
+          if ($('dockedlog_' + mobileLogId)) dojo.addClass('dockedlog_' + mobileLogId, 'cancel');
+        }
+      });
+    },
+
+    addLogClass() {
+      if (this._last_notif == null) return;
+
+      let notif = this._last_notif;
+      let type = notif.msg.type;
+      if (type == 'history_history') type = notif.msg.args.originalType;
+
+      if ($('log_' + notif.logId)) {
+        dojo.addClass('log_' + notif.logId, 'notif_' + type);
+
+        var methodName = 'onAdding' + type.charAt(0).toUpperCase() + type.slice(1) + 'ToLog';
+        if (this[methodName] !== undefined) this[methodName](notif);
+      }
+      if ($('dockedlog_' + notif.mobileLogId)) {
+        dojo.addClass('dockedlog_' + notif.mobileLogId, 'notif_' + type);
       }
     },
 
@@ -434,17 +469,6 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
 
     getLogIcon(type) {
       return this.format_block('jstpl_resource_icon_log', { type: type });
-    },
-
-    cancelLogs(notifIds) {
-      if (!this.canceledNotifFeature) return;
-
-      notifIds.forEach((uid) => {
-        if (this._notif_uid_to_log_id.hasOwnProperty(uid)) {
-          let logId = this._notif_uid_to_log_id[uid];
-          if ($('log_' + logId)) dojo.addClass('log_' + logId, 'cancel');
-        }
-      });
     },
 
     querySingle(query, element = null) {

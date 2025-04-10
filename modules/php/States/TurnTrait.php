@@ -15,8 +15,10 @@ trait TurnTrait
 {
   public function stPrepareMarket()
   {
-    Globals::incTurn();
-    FlowerCards::moveDeckToBoard(Globals::getTurn());
+    $turn = Globals::incTurn();
+    $cards = FlowerCards::moveDeckToBoard(Globals::getTurn());
+    Notifications::newTurn($turn, $cards);
+
     $pangolinHolder = Globals::getPangolinLocation();
     Globals::setPangolinPlayedThisTurn(false);
     $this->gamestate->changeActivePlayer($pangolinHolder);

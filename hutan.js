@@ -115,6 +115,7 @@ define([
       // This function is refreshUI compatible
       setupMeeples() {
         // Init grid for clientside logic
+        this._emptyBoard = true;
         this._board = {};
         for (let x = 0; x < 6; x++) {
           this._board[x] = {};
@@ -140,6 +141,7 @@ define([
           // Update board
           if (meeple.location == 'board' && meeple.pId == this.player_id) {
             this._board[meeple.x][meeple.y].push(meeple);
+            this._emptyBoard = false;
           }
 
           return meeple.id;
@@ -244,12 +246,6 @@ define([
       updateTurnNumber() {
         $('turn-number').innerHTML = this.gamedatas.turn;
         $('max-turns').innerHTML = this.getPlayers().length == 1 ? 18 : 9;
-      },
-
-      notif_newTurn(args) {
-        this.gamedatas.turn = args.turn;
-        this.updateTurnNumber();
-        return this.wait(800);
       },
 
       ////////////////////////////////////////////////////////////

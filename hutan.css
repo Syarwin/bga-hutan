@@ -586,6 +586,22 @@
         top: 0;
         visibility: hidden; }
 
+#logs .log.notif_newTurn .roundedbox,
+.chatwindowlogs_zone .log.notif_newTurn.roundedbox {
+  background: #337a45;
+  text-align: center;
+  color: #fff;
+  border: 1px solid black;
+  font-weight: bold;
+  padding: 5px 2px 2px;
+  font-size: 24px;
+  font-family: "Hawlers Two";
+  display: block;
+  position: relative; }
+
+.phantom {
+  visibility: hidden; }
+
 #ebd-body.help-mode .tooltipable {
   cursor: help; }
 

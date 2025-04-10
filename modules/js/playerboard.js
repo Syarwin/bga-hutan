@@ -1,4 +1,12 @@
 define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
+  const DIRECTIONS = [
+    [-1, 0],
+    [1, 0],
+    [0, 1],
+    [0, -1],
+    [0, 0],
+  ];
+
   // Everything ralted to playerboards
   return declare('hutan.playerboard', null, {
     getPlayers() {
@@ -46,6 +54,19 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
             let isValid = false;
             previousCells.forEach((cell) => {
               if (Math.abs(cell.x - x) + Math.abs(cell.y - y) == 1) {
+                isValid = true;
+              }
+            });
+
+            if (!isValid) continue;
+          }
+          // Otherwise, check if it's connex
+          else if (!this._emptyBoard) {
+            let isValid = false;
+            DIRECTIONS.forEach((dir) => {
+              let nx = x + dir[0],
+                ny = y + dir[1];
+              if (nx >= 0 && nx < 6 && ny >= 0 && ny < 6 && this._board[nx][ny].length > 0) {
                 isValid = true;
               }
             });

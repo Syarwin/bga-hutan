@@ -15,8 +15,22 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
   return declare('hutan.turn', null, {
     constructor() {
+      this._notifications.push('newTurn');
       this._notifications.push('flowerCardChosen');
       this._notifications.push('meeplePlaced');
+    },
+
+    async notif_newTurn(args) {
+      debug('Notif: starting new turn', args);
+      this.gamedatas.turn = args.turn;
+      this.updateTurnNumber();
+
+      await Promise.all(
+        args.cards.map((card, i) => {
+          this.addFlowerCard(card, this.getVisibleTitleContainer());
+          return this.slide(`flower-card-${card.id}`, this.getFlowerCardContainer(card), { delay: 100 * i, phantomEnd: true });
+        })
+      );
     },
 
     /////////////////////////////////////////////////////////
