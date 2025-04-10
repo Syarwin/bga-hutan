@@ -16,8 +16,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
   return declare('hutan.turn', null, {
     constructor() {
       this._notifications.push('flowerCardChosen');
-      this._notifications.push('flowerPlaced');
-      this._notifications.push('treePlaced');
+      this._notifications.push('meeplePlaced');
     },
 
     /////////////////////////////////////////////////////////
@@ -92,7 +91,18 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
       // Place temporary flowers
       Object.entries(args.flowers).forEach(([i, cell]) => {
-        let o = this.addMeeple({ id: `tmp-${i}`, type: args.colors[i] }, this.getCell(cell));
+        let oCell = this.getCell(cell);
+        let o;
+
+        // Already something here ? => Place a tree instead
+        if (oCell.querySelector('.hutan-meeple')) {
+          o = this.addMeeple({ id: `tmp-${i}`, type: `tree-${+i + 1}` }, oCell);
+        }
+        // Otherwise, basic flow
+        else {
+          o = this.addMeeple({ id: `tmp-${i}`, type: args.colors[i] }, oCell);
+        }
+
         o.classList.add('tmp');
       });
     },
@@ -171,19 +181,15 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     },
 
     // Notif flower placed
-    async notif_flowerPlaced(args) {
-      debug('Notif: flowerPlaced', args);
+    async notif_meeplePlaced(args) {
+      debug('Notif: meeplePlaced', args);
 
-      let meeple = this.addMeeple(args.flower, this.getVisibleTitleContainer());
-      let cell = this.getCell(args.flower, args.player_id);
+      let meeple = this.addMeeple(args.meeple, this.getVisibleTitleContainer());
+      let cell = this.getCell(args.meeple, args.player_id);
       await this.slide(meeple, cell);
 
-      let tmpFlower = cell.querySelector('.tmp');
-      if (tmpFlower) this.destroy(tmpFlower);
-    },
-
-    notif_treePlaced(n) {
-      debug('Notif: treePlaced', n);
+      let tmpMeeple = cell.querySelector('.tmp');
+      if (tmpMeeple) this.destroy(tmpMeeple);
     },
 
     /////////////////////////////////////////////////////////

@@ -114,6 +114,15 @@ define([
 
       // This function is refreshUI compatible
       setupMeeples() {
+        // Init grid for clientside logic
+        this._board = {};
+        for (let x = 0; x < 6; x++) {
+          this._board[x] = {};
+          for (let y = 0; y < 6; y++) {
+            this._board[x][y] = [];
+          }
+        }
+
         let meepleIds = this.gamedatas.meeples.map((meeple) => {
           if (!$(`meeple-${meeple.id}`)) {
             this.addMeeple(meeple);
@@ -127,6 +136,11 @@ define([
             dojo.place(o, container);
           }
           o.dataset.state = meeple.state;
+
+          // Update board
+          if (meeple.location == 'board' && meeple.pId == this.player_id) {
+            this._board[meeple.x][meeple.y].push(meeple);
+          }
 
           return meeple.id;
         });
@@ -143,6 +157,10 @@ define([
 
       addMeeple(meeple, location = null) {
         if ($('meeple-' + meeple.id)) return;
+
+        if (meeple.type == 'tree') {
+          meeple.type += '-' + Math.floor(Math.random() * 8);
+        }
 
         let o = this.place('tplMeeple', meeple, location == null ? this.getMeepleContainer(meeple) : location);
         let tooltipDesc = this.getMeepleTooltip(meeple);

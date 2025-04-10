@@ -21,15 +21,6 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
         this.place('tplPlayerPanel', player, `overall_player_board_${player.id}`);
         $(`overall_player_board_${player.id}`).addEventListener('click', () => this.goToPlayerBoard(player.id));
       });
-
-      // Init grid for clientside logic
-      this._board = {};
-      for (let x = 0; x < 6; x++) {
-        this._board[x] = {};
-        for (let y = 0; y < 6; y++) {
-          this._board[x][y] = [];
-        }
-      }
     },
 
     getCell(cell, pId = null) {
@@ -47,7 +38,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
 
           // If there is one flower here, check the color
           if (this._board[x][y].length == 1) {
-            if (this._board[x][y][0] != color) continue;
+            if (this._board[x][y][0].type != color) continue;
           }
 
           // Check adjacency to other ongoing flowers

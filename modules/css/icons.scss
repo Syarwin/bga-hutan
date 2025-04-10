@@ -14,6 +14,17 @@
   height: 2em;
 }
 
+.icon-tree-1,
+.icon-tree-2,
+.icon-tree-3,
+.icon-tree-4,
+.icon-tree-5,
+.icon-tree-6,
+.icon-tree-7,
+.icon-tree-8 {
+  height: 2em;
+}
+
 .flowerBtn {
   padding: 1px 3px;
   font-size: 19px;
@@ -35,6 +46,17 @@
   &.icon-flower-red,
   &.icon-flower-white,
   &.icon-flower-yellow {
+    height: 8em;
+  }
+
+  &.icon-tree-1,
+  &.icon-tree-2,
+  &.icon-tree-3,
+  &.icon-tree-4,
+  &.icon-tree-5,
+  &.icon-tree-6,
+  &.icon-tree-7,
+  &.icon-tree-8 {
     height: 8em;
   }
 }

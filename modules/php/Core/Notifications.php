@@ -23,17 +23,21 @@ class Notifications
 
   public static function flowerPlaced(Player $player, Meeple $flower)
   {
-    self::notifyAll('flowerPlaced', clienttranslate('${player_name} places a ${color_desc} on his board (${coords})'), [
+    self::notifyAll('meeplePlaced', clienttranslate('${player_name} places a ${color_desc} on his board (${coords})'), [
       'player' => $player,
-      'flower' => $flower,
+      'meeple' => $flower,
       'color' => $flower->getType(),
       'coords' => $flower->getNotifCoords()
     ]);
   }
 
-  public static function treePlaced(Player $player, Meeple $flower)
+  public static function treePlaced(Player $player, Meeple $tree)
   {
-    self::notifyAll('treePlaced', '', ['player' => $player, 'tree' => $flower]);
+    self::notifyAll('meeplePlaced', clienttranslate('${player_name} places a tree on his board (${coords})'), [
+      'player' => $player,
+      'meeple' => $tree,
+      'coords' => $tree->getNotifCoords()
+    ]);
   }
 
   public static function pangolinMovedToMarket(Player $player)

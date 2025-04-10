@@ -43,6 +43,16 @@
 .icon-flower-yellow {
   height: 2em; }
 
+.icon-tree-1,
+.icon-tree-2,
+.icon-tree-3,
+.icon-tree-4,
+.icon-tree-5,
+.icon-tree-6,
+.icon-tree-7,
+.icon-tree-8 {
+  height: 2em; }
+
 .flowerBtn {
   padding: 1px 3px;
   font-size: 19px; }
@@ -53,6 +63,8 @@
 .hutan-meeple.tmp {
   opacity: 0.7; }
 .hutan-meeple.icon-flower-grey, .hutan-meeple.icon-flower-blue, .hutan-meeple.icon-flower-joker, .hutan-meeple.icon-flower-red, .hutan-meeple.icon-flower-white, .hutan-meeple.icon-flower-yellow {
+  height: 8em; }
+.hutan-meeple.icon-tree-1, .hutan-meeple.icon-tree-2, .hutan-meeple.icon-tree-3, .hutan-meeple.icon-tree-4, .hutan-meeple.icon-tree-5, .hutan-meeple.icon-tree-6, .hutan-meeple.icon-tree-7, .hutan-meeple.icon-tree-8 {
   height: 8em; }
 
 #meeple-pangolin {
@@ -286,7 +298,7 @@
         height: 170px;
         position: relative;
         z-index: 2;
-        font-size: 16px; }
+        font-size: 20px; }
         .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell .hutan-meeple {
           position: absolute;
           left: 50%;
