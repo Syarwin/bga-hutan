@@ -8,6 +8,13 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     j: 'flower-joker',
   };
 
+  const ZONES_SCORING = {
+    2: [2, 3],
+    3: [4, 6],
+    4: [6, 9],
+    5: [8, 12],
+  };
+
   return declare('hutan.htmltemplates', null, {
     centralAreaHtml() {
       return `
@@ -88,11 +95,65 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       let boards = this.gamedatas.board.ids;
       let grid = '';
 
+      // Quadrant
       for (let i = 0; i < 4; i++) {
         let board = boards[i];
         grid += `<div class='board-quadrant' data-quadrant='${i}' data-board='${board[0]}' data-orientation='${board[1]}'></div>`;
       }
 
+      // Zone indicators
+      Object.entries(this.gamedatas.board.zones).forEach(([zoneId, zone]) => {
+        // Compute where to place the shape
+        let minX = 6,
+          minY = 6,
+          maxY = 0,
+          maxX = 0;
+        zone.cells.forEach((cell) => {
+          minX = Math.min(minX, cell.x);
+          minY = Math.min(minY, cell.y);
+          maxX = Math.max(maxX, cell.x);
+          maxY = Math.max(maxY, cell.y);
+        });
+        let midY = (minY + maxY) / 2;
+        let column = '';
+        if ((minY + maxY) % 2 == 1) {
+          column = `${midY + 0.5} / span 2`;
+        } else {
+          column = `${midY + 1} / span 1`;
+        }
+
+        // Find info about that zone
+        let scoring = ZONES_SCORING[zone.cells.length];
+        let shape = '';
+        switch (zone.cells.length) {
+          case 2:
+            shape = 'zone-2';
+            break;
+
+          case 3:
+            shape = minX != maxX && minY != maxY ? 'zone-3L' : 'zone-3I';
+            break;
+
+          case 4:
+            if (maxX == minX + 1 && maxY == minY + 1) shape = 'zone-4O';
+            // TODO
+            break;
+
+          default:
+            shape = 'zone-4S';
+        }
+
+        grid += `<div class='zone-infos-wrapper' style='grid-row-start:${minX + 1}; grid-column:${column}'>
+          <div class='zone-infos'>
+            <div class='zone-size-scoring'>
+              <span>${scoring[0]}</span>${this.formatIcon(shape, null, false)}
+            </div>
+            <div class='zone-animal-scoring'>${scoring[1]}</div>
+          </div>
+        </div>`;
+      });
+
+      // Cells
       for (let x = 0; x < 6; x++) {
         for (let y = 0; y < 6; y++) {
           grid += `<div class='board-cell' id='cell-${player.id}-${x}-${y}' style='grid-row-start:${x + 1}; grid-column-start:${y + 1}'></div>`;

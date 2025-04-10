@@ -142,6 +142,55 @@
           border-color: black;
         }
       }
+
+      .zone-infos-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+
+        .zone-infos {
+          width: 120px;
+          display: flex;
+          justify-content: center;
+          position: relative;
+          margin-top: -6px;
+
+          .zone-size-scoring,
+          .zone-animal-scoring {
+            height: 40px;
+            font-size: 28px;
+            line-height: 48px;
+            font-family: "DK Sensory Overload";
+            color: white;
+            text-shadow:
+              1px 0px 1px black,
+              1px 1px 1px black,
+              0px 1px 1px black,
+              -1px 1px 1px black,
+              -1px 0px 1px black,
+              -1px -1px 1px black,
+              0px -1px 1px black,
+              1px -1px 1px black;
+          }
+
+          .zone-size-scoring {
+            & > span {
+              position: relative;
+              z-index: 2;
+            }
+
+            .icon-container {
+              margin-left: -0.3em;
+            }
+          }
+
+          .zone-animal-scoring {
+            @include icon-paw;
+            text-align: center;
+            width: 40px;
+          }
+        }
+      }
     }
   }
 }
