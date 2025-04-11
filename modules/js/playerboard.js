@@ -112,6 +112,44 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       return cells;
     },
 
+    updateZonesStatuses() {
+      this.forEachPlayer((player) => {
+        let pId = player.id;
+        this.updateZonesStatus(pId);
+      });
+    },
+
+    updateZonesStatus(pId) {
+      let zones = this.gamedatas.board.zones;
+      Object.entries(zones).forEach(([zoneId, zone]) => {
+        let isFull = true,
+          isValid = true,
+          hasAnimal = false;
+        color = null;
+        zone.cells.forEach((cell2) => {
+          let oMeeples = this.getCell(cell2, pId).childNodes;
+          if (oMeeples.length == 0) {
+            isFull = false;
+            return;
+          }
+
+          let cellColor = oMeeples[0].type;
+          if (color === null) color = cellColor;
+          else if (color !== cellColor) isValid = false;
+
+          if (oMeeples.length == 2 && oMeeples[1].dataset.type.indexOf('animal') !== -1) hasAnimal = true;
+        });
+
+        $(`zone-${pId}-${zoneId}`).dataset.status = isFull && isValid ? 1 : color === null ? 0 : -1;
+        $(`zone-animal-${pId}-${zoneId}`).dataset.status = hasAnimal ? 1 : 0;
+      });
+    },
+
+    /////////////////////////////////////
+    ///// TABBED / MULTI VIEW      //////
+    //// TODO: REMOVE AND KEEP MULTI ONLY ??? //////
+    /////////////////////////////////////
+
     onChangePlayerBoardsLayoutSetting(v) {
       if (v == 0) {
         this.goToPlayerBoard(this.orderedPlayers[0].id);

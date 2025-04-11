@@ -50,6 +50,7 @@ define([
         this.setupInfoPanel();
         this.setupMeeples();
         this.setupFlowerCards();
+        this.updateZonesStatuses();
         this.inherited(arguments);
       },
 

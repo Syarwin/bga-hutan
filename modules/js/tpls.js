@@ -146,9 +146,9 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         grid += `<div class='zone-infos-wrapper' style='grid-row-start:${minX + 1}; grid-column:${column}'>
           <div class='zone-infos'>
             <div class='zone-size-scoring'>
-              <span>${scoring[0]}</span>${this.formatIcon(shape, null, false)}
+              <span id='zone-${player.id}-${zoneId}'>${scoring[0]}</span>${this.formatIcon(shape, null, false)}
             </div>
-            <div class='zone-animal-scoring'>${scoring[1]}</div>
+            <div id='zone-animal-${player.id}-${zoneId}' class='zone-animal-scoring'>${scoring[1]}</div>
           </div>
         </div>`;
       });

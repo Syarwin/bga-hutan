@@ -122,7 +122,7 @@
     background-position: 69.89189189189189% 40.31476997578692%;
     background-size: 1034.3434343434344%;
     aspect-ratio: 198 / 198; }
-  .hutan-icon.icon-flower-black {
+  .hutan-icon.icon-flower-grey {
     background: url("img/icons.png") no-repeat;
     background-position: 81.67567567567568% 40.31476997578692%;
     background-size: 1034.3434343434344%;
@@ -182,42 +182,42 @@
     background-position: 82.2450080949811% 2.484472049689441%;
     background-size: 1050.2564102564102%;
     aspect-ratio: 195 / 219; }
-  .hutan-icon.icon-tree-00 {
+  .hutan-icon.icon-tree-1 {
     background: url("img/icons.png") no-repeat;
     background-position: 12.004287245444802% 2.73224043715847%;
     background-size: 1125.2747252747254%;
     aspect-ratio: 182 / 292; }
-  .hutan-icon.icon-tree-01 {
+  .hutan-icon.icon-tree-2 {
     background: url("img/icons.png") no-repeat;
     background-position: 1.0729613733905579% 2.7359781121751023%;
     background-size: 1113.0434782608695%;
     aspect-ratio: 184 / 293; }
-  .hutan-icon.icon-tree-10 {
+  .hutan-icon.icon-tree-3 {
     background: url("img/icons.png") no-repeat;
     background-position: 38.42020419129501% 2.635046113306983%;
     background-size: 1095.187165775401%;
     aspect-ratio: 187 / 265; }
-  .hutan-icon.icon-tree-11 {
+  .hutan-icon.icon-tree-4 {
     background: url("img/icons.png") no-repeat;
     background-position: 49.384038564542045% 2.631578947368421%;
     background-size: 1131.4917127071822%;
     aspect-ratio: 181 / 264; }
-  .hutan-icon.icon-tree-20 {
+  .hutan-icon.icon-tree-5 {
     background: url("img/icons.png") no-repeat;
     background-position: 60.14997321906802% 2.5412960609911055%;
     background-size: 1131.4917127071822%;
     aspect-ratio: 181 / 237; }
-  .hutan-icon.icon-tree-21 {
+  .hutan-icon.icon-tree-6 {
     background: url("img/icons.png") no-repeat;
     background-position: 70.8779443254818% 2.5380710659898478%;
     background-size: 1137.7777777777778%;
     aspect-ratio: 180 / 236; }
-  .hutan-icon.icon-tree-30 {
+  .hutan-icon.icon-tree-7 {
     background: url("img/icons.png") no-repeat;
     background-position: 11.83083511777302% 40.758873929008566%;
     background-size: 1137.7777777777778%;
     aspect-ratio: 180 / 207; }
-  .hutan-icon.icon-tree-31 {
+  .hutan-icon.icon-tree-8 {
     background: url("img/icons.png") no-repeat;
     background-position: 1.0712372790573113% 40.80882352941176%;
     background-size: 1131.4917127071822%;
@@ -271,11 +271,11 @@
 .hutan-meeple.tmp {
   opacity: 0.7; }
 .hutan-meeple.icon-flower-grey, .hutan-meeple.icon-flower-blue, .hutan-meeple.icon-flower-joker, .hutan-meeple.icon-flower-red, .hutan-meeple.icon-flower-white, .hutan-meeple.icon-flower-yellow {
-  height: 8em; }
+  height: 6em; }
 .hutan-meeple.icon-tree-1, .hutan-meeple.icon-tree-2, .hutan-meeple.icon-tree-3, .hutan-meeple.icon-tree-4, .hutan-meeple.icon-tree-5, .hutan-meeple.icon-tree-6, .hutan-meeple.icon-tree-7, .hutan-meeple.icon-tree-8 {
-  height: 8em; }
+  height: 6em; }
 .hutan-meeple.icon-animal-cassowary, .hutan-meeple.icon-animal-hornbill, .hutan-meeple.icon-animal-orangutan, .hutan-meeple.icon-animal-rhinoceros, .hutan-meeple.icon-animal-tiger {
-  height: 8em; }
+  height: 6em; }
 
 #meeple-pangolin {
   background: url("img/icons.png") no-repeat;
@@ -341,7 +341,7 @@
         height: 170px;
         position: relative;
         z-index: 2;
-        font-size: 20px; }
+        font-size: 23px; }
         .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell .hutan-meeple {
           position: absolute;
           left: 50%;
@@ -445,12 +445,21 @@
             line-height: 48px;
             font-family: "DK Sensory Overload";
             color: white;
-            text-shadow: 1px 0px 1px black, 1px 1px 1px black, 0px 1px 1px black, -1px 1px 1px black, -1px 0px 1px black, -1px -1px 1px black, 0px -1px 1px black, 1px -1px 1px black; }
+            text-shadow: black 3px 0px 0px, black 2.83487px 0.981584px 0px, black 2.35766px 1.85511px 0px, black 1.62091px 2.52441px 0px, black 0.705713px 2.91581px 0px, black -0.287171px 2.98622px 0px, black -1.24844px 2.72789px 0px, black -2.07227px 2.16926px 0px, black -2.66798px 1.37182px 0px, black -2.96998px 0.42336px 0px, black -2.94502px -0.571704px 0px, black -2.59586px -1.50383px 0px, black -1.96093px -2.27041px 0px, black -1.11013px -2.78704px 0px, black -0.137119px -2.99686px 0px, black 0.850987px -2.87677px 0px, black 1.74541px -2.43999px 0px, black 2.44769px -1.73459px 0px, black 2.88051px -0.838247px 0px; }
           .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-size-scoring > span {
             position: relative;
-            z-index: 2; }
-          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-size-scoring .icon-container {
-            margin-left: -0.3em; }
+            z-index: 2;
+            margin-right: -0.3em; }
+            .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-size-scoring > span[data-status="1"] {
+              color: #4aff4a;
+              margin-right: -0.4em; }
+              .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-size-scoring > span[data-status="1"]::before {
+                content: "+"; }
+            .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-size-scoring > span[data-status="-1"] {
+              color: #ff4b4b;
+              margin-right: -0.4em; }
+              .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-size-scoring > span[data-status="-1"]::before {
+                content: "-"; }
           .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-animal-scoring {
             background: url("img/icons.png") no-repeat;
             background-position: 94% 2.4539877300613497%;
@@ -458,6 +467,8 @@
             aspect-ratio: 198 / 209;
             text-align: center;
             width: 40px; }
+            .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper .zone-infos .zone-animal-scoring[data-status="1"] {
+              color: #4aff4a; }
 
 :root {
   --hutanBoardScale: 0.6;

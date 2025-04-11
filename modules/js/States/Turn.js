@@ -151,6 +151,8 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           o.classList.add('tmp');
         });
       }
+
+      this.updateZonesStatus(this.player_id);
     },
 
     /////////////////////////////////////////////////////////
@@ -176,6 +178,8 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     /////////////////////////////////////////////////////////
     // Place the flowers
     /////////////////////////////////////////////////////////
+
+    // Choose the flower you want to place
     onEnteringStatePlaceFlowers(args) {
       this.highlightOngoingMoves(args);
 
@@ -209,6 +213,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
     },
 
+    // Place indivual flower
     onEnteringStatePlaceFlower(args) {
       this.highlightOngoingMoves(args);
 
@@ -239,6 +244,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
       let tmpMeeple = cell.querySelector('.tmp');
       if (tmpMeeple) this.destroy(tmpMeeple);
+      this.updateZonesStatus(args.player_id);
     },
 
     /////////////////////////////////////////////////////////
@@ -260,9 +266,10 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         let isFullAndValid = true,
           color = null;
         zones[zoneId].cells.forEach((cell2) => {
-          if (this.getCell(cell2).childNodes < 2) isFullAndValid = false;
+          let oMeeples = this.getCell(cell2).childNodes;
+          if (oMeeples.length < 2) isFullAndValid = false;
 
-          let cellColor = this._board[cell2.x][cell2.y][0].type;
+          let cellColor = oMeeples[0].type;
           if (color === null) color = cellColor;
           else if (color !== cellColor) isFullAndValid = false;
         });
@@ -284,6 +291,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
       // Otherwise, let the user click on the cell
       else {
+        console.log(completeZones);
         Object.entries(completeZones).forEach(([zoneId, i]) => {
           let cell = args.flowers[i];
           this.onClick(this.getCell(cell), () => {
@@ -312,6 +320,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
       let tmpMeeple = cell.querySelector('.tmp');
       if (tmpMeeple) this.destroy(tmpMeeple);
+      this.updateZonesStatus(args.player_id);
     },
 
     /////////////////////////////////////////////////////////
@@ -390,106 +399,5 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         this.bgaPerformAction('actTakeTurn', { turn: JSON.stringify(args) })
       );
     },
-
-    // onEnteringStateChooseFlowerCard(args) {
-    //   this.destroyAll('.hutan-flower-card');
-    //   const cards = this.placeFlowerCards(args.cards);
-    //   if (this.isCurrentPlayerActive()) {
-    //     this.makeAllSelectableAndClickable(cards, (card) => {
-    //       const id = this.extractId(card, 'flower-card');
-    //       this.bgaPerformAction('actChooseFlowerCard', { id: id });
-    //     });
-    //     if (this.gamedatas.pangolin === LOCATION_TABLE) {
-    //       this.addPrimaryActionButton('pangolin', `Take Pangolin`, () => {
-    //         this.bgaPerformAction('actChooseFlowerCard', { id: 0 });
-    //       });
-    //     }
-    //   }
-    // },
-
-    // onEnteringStateChooseFlowerColor(args) {
-    //   args.colors.forEach((color) => {
-    //     this.addPrimaryActionButton(color, this.tplFlowerIcon(color, true), (element) => {
-    //       this.bgaPerformAction('actChooseFlowerColor', { colorClass: color });
-    //     });
-    //   });
-    // },
-
-    // onEnteringStatePlaceFlowers(args) {
-    //   if (this.isCurrentPlayerActive()) {
-    //     const flowersColors = args.flowersClasses;
-    //     const flowersElements = flowersColors.map((flower) => {
-    //       return this.tplFlowerIcon(flower, true);
-    //     });
-
-    //     // *** All this block should be replaced with the client logic. Here are all possible correct and incorrect placements
-    //     const x = 0;
-    //     const y = 2;
-    //     if (flowersColors.length === 1) {
-    //       this.addPrimaryActionButton('one', `${flowersElements[0]} -> ${x},${y}`, () => {
-    //         const flowerObject = this.getFlowerObject(flowersColors[0], x, y);
-    //         this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify([flowerObject]) });
-    //       });
-    //       this.addPrimaryActionButton('incorr', `Incorrect amount`, () => {
-    //         const flowerObject = this.getFlowerObject(flowersColors[0], x, y);
-    //         const fakeObject = this.getFlowerObject(flowersColors[0], 0, 1);
-    //         this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify([flowerObject, fakeObject]) });
-    //       });
-    //     }
-
-    //     if (flowersColors.length > 1) {
-    //       this.addPrimaryActionButton('incorrectcolor', `Incorrect color`, () => {
-    //         const incorrectColor = flowersColors[0] === 'icon-flower-red' ? 'icon-flower-blue' : 'icon-flower-red';
-    //         const flowers = [this.getFlowerObject(incorrectColor, x, y), this.getFlowerObject(flowersColors[1], x + 1, y)];
-    //         if (flowersColors.length > 2) {
-    //           flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
-    //         }
-    //         this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
-    //       });
-    //       this.addPrimaryActionButton('onenotadjacent', `One not adjacent`, () => {
-    //         const flowers = [this.getFlowerObject(flowersColors[0], x, y), this.getFlowerObject(flowersColors[1], x + 3, y)];
-    //         if (flowersColors.length > 2) {
-    //           flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
-    //         }
-    //         this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
-    //       });
-    //       if (flowersColors[0] === flowersColors[1]) {
-    //         this.addPrimaryActionButton('two-same', `Two same to same coords`, () => {
-    //           const flowers = [this.getFlowerObject(flowersColors[0], x, y), this.getFlowerObject(flowersColors[1], x, y)];
-    //           this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
-    //         });
-    //       }
-    //       this.addPrimaryActionButton('Allcorrect', `All correct`, () => {
-    //         const flowerObject0 = this.getFlowerObject(flowersColors[0], x, y);
-    //         const flowerObject1 = this.getFlowerObject(flowersColors[1], x + 1, y);
-    //         const flowers = [flowerObject0, flowerObject1];
-    //         if (flowersColors.length > 2) {
-    //           flowers.push(this.getFlowerObject(flowersColors[2], x + 2, y));
-    //         }
-    //         this.bgaPerformAction('actPlaceFlowers', { flowers: JSON.stringify(flowers) });
-    //       });
-    //     }
-    //     // *** End of block
-    //   }
-    // },
-
-    // getFlowerObject(color, x, y) {
-    //   return { color: color, x: x, y: y };
-    // },
-
-    // notif_flowerCardChosen(n) {
-    //   debug('Notif: flowerCardChosen', n);
-    //   if (n.args.flowerCardId === 0) {
-    //     this.gamedatas.pangolin = n.active_player;
-    //   }
-    // },
-
-    // notif_flowerPlaced(n) {
-    //   debug('Notif: flowerPlaced', n);
-    // },
-
-    // notif_treePlaced(n) {
-    //   debug('Notif: treePlaced', n);
-    // },
   });
 });
