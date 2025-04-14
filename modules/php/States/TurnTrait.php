@@ -7,8 +7,6 @@ use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\GameFramework\Actions\Types\JsonParam;
-use Bga\Games\Hutan\Helpers\Utils;
-use Bga\Games\Hutan\Managers\Meeples;
 use Bga\Games\Hutan\Models\Player;
 
 trait TurnTrait
@@ -39,7 +37,6 @@ trait TurnTrait
       Globals::setPangolinLocation(LOCATION_TABLE);
       Notifications::pangolinMovedToMarket($player);
     }
-    // Do we need a notification about a flower card being discarded? It will disappear from the UI anyway
     $flowerCardsLeft = FlowerCards::getInLocation(LOCATION_TABLE);
     if ($flowerCardsLeft->count() === 0 && Globals::getPangolinLocation() !== LOCATION_TABLE) {
       // End of round
@@ -79,19 +76,19 @@ trait TurnTrait
     $player = Players::getCurrent();
 
     // Choose card
-    $cardId = (int) $turn['cardId'];
-    $player->setFlowerCardId($cardId);  // TODO: remove ?
-    $cardFlowers = $this->getFlowersColors($player, $cardId);
+    $cardId = (int)$turn['cardId'];
+    $player->setFlowerCardId($cardId);  // We need that for EndOfTurnCleanup state
     if ($cardId === 0) {
       Globals::setPangolinLocation($player->getId());
-    }
-    Notifications::flowerCardChosen($player, $cardId);
 
-    // Choose color if needed
-    if (count($cardFlowers) == 1) {
-      $player->setJokerColor($turn['colors'][0]); // TODO: remove ?
-      $cardFlowers = $turn['colors'];
+      if (count($turn['colors']) > 1) {
+        throw new \BgaVisibleSystemException(
+          "More than one color is sent for Pangolin. That should not be possible"
+        );
+      }
     }
+    $cardFlowers = $turn['colors'];
+    Notifications::flowerCardChosen($player, $cardId);
 
     // Place flowers
     $flowers = [];
@@ -130,15 +127,5 @@ trait TurnTrait
     }
 
     $this->gamestate->nextState('');
-  }
-
-  private function getFlowersColors(Player $player, int $flowerCardId)
-  {
-    $cardFlowers = $flowerCardId === 0 ? null : FlowerCards::getSingle($flowerCardId)->getFlowers();
-    if ($flowerCardId === 0 || in_array(FLOWER_JOKER, $cardFlowers)) {
-      return [$player->getJokerColor()];
-    } else {
-      return $cardFlowers;
-    }
   }
 }

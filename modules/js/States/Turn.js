@@ -36,7 +36,10 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       await Promise.all(
         args.cards.map((card, i) => {
           this.addFlowerCard(card, this.getVisibleTitleContainer());
-          return this.slide(`flower-card-${card.id}`, this.getFlowerCardContainer(card), { delay: 100 * i, phantomEnd: true });
+          return this.slide(`flower-card-${card.id}`, this.getFlowerCardContainer(card), {
+            delay: 100 * i,
+            phantomEnd: true
+          });
         })
       );
     },
@@ -52,11 +55,11 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       let cardIds = args.cards[this.player_id];
       cardIds.forEach((cardId) => {
         this.onClick(`flower-card-${cardId}`, () => {
-          let colors = $(`flower-card-${cardId}`).dataset.type;
+          let colors = $(`flower-card-${cardId}`).dataset.type.split('');
           let data = { cardId, colors, flowers: {} };
 
           // Joker card => select the color first
-          if (colors.length == 1) {
+          if (colors.length === 1) {
             this.clientState('chooseFlowerCardColor', _('What flower do you want to place?'), data);
           }
           // Standard case => go to place flower client state
@@ -181,6 +184,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
     // Choose the flower you want to place
     onEnteringStatePlaceFlowers(args) {
+      console.log('aaaa');
       this.highlightOngoingMoves(args);
 
       // Callback once we picked the color we want to place
@@ -207,7 +211,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
 
       // Auto select if only one color type left
-      if (Object.values(remainingColors).filter(onlyUnique).length == 1) {
+      if (Object.values(remainingColors).filter(onlyUnique).length === 1) {
         let i = Object.keys(remainingColors)[0];
         callback(i, false)();
       }
@@ -221,7 +225,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       cells.forEach((cell) => {
         this.onClick(this.getCell(cell), () => {
           args.flowers[args.i] = cell;
-          let isFinished = Object.values(args.flowers).length == args.colors.length;
+          let isFinished = Object.values(args.flowers).length === args.colors.length;
           if (isFinished) {
             this.clientState('placeAnimal', _('You may place an animal'), args);
           } else {
@@ -268,10 +272,11 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         zones[zoneId].cells.forEach((cell2) => {
           let oMeeples = this.getCell(cell2).childNodes;
           if (oMeeples.length < 2) isFullAndValid = false;
-
-          let cellColor = oMeeples[0].type;
-          if (color === null) color = cellColor;
-          else if (color !== cellColor) isFullAndValid = false;
+          if (oMeeples.length > 0) {
+            let cellColor = oMeeples[0].getAttribute('data-type');
+            if (color === null) color = cellColor;
+            else if (color !== cellColor) isFullAndValid = false;
+          }
         });
 
         if (isFullAndValid) {
@@ -286,7 +291,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       });
 
       // No full zone => auto skip to confirm
-      if (Object.keys(completeZones).length == 0) {
+      if (Object.keys(completeZones).length === 0) {
         this.clientState('confirmTurn', _('Please confirm your turn'), args);
       }
       // Otherwise, let the user click on the cell
@@ -337,7 +342,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       Object.keys(args.fertilized).forEach((i) => delete cells[i]);
 
       // Nothing else to fertilize => auto skip to confirm
-      if (Object.keys(cells).length == 0) {
+      if (Object.keys(cells).length === 0) {
         this.clientState('confirmTurn', _('Please confirm your turn'), args);
       }
       // Otherwise, let the user click on the cell

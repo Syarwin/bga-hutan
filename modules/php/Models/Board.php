@@ -152,11 +152,10 @@ class Board
     return empty($this->cells[$x][$y]);
   }
 
-  public function getItemsAt(int $x, int $y): array
+  public function getItemsAt(int $x, int $y): ?array
   {
-    return $this->cells[$x][$y];
+    return $this->cells[$x][$y] ?? null;
   }
-
 
   public function getPlacableColorsAtCell(int $x, int $y, ?array $availableColors = null): array
   {
@@ -236,5 +235,16 @@ class Board
     }
 
     return false;
+  }
+
+  public function getAmountOfMeeples(): int
+  {
+    $amount = 0;
+    for ($x = 0; $x < 6; $x++) {
+      for ($y = 0; $y < 6; $y++) {
+        $amount = $amount + count($this->cells[$x][$y]);
+      }
+    }
+    return $amount;
   }
 }

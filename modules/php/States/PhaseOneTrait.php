@@ -175,5 +175,47 @@ trait PhaseOneTrait
         }
       }
     }
+
+    $playerBoard = Players::getCurrent()->board();
+    foreach ($flowers as $flower) {
+      $x = $flower['x'];
+      $y = $flower['y'];
+      $itemsAtCoords = $playerBoard->getItemsAt($x, $y);
+      if (count($itemsAtCoords) > 1) {
+        throw new \BgaVisibleSystemException(
+          "You cannot place a flower at $x, $y, it's already fully occupied"
+        );
+      } else if (count($itemsAtCoords) === 1) {
+        /** @var Meeple $flowerAtCoords */
+        $flowerAtCoords = $itemsAtCoords[0];
+        if ($flowerAtCoords->getUiData()['type'] !== $flower['color']) {
+          throw new \BgaVisibleSystemException(
+            "You cannot place a flower at $x, $y because their colors don't match"
+          );
+        }
+      }
+    }
+
+    if ($playerBoard->getAmountOfMeeples() > 0) {
+      foreach ($flowers as $flower) {
+        $x = $flower['x'];
+        $y = $flower['y'];
+        $foundAdjacent = count($playerBoard->getItemsAt($x, $y)) > 0;
+        if (!$foundAdjacent) {
+          foreach ([[$x - 1, $y], [$x + 1, $y], [$x, $y - 1], [$x, $y + 1]] as [$adjacentX, $adjacentY]) {
+            $itemsAtCoords = $playerBoard->getItemsAt($adjacentX, $adjacentY);
+            if (!is_null($itemsAtCoords) && count($itemsAtCoords) > 0) {
+              $foundAdjacent = true;
+              break;
+            }
+          }
+        }
+        if (!$foundAdjacent) {
+          throw new \BgaVisibleSystemException(
+            "New flowers must be adjacent to, or on top of, Flowers you already placed"
+          );
+        }
+      }
+    }
   }
 }
