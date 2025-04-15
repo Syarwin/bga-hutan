@@ -38,7 +38,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           this.addFlowerCard(card, this.getVisibleTitleContainer());
           return this.slide(`flower-card-${card.id}`, this.getFlowerCardContainer(card), {
             delay: 100 * i,
-            phantomEnd: true
+            phantomEnd: true,
           });
         })
       );
@@ -242,8 +242,10 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       let oMeeple = this.addMeeple(meeple, this.getVisibleTitleContainer());
       let cell = this.getCell(meeple, args.player_id);
       await this.slide(oMeeple, cell);
-      this._board[meeple.x][meeple.y].push(meeple);
-      this._emptyBoard = false;
+      if (args.player_id == this.player_id) {
+        this._board[meeple.x][meeple.y].push(meeple);
+        this._emptyBoard = false;
+      }
 
       let tmpMeeple = cell.querySelector('.tmp');
       if (tmpMeeple) this.destroy(tmpMeeple);
@@ -319,8 +321,10 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         this.slide(`meeple-${animal.id}`, cell),
         this.slide(`meeple-${args.tree.id}`, this.getVisibleTitleContainer(), { destroy: true }),
       ]);
-      this._board[animal.x][animal.y].pop();
-      this._board[animal.x][animal.y].push(animal);
+      if (this.player_id == args.player_id) {
+        this._board[animal.x][animal.y].pop();
+        this._board[animal.x][animal.y].push(animal);
+      }
 
       let tmpMeeple = cell.querySelector('.tmp');
       if (tmpMeeple) this.destroy(tmpMeeple);
