@@ -160,6 +160,7 @@ class Board
     }
     $animal->setX($x);
     $animal->setY($y);
+    $animal->setPId($this->player->getId());
     $animal->setLocation('board');
     $this->cells[$x][$y][] = $animal;
     return [$treeToRemove, $animal];
