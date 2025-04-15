@@ -184,7 +184,6 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
     // Choose the flower you want to place
     onEnteringStatePlaceFlowers(args) {
-      console.log('aaaa');
       this.highlightOngoingMoves(args);
 
       // Callback once we picked the color we want to place

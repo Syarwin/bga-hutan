@@ -99,6 +99,19 @@ class Board
     return $this->zones;
   }
 
+  public function getFinishedZones(): array
+  {
+    return array_filter($this->zones, function ($zone) {
+      $full = true;
+      foreach ($zone['cells'] as $cell) {
+        if (count($this->getItemsAt($cell['x'], $cell['y'])) < 2) {
+          $full = false;
+        }
+      }
+      return $full;
+    });
+  }
+
   public function getCellsZone(): array
   {
     return $this->cellsZone;
@@ -140,6 +153,11 @@ class Board
     $color = $this->cells[$x][$y][0]->getType();
     $animalType = COLOR_ANIMAL_MAP[$color];
     $animal = Meeples::getNextAvailableAnimal($animalType);
+    if (!$animal) {
+      throw new \BgaVisibleSystemException(
+        "Unable to place an animal: There's no more animals of this type. This should not happen"
+      );
+    }
     $animal->setX($x);
     $animal->setY($y);
     $animal->setLocation('board');
@@ -215,7 +233,7 @@ class Board
       $colorsToPlace[$key] = $color;
     }
 
-    // If we are here, we havent found any possibility
+    // If we are here, we haven't found any possibility
     return false;
   }
 

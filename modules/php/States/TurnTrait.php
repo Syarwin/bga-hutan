@@ -71,6 +71,9 @@ trait TurnTrait
     ];
   }
 
+  /**
+   * @throws \BgaVisibleSystemException
+   */
   public function actTakeTurn(#[JsonParam] array $turn): void
   {
     $player = Players::getCurrent();
@@ -96,8 +99,9 @@ trait TurnTrait
       $flower['color'] = $cardFlowers[$i];
       $flowers[] = $flower;
     }
-    $this->verifyParams($flowers, $cardFlowers);
+    $this->verifyTurnParams($flowers, $cardFlowers);
 
+    $finishedZonesIdsBeforePlacing = array_keys($player->board()->getFinishedZones());
     foreach ($flowers as $flower) {
       $meeple = $player->board()->addFlower($flower['x'], $flower['y'], $flower['color']);
       Notifications::meeplePlaced($player, $meeple);
@@ -105,9 +109,7 @@ trait TurnTrait
 
     // Animal
     if (isset($turn['animal'])) {
-      /////
-      // TODO : sanity check
-      /////
+      $this->verifyAnimalParams((int)$turn['animalZone'], $player, $finishedZonesIdsBeforePlacing);
 
       $i = $turn['animal'];
       [$treeToRemove, $animal] = $player->board()->placeAnimal($flowers[$i]['x'], $flowers[$i]['y']);
