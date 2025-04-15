@@ -206,6 +206,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
 
     clearActionButtons() {
       dojo.empty('customActions');
+      dojo.empty('restartAction');
     },
 
     slide(mobileElt, targetElt, options = {}) {

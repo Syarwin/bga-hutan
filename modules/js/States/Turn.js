@@ -265,7 +265,6 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       let completeZones = {};
       Object.entries(args.flowers).forEach(([i, cell]) => {
         let zoneId = cellsZone[cell.x][cell.y];
-        if (completeZones[zoneId] !== undefined) return;
 
         /// Check if the zone if full by checking how many meeples are there
         let isFullAndValid = true,
@@ -286,7 +285,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           debug(`animal-reserve-animal-${animalType}-counter`);
           let counter = $(`animal-reserve-animal-${animalType}-counter`);
           if (parseInt(counter.innerHTML) > 0) {
-            completeZones[zoneId] = i; // Store the index to replace the tree by the animal
+            completeZones[i] = zoneId; // Store the index to replace the tree by the animal
           }
         }
       });
@@ -297,8 +296,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
       // Otherwise, let the user click on the cell
       else {
-        console.log(completeZones);
-        Object.entries(completeZones).forEach(([zoneId, i]) => {
+        Object.entries(completeZones).forEach(([i, zoneId]) => {
           let cell = args.flowers[i];
           this.onClick(this.getCell(cell), () => {
             args.animal = i;
@@ -340,6 +338,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       // Cell where the animal was placed
       let cell = args.flowers[args.animal];
       let cells = { ...this.getFertizableCells(cell, args.flowers) };
+      console.log(cells);
 
       // Remove the already fertilized one
       Object.keys(args.fertilized).forEach((i) => delete cells[i]);
