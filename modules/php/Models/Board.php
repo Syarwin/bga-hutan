@@ -161,7 +161,7 @@ class Board
     $animal->setX($x);
     $animal->setY($y);
     $animal->setPId($this->player->getId());
-    $animal->setLocation('board');
+    $animal->setLocation(LOCATION_TABLE);
     $this->cells[$x][$y][] = $animal;
     return [$treeToRemove, $animal];
   }
@@ -265,5 +265,10 @@ class Board
       }
     }
     return $amount;
+  }
+
+  public function moveTreeToReserve(Meeple $tree)
+  {
+    $tree->setLocation(LOCATION_RESERVE);
   }
 }

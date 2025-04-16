@@ -113,6 +113,7 @@ trait TurnTrait
 
       $i = $turn['animal'];
       [$treeToRemove, $animal] = $player->board()->placeAnimal($flowers[$i]['x'], $flowers[$i]['y']);
+      $player->board()->moveTreeToReserve($treeToRemove);
       Notifications::animalPlaced($player, $treeToRemove, $animal);
     }
 

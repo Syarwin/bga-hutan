@@ -140,7 +140,7 @@ define([
           o.dataset.state = meeple.state;
 
           // Update board
-          if (meeple.location == 'board' && meeple.pId == this.player_id) {
+          if (meeple.location == 'table' && meeple.pId == this.player_id) {
             this._board[meeple.x][meeple.y].push(meeple);
             this._emptyBoard = false;
           }
@@ -190,7 +190,7 @@ define([
           return $(`animal-reserve-${meeple.type}`);
         }
         // Board
-        if (meeple.location == 'board') {
+        if (meeple.location == 'table') {
           return $(`cell-${meeple.pId}-${meeple.x}-${meeple.y}`);
         }
 
@@ -281,7 +281,14 @@ define([
       },
 
       formatString(str) {
-        const ICONS = ['ANIMAL-CASSOWARY', 'ANIMAL-ORANGUTAN', 'ANIMAL-TIGER', 'ANIMAL-HORNBILL', 'ANIMAL-RHINOCEROS', 'TREE-5'];
+        const ICONS = [
+          'ANIMAL-CASSOWARY',
+          'ANIMAL-ORANGUTAN',
+          'ANIMAL-TIGER',
+          'ANIMAL-HORNBILL',
+          'ANIMAL-RHINOCEROS',
+          'TREE-5'
+        ];
 
         ICONS.forEach((name) => {
           str = str.replaceAll(new RegExp('<' + name + '>', 'g'), this.formatIcon(name));
