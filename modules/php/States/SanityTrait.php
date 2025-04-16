@@ -69,6 +69,10 @@ trait SanityTrait
             "You cannot place a flower at $x, $y because their colors don't match"
           );
         }
+      } else {
+        if (in_array(['x' => $x, 'y' => $y], $playerBoard->getWaterSpaces())) {
+          throw new \BgaVisibleSystemException("You cannot place a flower at $x, $y as it is a water space");
+        }
       }
     }
 
@@ -96,10 +100,11 @@ trait SanityTrait
   /**
    * @throws \BgaVisibleSystemException
    */
-  public function verifyAnimalParams(int $requestedZone, Player $player, array $finishedZonesIdsBeforePlacing): void
+  public function verifyAnimalParams(Player $player, int $requestedZone, array $finishedZonesIdsBeforePlacing): void
   {
+    $finishedZones = $player->board()->getFinishedZones();
     $zonesIdsFinishedThisTurn = array_filter(
-      array_keys($player->board()->getFinishedZones()),
+      array_keys($finishedZones),
       function ($zoneId) use ($finishedZonesIdsBeforePlacing) {
         return !in_array($zoneId, $finishedZonesIdsBeforePlacing);
       }
@@ -114,6 +119,64 @@ trait SanityTrait
       throw new \BgaVisibleSystemException(
         "Unable to place an animal: Requested animal zone was finished before this turn"
       );
+    }
+
+    $finishedZone = $finishedZones[$requestedZone];
+    $flowerColors = array_map(function ($cell) use ($player) {
+      $x = $cell['x'];
+      $y = $cell['y'];
+      $meeplesAtCell = $player->board()->getItemsAt($x, $y);
+      $flower = array_filter($meeplesAtCell, function ($meeple) {
+        return $meeple->getType() !== TREE;
+      })[0] ?? null;
+      if (is_null($flower)) {
+        throw new \BgaVisibleSystemException("Cannot find a flower at $x, $y");
+      }
+      return $flower->getType();
+    }, $finishedZone['cells']);
+    if (count(array_unique($flowerColors)) > 1) {
+      throw new \BgaVisibleSystemException("Unable to place an animal: zone contains flowers of different colors");
+    }
+  }
+
+  /**
+   * @throws \BgaVisibleSystemException
+   */
+  public function verifyFertilizedParams(Player $player, Meeple $animal, array $params): void
+  {
+    $animalCoords = $animal->getCoords();
+    foreach ($params as $placedItem) {
+      $x = $placedItem['x'];
+      $y = $placedItem['y'];
+      $distance = abs($x - $animalCoords['x']) + abs($y - $animalCoords['y']);
+      if ($distance === 0) {
+        throw new \BgaVisibleSystemException(
+          "Unable to fertilize: trying to place a flower/tree at the same tile as the animal"
+        );
+      }
+      if ($distance > 1) {
+        throw new \BgaVisibleSystemException(
+          "Unable to fertilize: placed flowers/trees should be adjacent"
+        );
+      }
+      $board = $player->board();
+      $itemsAtCell = $board->getItemsAt($x, $y);
+      if (count($itemsAtCell) > 1) {
+        throw new \BgaVisibleSystemException(
+          "Unable to fertilize: cell $x, $y already has 2 meeples on it"
+        );
+      } elseif (count($itemsAtCell) === 1) {
+        $itemColor = $placedItem['color'];
+        $itemPlacedColor = $itemsAtCell[0]->getType();
+        if ($itemColor !== $itemPlacedColor) {
+          throw new \BgaVisibleSystemException(
+            "Unable to fertilize: trying to place a flower of incorrect color $itemColor. Found color $itemPlacedColor at the same cell"
+          );
+        }
+      }
+      if (in_array(['x' => $x, 'y' => $y], $board->getWaterSpaces())) {
+        throw new \BgaVisibleSystemException("Unable to fertilize: trying to place a flower on a water space");
+      }
     }
   }
 }

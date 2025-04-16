@@ -34,4 +34,14 @@ class Meeple extends DB_Model
   {
     return chr(ord('A') + $this->getX()) . ($this->getY() + 1);
   }
+
+  public function getType()
+  {
+    return $this->type;
+  }
+
+  public function getCoords()
+  {
+    return ['x' => $this->x, 'y' => $this->y];
+  }
 }

@@ -109,7 +109,7 @@ trait TurnTrait
 
     // Animal
     if (isset($turn['animal'])) {
-      $this->verifyAnimalParams((int)$turn['animalZone'], $player, $finishedZonesIdsBeforePlacing);
+      $this->verifyAnimalParams($player, (int)$turn['animalZone'], $finishedZonesIdsBeforePlacing);
 
       $i = $turn['animal'];
       [$treeToRemove, $animal] = $player->board()->placeAnimal($flowers[$i]['x'], $flowers[$i]['y']);
@@ -118,9 +118,7 @@ trait TurnTrait
 
     // Fertilize
     if (isset($turn['fertilized'])) {
-      /////
-      // TODO : sanity check
-      /////
+      $this->verifyFertilizedParams($player, $animal, $turn['fertilized']);
 
       foreach ($turn['fertilized'] as $flower) {
         $meeple = $player->board()->addFlower($flower['x'], $flower['y'], $flower['color']);
