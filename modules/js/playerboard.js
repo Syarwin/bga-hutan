@@ -124,8 +124,8 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       Object.entries(zones).forEach(([zoneId, zone]) => {
         let isFull = true,
           isValid = true,
-          hasAnimal = false;
-        color = null;
+          hasAnimal = false,
+          color = null;
         zone.cells.forEach((cell2) => {
           let oMeeples = this.getCell(cell2, pId).childNodes;
           if (oMeeples.length == 0) {
@@ -133,7 +133,8 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
             return;
           }
 
-          let cellColor = oMeeples[0].type;
+          let cellColor = oMeeples[0].dataset.type;
+          console.log(cellColor, color);
           if (color === null) color = cellColor;
           else if (color !== cellColor) isValid = false;
 
