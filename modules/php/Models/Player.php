@@ -5,9 +5,8 @@ namespace Bga\Games\Hutan\Models;
 use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Helpers\DB_Model;
-use Bga\Games\Hutan\Managers\Flowers;
+use Bga\Games\Hutan\Helpers\Utils;
 use Bga\Games\Hutan\Managers\Meeples;
-use Bga\Games\Hutan\Managers\Players;
 
 /*
  * Player: all utility functions concerning a player
@@ -83,6 +82,9 @@ class Player extends DB_Model
     return $this->board()->canPlayCard($card);
   }
 
+  /**
+   * @throws \BgaVisibleSystemException
+   */
   public function updateScores(): array
   {
     $newScores = $this->getScores();
@@ -90,30 +92,66 @@ class Player extends DB_Model
     return $newScores;
   }
 
+  /**
+   * @throws \BgaVisibleSystemException
+   */
   public function getScores(): array
   {
     // Trees
-    $trees = count($this->getTrees()) * 2;
+    $treesScore = count($this->getTrees()) * 2;
 
     // Animals
-    $animals = 0;
+    $animalsScore = 0;
+    $fullyFilledAreasWithAnimals = $this->board->getFullyFilledZones(true);
+    foreach ($fullyFilledAreasWithAnimals as $area) {
+      $scoreForArea = $this->getScoreForAnimal(count($area['cells']));
+      $animalsScore += $scoreForArea;
+    }
 
-    // Completed areas
-    $completedAreas = 0;
+    // Completed & mixed areas
+    $completedAreasScore = 0;
+    $mixedScore = 0;
+    $completedAreas = $this->board->getCompletedAreas();
+    foreach ($completedAreas as $area) {
+      $flowerColors = Utils::getFlowerColorsForZone($this, $area);
+      $scoreForArea = $this->getScoreForArea(count($area['cells']));
+      if (count(array_unique($flowerColors)) > 1) {
+        $mixedScore += $scoreForArea;
+      } else {
+        $completedAreasScore += $scoreForArea;
+      }
+    }
 
-    // Unfinished & mixed areas
-    $unfinished = 0;
-    $mixed = 0;
-    $unfinishedAndMixed = $unfinished + $mixed;
+    // Unfinished areas
+    $unfinishedScore = 0;
+    $unfinishedAreas = array_udiff_assoc($this->board->getZonesWithMeeples(), $completedAreas, function ($a, $b) {
+      return $a <=> $b;
+    });
+    foreach ($unfinishedAreas as $area) {
+      $scoreForArea = $this->getScoreForArea(count($area['cells']));
+      $unfinishedScore += $scoreForArea;
+    }
+    $unfinishedAndMixedScore = $unfinishedScore + $mixedScore;
 
-    $overall = $trees;
+    // Overall
+    $overall = $treesScore + $animalsScore + $completedAreasScore - $unfinishedAndMixedScore;
     return [
-      'trees' => $trees,
-      'animals' => $animals,
-      'comletedAreas' => $completedAreas,
-      'unfinishedAndMixed' => $unfinishedAndMixed,
+      'trees' => $treesScore,
+      'animals' => $animalsScore,
+      'completedAreas' => $completedAreasScore,
+      'unfinishedAndMixed' => $unfinishedAndMixedScore,
       'overall' => $overall,
     ];
+  }
+
+  private function getScoreForArea(int $amountOfCells): int
+  {
+    return ($amountOfCells - 1) * 2;
+  }
+
+  private function getScoreForAnimal(int $amountOfCells): int
+  {
+    return ($amountOfCells - 1) * 3;
   }
 
   // public function getStat($name)

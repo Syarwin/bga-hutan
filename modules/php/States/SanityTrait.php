@@ -2,6 +2,7 @@
 
 namespace Bga\Games\Hutan\States;
 
+use Bga\Games\Hutan\Helpers\Utils;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\Games\Hutan\Models\Meeple;
 use Bga\Games\Hutan\Models\Player;
@@ -102,7 +103,7 @@ trait SanityTrait
    */
   public function verifyAnimalParams(Player $player, int $requestedZone, array $finishedZonesIdsBeforePlacing): void
   {
-    $finishedZones = $player->board()->getFinishedZones();
+    $finishedZones = $player->board()->getFullyFilledZones();
     $zonesIdsFinishedThisTurn = array_filter(
       array_keys($finishedZones),
       function ($zoneId) use ($finishedZonesIdsBeforePlacing) {
@@ -110,30 +111,19 @@ trait SanityTrait
       }
     );
 
-    if (!in_array($requestedZone, array_keys($player->board()->getFinishedZones()))) {
+    if (!in_array($requestedZone, array_keys($player->board()->getFullyFilledZones()))) {
       throw new \BgaVisibleSystemException(
-        "Unable to place an animal: Requested animal zone is not finished yet"
+        "Unable to place an animal: Requested animal zone is not fully filled yet"
       );
     }
     if (!in_array($requestedZone, $zonesIdsFinishedThisTurn)) {
       throw new \BgaVisibleSystemException(
-        "Unable to place an animal: Requested animal zone was finished before this turn"
+        "Unable to place an animal: Requested animal zone was fully filled before this turn"
       );
     }
 
     $finishedZone = $finishedZones[$requestedZone];
-    $flowerColors = array_map(function ($cell) use ($player) {
-      $x = $cell['x'];
-      $y = $cell['y'];
-      $meeplesAtCell = $player->board()->getItemsAt($x, $y);
-      $flower = array_filter($meeplesAtCell, function ($meeple) {
-        return $meeple->getType() !== TREE;
-      })[0] ?? null;
-      if (is_null($flower)) {
-        throw new \BgaVisibleSystemException("Cannot find a flower at $x, $y");
-      }
-      return $flower->getType();
-    }, $finishedZone['cells']);
+    $flowerColors = Utils::getFlowerColorsForZone($player, $finishedZone);
     if (count(array_unique($flowerColors)) > 1) {
       throw new \BgaVisibleSystemException("Unable to place an animal: zone contains flowers of different colors");
     }

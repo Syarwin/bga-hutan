@@ -99,16 +99,45 @@ class Board
     return $this->zones;
   }
 
-  public function getFinishedZones(): array
+  public function getCompletedAreas(): array
   {
-    return array_filter($this->zones, function ($zone) {
-      $full = true;
+    return $this->getZonesWithMeeplesOnEachCell(1);
+  }
+
+  public function getFullyFilledZones(bool $animalsOnly = false): array
+  {
+    return $this->getZonesWithMeeplesOnEachCell(2, $animalsOnly);
+  }
+
+  private function getZonesWithMeeplesOnEachCell(int $threshold, bool $withAnimalsOnly = false): array
+  {
+    return array_filter($this->zones, function ($zone) use ($threshold, $withAnimalsOnly) {
+      $correctZone = true;
+      $animalsFound = false;
       foreach ($zone['cells'] as $cell) {
-        if (count($this->getItemsAt($cell['x'], $cell['y'])) < 2) {
-          $full = false;
+        $meeplesAtCell = $this->getItemsAt($cell['x'], $cell['y']);
+        if (count($meeplesAtCell) < $threshold) {
+          $correctZone = false;
+        }
+        if ($correctZone && $withAnimalsOnly && !$animalsFound) {
+          $meepleTypes = array_map(fn(Meeple $meeple) => $meeple->getType(), $meeplesAtCell);
+          $animalsFound = !empty(array_intersect($meepleTypes, ANIMALS));
         }
       }
-      return $full;
+      return $correctZone;
+    });
+  }
+
+  public function getZonesWithMeeples(): array
+  {
+    return array_filter($this->zones, function ($zone) {
+      $hasMeeples = false;
+      foreach ($zone['cells'] as $cell) {
+        if (count($this->getItemsAt($cell['x'], $cell['y'])) > 0) {
+          $hasMeeples = true;
+        }
+      }
+      return $hasMeeples;
     });
   }
 
@@ -116,7 +145,6 @@ class Board
   {
     return $this->cellsZone;
   }
-
 
   public function refresh()
   {
@@ -270,5 +298,6 @@ class Board
   public function moveTreeToReserve(Meeple $tree)
   {
     $tree->setLocation(LOCATION_RESERVE);
+    $tree->setPId(null);
   }
 }

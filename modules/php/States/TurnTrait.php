@@ -101,7 +101,7 @@ trait TurnTrait
     }
     $this->verifyTurnParams($flowers, $cardFlowers);
 
-    $finishedZonesIdsBeforePlacing = array_keys($player->board()->getFinishedZones());
+    $finishedZonesIdsBeforePlacing = array_keys($player->board()->getFullyFilledZones());
     foreach ($flowers as $flower) {
       $meeple = $player->board()->addFlower($flower['x'], $flower['y'], $flower['color']);
       Notifications::meeplePlaced($player, $meeple);
