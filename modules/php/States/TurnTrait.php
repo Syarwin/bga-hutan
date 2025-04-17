@@ -126,7 +126,8 @@ trait TurnTrait
         Notifications::meeplePlaced($player, $meeple, true);
       }
     }
-
+    $newScore = $player->updateScores();
+//  TODO:  Notifications::newScore($newScore);
     $this->gamestate->nextState('');
   }
 }

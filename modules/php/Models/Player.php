@@ -31,6 +31,8 @@ class Player extends DB_Model
   protected int $id;
   protected int $flowerCardId;
 
+  protected Board $board;
+
   public function getUiData()
   {
     $data = parent::getUiData();
@@ -58,8 +60,15 @@ class Player extends DB_Model
     return $this->getMeeples()->where('type', ALL_COLORS);
   }
 
+  public function getTrees(): Collection
+  {
+    return $this->getMeeples()->where('type', TREE);
+  }
 
-  protected Board $board;
+  public function getAnimals(): Collection
+  {
+    return $this->getMeeples()->where('type', ANIMALS);
+  }
 
   public function board(): Board
   {
@@ -74,6 +83,38 @@ class Player extends DB_Model
     return $this->board()->canPlayCard($card);
   }
 
+  public function updateScores(): array
+  {
+    $newScores = $this->getScores();
+    $this->setScore($newScores['overall']);
+    return $newScores;
+  }
+
+  public function getScores(): array
+  {
+    // Trees
+    $trees = count($this->getTrees()) * 2;
+
+    // Animals
+    $animals = 0;
+
+    // Completed areas
+    $completedAreas = 0;
+
+    // Unfinished & mixed areas
+    $unfinished = 0;
+    $mixed = 0;
+    $unfinishedAndMixed = $unfinished + $mixed;
+
+    $overall = $trees;
+    return [
+      'trees' => $trees,
+      'animals' => $animals,
+      'comletedAreas' => $completedAreas,
+      'unfinishedAndMixed' => $unfinishedAndMixed,
+      'overall' => $overall,
+    ];
+  }
 
   // public function getStat($name)
   // {
