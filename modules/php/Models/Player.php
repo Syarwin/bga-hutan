@@ -6,6 +6,7 @@ use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Helpers\DB_Model;
 use Bga\Games\Hutan\Helpers\Utils;
+use Bga\Games\Hutan\Managers\Ecosystems;
 use Bga\Games\Hutan\Managers\Meeples;
 
 /*
@@ -36,6 +37,7 @@ class Player extends DB_Model
   {
     $data = parent::getUiData();
     $data['flowers'] = $this->getFlowers();
+    $data['scores'] = $this->getScores();
     return $data;
   }
 
@@ -102,7 +104,7 @@ class Player extends DB_Model
 
     // Animals
     $animalsScore = 0;
-    $fullyFilledAreasWithAnimals = $this->board->getFullyFilledZones(true);
+    $fullyFilledAreasWithAnimals = $this->board()->getFullyFilledZones(true);
     foreach ($fullyFilledAreasWithAnimals as $area) {
       $scoreForArea = $this->getScoreForAnimal(count($area['cells']));
       $animalsScore += $scoreForArea;
@@ -111,7 +113,7 @@ class Player extends DB_Model
     // Completed & mixed areas
     $completedAreasScore = 0;
     $mixedScore = 0;
-    $completedAreas = $this->board->getCompletedAreas();
+    $completedAreas = $this->board()->getCompletedAreas();
     foreach ($completedAreas as $area) {
       $flowerColors = Utils::getFlowerColorsForZone($this, $area);
       $scoreForArea = $this->getScoreForArea(count($area['cells']));
@@ -124,7 +126,7 @@ class Player extends DB_Model
 
     // Unfinished areas
     $unfinishedScore = 0;
-    $unfinishedAreas = array_udiff_assoc($this->board->getZonesWithMeeples(), $completedAreas, function ($a, $b) {
+    $unfinishedAreas = array_udiff_assoc($this->board()->getZonesWithMeeples(), $completedAreas, function ($a, $b) {
       return $a <=> $b;
     });
     foreach ($unfinishedAreas as $area) {
@@ -135,13 +137,18 @@ class Player extends DB_Model
 
     // Overall
     $overall = $treesScore + $animalsScore + $completedAreasScore - $unfinishedAndMixedScore;
-    return [
+    $data = [
       'trees' => $treesScore,
       'animals' => $animalsScore,
       'completedAreas' => $completedAreasScore,
       'unfinishedAndMixed' => $unfinishedAndMixedScore,
       'overall' => $overall,
     ];
+    if (true) { // TODO: add Solo, Advanced & Scenarios checks here
+      $data['ecosystems'] = Ecosystems::getScoresForAllEcosystems($this);
+      $data['overall'] = $overall + array_sum(array_values($data['ecosystems']));;
+    }
+    return $data;
   }
 
   private function getScoreForArea(int $amountOfCells): int
