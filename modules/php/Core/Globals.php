@@ -75,8 +75,9 @@ class Globals extends DB_Manager
   private static function getRandomEcosystems(): array
   {
     $ecosystems = [];
-    for ($i = 0; $i < 5; $i++) {
+    while (count($ecosystems) < 5) {
       $ecosystems[] = bga_rand(1, 24);
+      $ecosystems = array_unique($ecosystems);
     }
     return $ecosystems;
   }

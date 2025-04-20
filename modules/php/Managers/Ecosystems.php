@@ -102,7 +102,7 @@ class Ecosystems
         $groupsOfConnectedTrees = static::findTreeGroups($player->getTrees()->toArray());
         return max(array_map(fn($group) => count($group), $groupsOfConnectedTrees));
 
-      case 16: //  5 points for each group of 3 or more connected Trees you have (not diagonally)
+      case 16: // 5 points for each group of 3 or more connected Trees you have (not diagonally)
         $groupsOfConnectedTrees = static::findTreeGroups($player->getTrees()->toArray());
         $groupsOfThree = array_filter($groupsOfConnectedTrees, function ($group) {
           return count($group) === 3;

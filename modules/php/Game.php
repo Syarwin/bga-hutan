@@ -28,6 +28,7 @@ use Bga\Games\Hutan\Core\Stats;
 use Bga\Games\Hutan\Managers\Meeples;
 use Bga\Games\Hutan\Models\Board;
 
+require_once dirname(__FILE__) . "/../php/Materials/Ecosystems.php";
 require_once APP_GAMEMODULE_PATH . 'module/table/table.game.php';
 
 class Game extends \Table
@@ -74,7 +75,7 @@ class Game extends \Table
   public function getAllDatas(): array
   {
     $board = new Board(null);
-    return [
+    $data = [
       'board' => [
         'ids' => Globals::getBoards(),
         'waterSpaces' => $board->getWaterSpaces(),
@@ -88,6 +89,15 @@ class Game extends \Table
 
       'turn' => Globals::getTurn(),
     ];
+    $ecosystemsIds = Globals::getEcosystems();
+    if ($ecosystemsIds) {
+      $ecosystems = [];
+      foreach ($ecosystemsIds as $ecosystemId) {
+        $ecosystems[$ecosystemId] = ECOSYSTEMS[$ecosystemId];
+      }
+      $data['ecosystemsTexts'] = $ecosystems;
+    }
+    return $data;
   }
 
   /*
