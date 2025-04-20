@@ -94,18 +94,17 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
         if (x < 0 || x >= 6 || y < 0 || y >= 6) return;
 
         // Water cell
-        let isWater = this.gamedatas.board.waterSpaces.findIndex((cell) => cell.x == x && cell.y == y) !== -1;
+        let isWater = this.gamedatas.board.waterSpaces.findIndex((cell) => cell.x === x && cell.y === y) !== -1;
         if (isWater) return;
 
         let meeples = this._board[x][y].slice();
         Object.values(previousFlowers).forEach((cell2) => {
-          if (cell2.x == x && cell2.y == y) meeples.push(cell2);
+          if (cell2.x === x && cell2.y === y) meeples.push(cell2);
         });
 
         // Board already full
-        if (meeples.length == 2) return;
-
-        let colors = meeples.length == 1 ? [meeples[0].type] : ['r', 'y', 'w', 'b', 'g'];
+        if (meeples.length === 2) return;
+        let colors = meeples.length === 1 ? [meeples[0].type] : ['r', 'y', 'w', 'b', 'g'];
         cells.push({ x, y, colors });
       });
 

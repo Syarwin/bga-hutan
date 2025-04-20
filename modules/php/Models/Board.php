@@ -3,6 +3,7 @@
 namespace Bga\Games\Hutan\Models;
 
 use Bga\Games\Hutan\Core\Globals;
+use Bga\Games\Hutan\Helpers\Utils;
 use Bga\Games\Hutan\Managers\Meeples;
 
 const DIRECTIONS = [
@@ -99,19 +100,38 @@ class Board
     return $this->zones;
   }
 
+  /**
+   * @throws \BgaVisibleSystemException
+   */
   public function getCompletedAreas(): array
   {
-    return $this->getZonesWithMeeplesOnEachCell(1);
+    return array_filter($this->getCompletedAndMixedAreas(), function ($area) {
+      return count($area['colors']) === 1;
+    });
   }
 
+  /**
+   * @throws \BgaVisibleSystemException
+   */
+  public function getCompletedAndMixedAreas($includeColors = true): array
+  {
+    return $this->getZonesWithMeeplesOnEachCell(1, false, $includeColors);
+  }
+
+  /**
+   * @throws \BgaVisibleSystemException
+   */
   public function getFullyFilledZones(bool $animalsOnly = false): array
   {
     return $this->getZonesWithMeeplesOnEachCell(2, $animalsOnly);
   }
 
+  /**
+   * @throws \BgaVisibleSystemException
+   */
   private function getZonesWithMeeplesOnEachCell(int $threshold, bool $withAnimalsOnly = false): array
   {
-    return array_filter($this->zones, function ($zone) use ($threshold, $withAnimalsOnly) {
+    $zones = array_filter($this->zones, function ($zone) use ($threshold, $withAnimalsOnly) {
       $correctZone = true;
       $animalsFound = false;
       foreach ($zone['cells'] as $cell) {
@@ -126,11 +146,18 @@ class Board
       }
       return $correctZone;
     });
+    foreach ($zones as &$zone) {
+      $zone['colors'] = Utils::getFlowerColorsForZone($this, $zone);
+    }
+    return $zones;
   }
 
+  /**
+   * @throws \BgaVisibleSystemException
+   */
   public function getZonesWithMeeples(): array
   {
-    return array_filter($this->zones, function ($zone) {
+    $zones = array_filter($this->zones, function ($zone) {
       $hasMeeples = false;
       foreach ($zone['cells'] as $cell) {
         if (count($this->getItemsAt($cell['x'], $cell['y'])) > 0) {
@@ -139,6 +166,10 @@ class Board
       }
       return $hasMeeples;
     });
+    foreach ($zones as &$zone) {
+      $zone['colors'] = Utils::getFlowerColorsForZone($this, $zone);
+    }
+    return $zones;
   }
 
   public function getCellsZone(): array

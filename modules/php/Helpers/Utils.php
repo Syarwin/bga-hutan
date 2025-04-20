@@ -4,7 +4,7 @@ namespace Bga\Games\Hutan\Helpers;
 
 use Bga\Games\Hutan\Managers\ZooCards;
 use Bga\Games\Hutan\Managers\ActionCards;
-use Bga\Games\Hutan\Models\Player;
+use Bga\Games\Hutan\Models\Board;
 
 abstract class Utils extends \APP_DbObject
 {
@@ -182,20 +182,22 @@ abstract class Utils extends \APP_DbObject
     return array_search($class, self::COLORS_CLASSES);
   }
 
-  public static function getFlowerColorsForZone(Player $player, array $zone): array
+  public static function getFlowerColorsForZone(Board $board, array $zone): array
   {
-    return array_map(function ($cell) use ($player) {
+    $colors = array_map(function ($cell) use ($board, $zone) {
       $x = $cell['x'];
       $y = $cell['y'];
-      $meeplesAtCell = $player->board()->getItemsAt($x, $y);
-      $flower = array_values(array_filter($meeplesAtCell, function ($meeple) {
-        return $meeple->getType() !== TREE && !in_array($meeple->getType(), ANIMALS);
-      }))[0] ?? null;
-      if (is_null($flower)) {
-        throw new \BgaVisibleSystemException("Cannot find a flower at $x, $y");
+      $meeplesAtCell = $board->getItemsAt($x, $y);
+      if (count($meeplesAtCell) === 0) {
+        return null;
+      } else {
+        $flower = array_values(array_filter($meeplesAtCell, function ($meeple) {
+          return $meeple->getType() !== TREE && !in_array($meeple->getType(), ANIMALS);
+        }))[0] ?? null;
+        return $flower->getType();
       }
-      return $flower->getType();
     }, $zone['cells']);
+    return array_unique(array_filter($colors));
   }
 }
 

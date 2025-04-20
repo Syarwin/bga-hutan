@@ -122,6 +122,16 @@ trait TurnTrait
       $this->verifyFertilizedParams($player, $animal, $turn['fertilized']);
 
       foreach ($turn['fertilized'] as $flower) {
+        if (!isset($flower['color'])) {
+          // That should be a tree on top of just placed flower. Need to double-check that
+          $itemsAtCell = $player->board()->getItemsAt($flower['x'], $flower['y']);
+          if (count($itemsAtCell) === 0) {
+            throw new \BgaVisibleSystemException(
+              "Placed flower color is not set by frontend while cell is empty"
+            );
+          }
+          $flower['color'] = $itemsAtCell[0]->getType();
+        }
         $meeple = $player->board()->addFlower($flower['x'], $flower['y'], $flower['color']);
         Notifications::meeplePlaced($player, $meeple, true);
       }

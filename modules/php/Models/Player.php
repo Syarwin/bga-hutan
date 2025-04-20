@@ -104,7 +104,8 @@ class Player extends DB_Model
 
     // Animals
     $animalsScore = 0;
-    $fullyFilledAreasWithAnimals = $this->board()->getFullyFilledZones(true);
+    $playerBoard = $this->board();
+    $fullyFilledAreasWithAnimals = $playerBoard->getFullyFilledZones(true);
     foreach ($fullyFilledAreasWithAnimals as $area) {
       $scoreForArea = $this->getScoreForAnimal(count($area['cells']));
       $animalsScore += $scoreForArea;
@@ -113,11 +114,10 @@ class Player extends DB_Model
     // Completed & mixed areas
     $completedAreasScore = 0;
     $mixedScore = 0;
-    $completedAreas = $this->board()->getCompletedAreas();
-    foreach ($completedAreas as $area) {
-      $flowerColors = Utils::getFlowerColorsForZone($this, $area);
+    $completedAndMixedAreas = $playerBoard->getCompletedAndMixedAreas(false);
+    foreach ($completedAndMixedAreas as $area) {
       $scoreForArea = $this->getScoreForArea(count($area['cells']));
-      if (count(array_unique($flowerColors)) > 1) {
+      if (count($area['colors']) > 1) {
         $mixedScore += $scoreForArea;
       } else {
         $completedAreasScore += $scoreForArea;
@@ -126,9 +126,13 @@ class Player extends DB_Model
 
     // Unfinished areas
     $unfinishedScore = 0;
-    $unfinishedAreas = array_udiff_assoc($this->board()->getZonesWithMeeples(), $completedAreas, function ($a, $b) {
-      return $a <=> $b;
-    });
+    $unfinishedAreas = array_udiff_assoc(
+      $playerBoard->getZonesWithMeeples(),
+      $completedAndMixedAreas,
+      function ($a, $b) {
+        return $a <=> $b;
+      }
+    );
     foreach ($unfinishedAreas as $area) {
       $scoreForArea = $this->getScoreForArea(count($area['cells']));
       $unfinishedScore += $scoreForArea;

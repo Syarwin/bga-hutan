@@ -242,7 +242,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       let oMeeple = this.addMeeple(meeple, this.getVisibleTitleContainer());
       let cell = this.getCell(meeple, args.player_id);
       await this.slide(oMeeple, cell);
-      if (args.player_id == this.player_id) {
+      if (args.player_id === this.player_id) {
         this._board[meeple.x][meeple.y].push(meeple);
         this._emptyBoard = false;
       }
@@ -379,7 +379,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       };
 
       // Only one color => auto select
-      if (args.fertilizeCell.colors.length == 1) {
+      if (args.fertilizeCell.colors.length === 1) {
         callback(args.fertilizeCell.colors[0]);
       }
       // Otherwise, create buttons

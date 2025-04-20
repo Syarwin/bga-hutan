@@ -103,7 +103,8 @@ trait SanityTrait
    */
   public function verifyAnimalParams(Player $player, int $requestedZone, array $finishedZonesIdsBeforePlacing): void
   {
-    $finishedZones = $player->board()->getFullyFilledZones();
+    $playerBoard = $player->board();
+    $finishedZones = $playerBoard->getFullyFilledZones();
     $zonesIdsFinishedThisTurn = array_filter(
       array_keys($finishedZones),
       function ($zoneId) use ($finishedZonesIdsBeforePlacing) {
@@ -111,7 +112,7 @@ trait SanityTrait
       }
     );
 
-    if (!in_array($requestedZone, array_keys($player->board()->getFullyFilledZones()))) {
+    if (!in_array($requestedZone, array_keys($playerBoard->getFullyFilledZones()))) {
       throw new \BgaVisibleSystemException(
         "Unable to place an animal: Requested animal zone is not fully filled yet"
       );
@@ -123,8 +124,8 @@ trait SanityTrait
     }
 
     $finishedZone = $finishedZones[$requestedZone];
-    $flowerColors = Utils::getFlowerColorsForZone($player, $finishedZone);
-    if (count(array_unique($flowerColors)) > 1) {
+    $flowerColors = Utils::getFlowerColorsForZone($playerBoard, $finishedZone);
+    if (count($flowerColors) > 1) {
       throw new \BgaVisibleSystemException("Unable to place an animal: zone contains flowers of different colors");
     }
   }
@@ -156,12 +157,14 @@ trait SanityTrait
           "Unable to fertilize: cell $x, $y already has 2 meeples on it"
         );
       } elseif (count($itemsAtCell) === 1) {
-        $itemColor = $placedItem['color'];
-        $itemPlacedColor = $itemsAtCell[0]->getType();
-        if ($itemColor !== $itemPlacedColor) {
-          throw new \BgaVisibleSystemException(
-            "Unable to fertilize: trying to place a flower of incorrect color $itemColor. Found color $itemPlacedColor at the same cell"
-          );
+        if (isset($placedItem['color'])) { // Sometimes frontend places a second flower without a color during fertilization and that's fine
+          $itemColor = $placedItem['color'];
+          $itemPlacedColor = $itemsAtCell[0]->getType();
+          if ($itemColor !== $itemPlacedColor) {
+            throw new \BgaVisibleSystemException(
+              "Unable to fertilize: trying to place a flower of incorrect color $itemColor. Found color $itemPlacedColor at the same cell"
+            );
+          }
         }
       }
       if (in_array(['x' => $x, 'y' => $y], $board->getWaterSpaces())) {
