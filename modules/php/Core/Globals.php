@@ -22,6 +22,7 @@ class Globals extends DB_Manager
     // Setup
     'scenario' => 'int',
     'boards' => 'obj',
+    'ecosystems' => 'obj',
 
     // Game options
     'solo' => 'bool',
@@ -42,27 +43,42 @@ class Globals extends DB_Manager
 
     // Setup boards
     $boards = null;
+    $ecosystems = [];
     switch ($options[OPTION_VARIANT]) {
       case OPTION_VARIANT_FIRST_GAME:
         $boards = FIRST_GAME_BOARDS;
         break;
 
-      case OPTION_VARIANT_SCENARIO:
-        $boards = SCENARIOS[$scenario]['boards'];
+      case OPTION_VARIANT_ADVANCED:
+        $ecosystems = static::getRandomEcosystems();
         break;
 
-      default:
-        $boards = [];
-        // For each color
-        for ($board = 0; $board < 4; $board++) {
-          // Pick a random side (sides have same id +- 4)
-          $boardId = $board + 4 * bga_rand(0, 1);
-          $orientation = bga_rand(0, 3);
-          $boards[] = [$boardId, $orientation];
-        }
+      case OPTION_VARIANT_SCENARIO:
+        $boards = SCENARIOS[$scenario]['boards'];
+        $ecosystems = SCENARIOS[$scenario]['cards'];
         break;
     }
+    if (is_null($boards)) {
+      $boards = [];
+      // For each color
+      for ($board = 0; $board < 4; $board++) {
+        // Pick a random side (sides have same id +- 4)
+        $boardId = $board + 4 * bga_rand(0, 1);
+        $orientation = bga_rand(0, 3);
+        $boards[] = [$boardId, $orientation];
+      }
+    }
     static::setBoards($boards);
+    static::setEcosystems($ecosystems);
+  }
+
+  private static function getRandomEcosystems(): array
+  {
+    $ecosystems = [];
+    for ($i = 0; $i < 5; $i++) {
+      $ecosystems[] = bga_rand(1, 24);
+    }
+    return $ecosystems;
   }
 
   protected static string $table = 'global_variables';

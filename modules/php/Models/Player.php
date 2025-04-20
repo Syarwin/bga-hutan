@@ -148,8 +148,9 @@ class Player extends DB_Model
       'unfinishedAndMixed' => $unfinishedAndMixedScore,
       'overall' => $overall,
     ];
-    if (true) { // TODO: add Solo, Advanced & Scenarios checks here
-      $data['ecosystems'] = Ecosystems::getScoresForAllEcosystems($this);
+    $ecosystems = Ecosystems::getScoresForAllEcosystems($this);
+    if ($ecosystems) {
+      $data['ecosystems'] = $ecosystems;
       $data['overall'] = $overall + array_sum(array_values($data['ecosystems']));;
     }
     return $data;

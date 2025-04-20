@@ -2,6 +2,7 @@
 
 namespace Bga\Games\Hutan\Managers;
 
+use Bga\Games\Hutan\Core\Globals;
 use Bga\Games\Hutan\Models\Board;
 use Bga\Games\Hutan\Models\Meeple;
 use Bga\Games\Hutan\Models\Player;
@@ -11,11 +12,11 @@ class Ecosystems
   /**
    * @throws \BgaVisibleSystemException
    */
-  public static function getScoresForAllEcosystems(Player $player): array
+  public static function getScoresForAllEcosystems(Player $player): ?array
   {
-    $cardsInPlay = [21, 22, 23]; // TODO: Get from Globals
+    $ecosystemsInPlay = Globals::getEcosystems();
     $ecosystems = [];
-    foreach ($cardsInPlay as $cardId) {
+    foreach ($ecosystemsInPlay as $cardId) {
       $ecosystems[$cardId] = static::getScoresForEcosystem($player, $cardId);
     }
     return $ecosystems;
