@@ -20,7 +20,6 @@ class Notifications
   }
 
 
-
   public static function flowerCardChosen(Player $player, int $id)
   {
     $data = ['player' => $player, 'flowerCardId' => $id];
@@ -35,7 +34,8 @@ class Notifications
 
   public static function meeplePlaced(Player $player, Meeple $meeple, bool $isFertilization = false)
   {
-    $msg = $isFertilization ? clienttranslate('Fertilization: ${player_name} places a ${color_desc} on his board (${coords})')
+    $msg = $isFertilization ?
+      clienttranslate('Fertilization: ${player_name} places a ${color_desc} on his board (${coords})')
       : clienttranslate('${player_name} places a ${color_desc} on his board (${coords})');
     $data = [
       'player' => $player,
@@ -45,7 +45,8 @@ class Notifications
     ];
 
     if ($meeple->getType() == TREE) {
-      $msg = $isFertilization ? clienttranslate('Fertilization: ${player_name} places a tree <TREE-5> on his board (${coords})') :
+      $msg = $isFertilization ?
+        clienttranslate('Fertilization: ${player_name} places a tree <TREE-5> on his board (${coords})') :
         clienttranslate('${player_name} places a tree <TREE-5> on his board (${coords})');
       unset($data['color']);
     }
@@ -72,11 +73,15 @@ class Notifications
     ]);
   }
 
-
   public static function pangolinMovedToMarket(Player $player)
   {
     $msg = clienttranslate('${player_name} places the pangolin token back to the market');
     self::notifyAll('pangolinMovedToMarket', $msg, ['player' => $player]);
+  }
+
+  public static function newScores(Player $player, array $scores)
+  {
+    self::notifyAll('newScores', '', ['player' => $player, 'scores' => $scores]);
   }
 
   ///////////////////////////////////////////////////////////////////////////////////

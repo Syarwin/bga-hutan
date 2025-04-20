@@ -4,6 +4,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
   return declare('hutan.common', null, {
     constructor() {
       this._notifications.push('pangolinMovedToMarket');
+      this._notifications.push('newScores');
     },
 
     extractId(element, prefix) {
@@ -15,6 +16,12 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       debug('Notif: pangolinMovedToMarket', args);
       this.gamedatas.pangolin = LOCATION_TABLE;
       return this.slide('meeple-pangolin', $('flower-cards-container'));
+    },
+
+    notif_newScores(args) {
+      debug('Notif: newScores', args);
+      this.gamedatas.players[args.player_id].scores = args.scores;
+      this.scoreCtrl[args.player_id].toValue(args.scores.overall);
     },
   });
 });

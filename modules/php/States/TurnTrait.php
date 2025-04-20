@@ -7,7 +7,6 @@ use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\GameFramework\Actions\Types\JsonParam;
-use Bga\Games\Hutan\Models\Player;
 
 trait TurnTrait
 {
@@ -136,8 +135,8 @@ trait TurnTrait
         Notifications::meeplePlaced($player, $meeple, true);
       }
     }
-    $newScore = $player->updateScores();
-//  TODO:  Notifications::newScore($newScore);
+    $newScores = $player->updateScores();
+    Notifications::newScores($player, $newScores);
     $this->gamestate->nextState('');
   }
 }
