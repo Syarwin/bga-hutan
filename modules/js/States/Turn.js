@@ -408,11 +408,13 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       );
     },
 
-
-    notif_discardLeftoverFlowerCards(args) {
+    async notif_discardLeftoverFlowerCards(args) {
       debug('Notif: Discard Leftover Flower Cards', args);
-      this.destroyAll('#flower-cards-container .hutan-flower-card');
-      // TODO: Animation?
+
+      let cards = [...$('flower-cards-container').querySelectorAll('.hutan-flower-card')];
+      await Promise.all(
+        cards.map((oCard, i) => this.slide(oCard, this.getVisibleTitleContainer(), { destroy: true, delay: 100 * i }))
+      );
     },
   });
 });
