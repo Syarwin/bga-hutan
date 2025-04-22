@@ -2,6 +2,7 @@
 
 namespace Bga\Games\Hutan\Managers;
 
+use Bga\Games\Hutan\Core\Globals;
 use Bga\Games\Hutan\Helpers\CachedPieces;
 use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Models\FlowerCard;
@@ -33,9 +34,11 @@ class FlowerCards extends CachedPieces
   {
     shuffle(self::$allCards);
 
-    $cardsInDeck = (Players::count() * 2) - 1;
-    // 9 stacks / decks
-    for ($i = 1; $i <= 9; $i++) {
+    $isSolo = Globals::isSolo();
+    $cardsInDeck = $isSolo ? 3 : (Players::count() * 2) - 1;
+    // 18 or 9 stacks / decks
+    $amountOfDecks = $isSolo ? 18 : 9;
+    for ($i = 1; $i <= $amountOfDecks; $i++) {
       $values = [];
       for ($k = 0; $k < $cardsInDeck; $k++) {
         $card = array_pop(self::$allCards);

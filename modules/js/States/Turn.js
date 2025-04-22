@@ -26,6 +26,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       this._notifications.push('flowerCardChosen');
       this._notifications.push('meeplePlaced');
       this._notifications.push('animalPlaced');
+      this._notifications.push('discardLeftoverFlowerCards');
     },
 
     async notif_newTurn(args) {
@@ -405,6 +406,13 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       this.addPrimaryActionButton('btnConfirm', _('Confirm'), () =>
         this.bgaPerformAction('actTakeTurn', { turn: JSON.stringify(args) })
       );
+    },
+
+
+    notif_discardLeftoverFlowerCards(args) {
+      debug('Notif: Discard Leftover Flower Cards', args);
+      this.destroyAll('#flower-cards-container .hutan-flower-card');
+      // TODO: Animation?
     },
   });
 });

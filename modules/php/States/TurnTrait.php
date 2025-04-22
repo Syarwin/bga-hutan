@@ -15,10 +15,11 @@ trait TurnTrait
     $turn = Globals::incTurn();
     $cards = FlowerCards::moveDeckToBoard(Globals::getTurn());
     Notifications::newTurn($turn, $cards);
-
-    $pangolinHolder = Globals::getPangolinLocation();
-    Globals::setPangolinPlayedThisTurn(false);
-    $this->gamestate->changeActivePlayer($pangolinHolder);
+    if (!Globals::isSolo()) {
+      $pangolinHolder = Globals::getPangolinLocation();
+      Globals::setPangolinPlayedThisTurn(false);
+      $this->gamestate->changeActivePlayer($pangolinHolder);
+    }
     $this->gamestate->nextState('');
   }
 
@@ -37,8 +38,12 @@ trait TurnTrait
       Notifications::pangolinMovedToMarket($player);
     }
     $flowerCardsLeft = FlowerCards::getInLocation(LOCATION_TABLE);
-    if ($flowerCardsLeft->count() === 0 && Globals::getPangolinLocation() !== LOCATION_TABLE) {
+    if (Globals::isSolo() || ($flowerCardsLeft->count() === 0 && Globals::getPangolinLocation() !== LOCATION_TABLE)) {
       // End of round
+      if (Globals::isSolo()) {
+        FlowerCards::moveAllInLocation(LOCATION_TABLE, LOCATION_DISCARD);
+        Notifications::discardLeftoverFlowerCards();
+      }
       if (Globals::getTurn() === Globals::getMaxTurn()) {
         $this->gamestate->jumpToState(ST_END_GAME);
         // End of game
@@ -70,10 +75,14 @@ trait TurnTrait
       $playableCards[$pId] = $cards->filter(fn($card) => $player->canPlayCard($card))->getIds();
     }
 
-    return [
+    $args = [
       'cards' => $playableCards,
-      'pangolin' => Globals::getPangolinLocation(),
     ];
+    if (!Globals::isSolo()) {
+      $args['pangolin'] = Globals::getPangolinLocation();
+    }
+
+    return $args;
   }
 
   /**

@@ -83,6 +83,11 @@ class Notifications
     self::notifyAll('newScores', '', ['player' => $player, 'scores' => $scores]);
   }
 
+  public static function discardLeftoverFlowerCards()
+  {
+    self::notifyAll('discardLeftoverFlowerCards', '', []);
+  }
+
   ///////////////////////////////////////////////////////////////////////////////////
   //   ____                      _        __  __      _   _               _     
   //  / ___| ___ _ __   ___ _ __(_) ___  |  \/  | ___| |_| |__   ___   __| |___ 

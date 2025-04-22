@@ -63,9 +63,9 @@ class Game extends \Table
   {
     Stats::setupNewGame();
     Players::setupNewGame($players, $options);
+    Globals::setupNewGame($players, $options);
     FlowerCards::setupNewGame();
     Meeples::setupNewGame();
-    Globals::setupNewGame($players, $options);
     $this->activeNextPlayer();
   }
 
@@ -85,7 +85,6 @@ class Game extends \Table
       'meeples' => Meeples::getUiData(),
       'flowerCards' => FlowerCards::getUiData(),
       'players' => Players::getUiData(),
-      'pangolin' => Globals::getPangolinLocation(),
 
       'turn' => Globals::getTurn(),
     ];
@@ -96,6 +95,9 @@ class Game extends \Table
         $ecosystems[$ecosystemId] = ECOSYSTEMS[$ecosystemId];
       }
       $data['ecosystemsTexts'] = $ecosystems;
+    }
+    if (!Globals::isSolo()) {
+      $data['pangolin'] = Globals::getPangolinLocation();
     }
     return $data;
   }

@@ -36,7 +36,9 @@ class Globals extends DB_Manager
     $isSolo = count($players) == 1;
     static::setSolo($isSolo);
     static::setFirstPlayer(array_keys($players)[0]);
-    static::setPangolinLocation(array_keys($players)[0]);
+    if (!static::isSolo()) {
+      static::setPangolinLocation(array_keys($players)[0]);
+    }
 
     $scenario = $options[OPTION_SCENARIO] ?? 0;
     static::setScenario($scenario);
