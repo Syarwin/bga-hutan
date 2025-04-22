@@ -58,7 +58,7 @@ $gameinfos = array(
   //
   // Example: 'tie_breaker_description' => totranslate( "Number of remaining cards in hand" ),
   'tie_breaker_description' => totranslate(
-    '.'
+    'The tied player earliest in the turn order wins'
   ),
 
   // If in the game, all losers are equal (no score to rank them or explicit in the rules that losers are not ranked between them), set this to true 

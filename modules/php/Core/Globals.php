@@ -82,6 +82,11 @@ class Globals extends DB_Manager
     return $ecosystems;
   }
 
+  public static function getMaxTurn(): int
+  {
+    return static::isSolo() ? 18 : 9;
+  }
+
   protected static string $table = 'global_variables';
   protected static string $primary = 'name';
 

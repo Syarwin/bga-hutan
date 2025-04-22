@@ -15,10 +15,9 @@ class Notifications
     self::notifyAll('newTurn', clienttranslate('Turn ${turn}/${maxTurn}'), [
       'turn' => $turn,
       'cards' => $cards->ui(),
-      'maxTurn' => Globals::isSolo() ? 18 : 9
+      'maxTurn' => Globals::getMaxTurn()
     ]);
   }
-
 
   public static function flowerCardChosen(Player $player, int $id)
   {

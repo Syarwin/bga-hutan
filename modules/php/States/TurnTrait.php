@@ -39,8 +39,14 @@ trait TurnTrait
     $flowerCardsLeft = FlowerCards::getInLocation(LOCATION_TABLE);
     if ($flowerCardsLeft->count() === 0 && Globals::getPangolinLocation() !== LOCATION_TABLE) {
       // End of round
-      $this->gamestate->jumpToState(ST_PREPARE_MARKET);
+      if (Globals::getTurn() === Globals::getMaxTurn()) {
+        $this->gamestate->jumpToState(ST_END_GAME);
+        // End of game
+      } else {
+        $this->gamestate->jumpToState(ST_PREPARE_MARKET);
+      }
     } else {
+      // Still playing
       $this->activeNextPlayer();
       $this->gamestate->jumpToState(ST_TURN);
     }
