@@ -133,7 +133,11 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
           }
 
           let cellColor = oMeeples[0].dataset.type;
-          debug(cellColor, color);
+          if (cellColor.indexOf('animal') !== -1) {
+            cellColor = oMeeples[1].dataset.type;
+            hasAnimal = true;
+          }
+
           if (color === null) color = cellColor;
           else if (color !== cellColor) isValid = false;
 
