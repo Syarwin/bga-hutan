@@ -256,6 +256,10 @@ define([
         $('show-scores').addEventListener('click', () => this._scoresModal.show());
       },
 
+      onEnteringStateGameEnd(args) {
+        this._scoresModal.show();
+      },
+
       // updatePlayerOrdering() {
       //   this.inherited(arguments);
       //   dojo.place('player_board_config', 'player_boards', 'first');
