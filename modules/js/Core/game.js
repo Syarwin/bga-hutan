@@ -719,5 +719,67 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
 
       elem.remove();
     },
+
+    /**
+     * Own counter implementation that works with replay
+     */
+    createCounter(id, defaultValue = 0, linked = null) {
+      if (!$(id)) {
+        console.error('Counter : element does not exist', id);
+        return null;
+      }
+
+      let game = this;
+      let o = {
+        span: $(id),
+        linked: linked ? $(linked) : null,
+        targetValue: 0,
+        currentValue: 0,
+        speed: 100,
+        getValue() {
+          return this.targetValue;
+        },
+        setValue(n) {
+          this.currentValue = +n;
+          this.targetValue = +n;
+          this.span.innerHTML = +n;
+          if (this.linked) this.linked.innerHTML = +n;
+        },
+        toValue(n) {
+          if (game.instantaneousMode) {
+            this.setValue(n);
+            return;
+          }
+
+          this.targetValue = +n;
+          if (this.currentValue != n) {
+            this.span.classList.add('counter_in_progress');
+            setTimeout(() => this.makeCounterProgress(), this.speed);
+          }
+        },
+        goTo(n, anim) {
+          if (anim) this.toValue(n);
+          else this.setValue(n);
+        },
+        incValue(n) {
+          let m = +n;
+          this.toValue(this.targetValue + m);
+        },
+        makeCounterProgress() {
+          if (this.currentValue == this.targetValue) {
+            setTimeout(() => this.span.classList.remove('counter_in_progress'), this.speed);
+            return;
+          }
+
+          let step = Math.ceil(Math.abs(this.targetValue - this.currentValue) / 5);
+          this.currentValue += (this.currentValue < this.targetValue ? 1 : -1) * step;
+          this.span.innerHTML = this.currentValue;
+          if (this.linked) this.linked.innerHTML = this.currentValue;
+          setTimeout(() => this.makeCounterProgress(), this.speed);
+        },
+      };
+      o.setValue(defaultValue);
+      return o;
+    },
   });
 });

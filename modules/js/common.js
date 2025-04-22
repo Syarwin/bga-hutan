@@ -17,11 +17,5 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       this.gamedatas.pangolin = LOCATION_TABLE;
       return this.slide('meeple-pangolin', $('flower-cards-container'));
     },
-
-    notif_newScores(args) {
-      debug('Notif: newScores', args);
-      this.gamedatas.players[args.player_id].scores = args.scores;
-      this.scoreCtrl[args.player_id].toValue(args.scores.overall);
-    },
   });
 });

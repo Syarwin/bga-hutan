@@ -19,6 +19,7 @@ define([
   'dojo',
   'dojo/_base/declare',
   'ebg/counter',
+  g_gamethemeurl + 'modules/js/Core/modal.js',
   g_gamethemeurl + 'modules/js/Core/game.js',
   g_gamethemeurl + 'modules/js/playerboard.js',
   g_gamethemeurl + 'modules/js/common.js',
@@ -46,8 +47,8 @@ define([
         debug('SETUP', gamedatas);
         this.setupCentralArea();
 
-        this.setupPlayers();
         this.setupInfoPanel();
+        this.setupPlayers();
         this.setupMeeples();
         this.setupFlowerCards();
         this.updateZonesStatuses();
@@ -227,16 +228,32 @@ define([
         this.updateTurnNumber();
 
         // this._settingsModal = new customgame.modal('showSettings', {
-        //   class: 'brass_popin',
+        //   class: 'hutan_popin',
         //   closeIcon: 'fa-times',
         //   title: _('Settings'),
         //   closeAction: 'hide',
         //   verticalAlign: 'flex-start',
-        //   contentsTpl: `<div id='brass-settings'>
-        //      <div id='brass-settings-header'></div>
+        //   contentsTpl: `<div id='hutan-settings'>
+        //      <div id='hutan-settings-header'></div>
         //      <div id="settings-controls-container"></div>
         //    </div>`,
         // });
+
+        this._scoresModal = new customgame.modal('showScores', {
+          class: 'hutan_popin',
+          closeIcon: 'fa-times',
+          closeAction: 'hide',
+          verticalAlign: 'flex-start',
+          contentsTpl: `<table id='scoresheet'>
+             <tr id="score-row-name"><th>${this.formatIcon('player')}</th></tr>
+             <tr id="score-row-trees"><th>${this.formatIcon('tree')}</th></tr>
+             <tr id="score-row-animals"><th>${this.formatIcon('paw')}</th></tr>
+             <tr id="score-row-completedAreas"><th>${this.formatIcon('ok')}</th></tr>
+             <tr id="score-row-unfinishedAndMixed"><th>${this.formatIcon('nok')}</th></tr>
+             <tr id="score-row-overall"><th></th></tr>
+           </table>`,
+        });
+        $('show-scores').addEventListener('click', () => this._scoresModal.show());
       },
 
       // updatePlayerOrdering() {
@@ -281,14 +298,7 @@ define([
       },
 
       formatString(str) {
-        const ICONS = [
-          'ANIMAL-CASSOWARY',
-          'ANIMAL-ORANGUTAN',
-          'ANIMAL-TIGER',
-          'ANIMAL-HORNBILL',
-          'ANIMAL-RHINOCEROS',
-          'TREE-5'
-        ];
+        const ICONS = ['ANIMAL-CASSOWARY', 'ANIMAL-ORANGUTAN', 'ANIMAL-TIGER', 'ANIMAL-HORNBILL', 'ANIMAL-RHINOCEROS', 'TREE-5'];
 
         ICONS.forEach((name) => {
           str = str.replaceAll(new RegExp('<' + name + '>', 'g'), this.formatIcon(name));

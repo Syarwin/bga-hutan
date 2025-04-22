@@ -33,6 +33,13 @@
   #player_config {
     padding-bottom: 8px;
 
+    #show-scores {
+      svg {
+        width: 33px;
+        cursor: pointer;
+      }
+    }
+
     #help-mode-switch {
       .checkbox {
         display: none;

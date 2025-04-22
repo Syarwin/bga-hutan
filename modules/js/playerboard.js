@@ -14,13 +14,15 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
     },
 
     setupPlayers() {
+      this._scoresCounters = {};
+
       // Change No so that it fits the current player order view
       let currentNo = this.getPlayers().reduce((carry, player) => (player.id == this.player_id ? player.no : carry), 0);
       let nPlayers = Object.keys(this.gamedatas.players).length;
       this.forEachPlayer((player) => (player.order = (player.no + nPlayers - currentNo) % nPlayers));
       this.orderedPlayers = Object.values(this.gamedatas.players).sort((a, b) => a.order - b.order);
 
-      // // Add player mat and player panel
+      // Add player board and player panel
       this.orderedPlayers.forEach((player, i) => {
         // Player board
         this.place('tplPlayerBoard', player, 'hutan-main-container');
@@ -28,6 +30,36 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
         // Panels
         this.place('tplPlayerPanel', player, `overall_player_board_${player.id}`);
         $(`overall_player_board_${player.id}`).addEventListener('click', () => this.goToPlayerBoard(player.id));
+
+        // Scores
+        this._scoresCounters[player.id] = {};
+        ['name', 'trees', 'animals', 'completedAreas', 'unfinishedAndMixed', 'overall'].forEach((scoringCategory) => {
+          if (scoringCategory == 'name') {
+            $(`score-row-name`).insertAdjacentHTML('beforeend', `<td>${player.name}</td>`);
+            return;
+          }
+
+          $(`score-row-${scoringCategory}`).insertAdjacentHTML(
+            'beforeend',
+            `<td><span id='score-${player.id}-${scoringCategory}'></span></td>`
+          );
+
+          this._scoresCounters[player.id][scoringCategory] = this.createCounter(
+            `score-${player.id}-${scoringCategory}`,
+            player.scores[scoringCategory]
+          );
+        });
+      });
+    },
+
+    notif_newScores(args) {
+      debug('Notif: newScores', args);
+      this.scoreCtrl[args.player_id].toValue(args.scores.overall);
+      this.gamedatas.players[args.player_id].scores = args.scores;
+
+      ['trees', 'animals', 'completedAreas', 'unfinishedAndMixed', 'overall'].forEach((scoringCategory) => {
+        console.log(scoringCategory);
+        this._scoresCounters[args.player_id][scoringCategory].toValue(args.scores[scoringCategory]);
       });
     },
 
