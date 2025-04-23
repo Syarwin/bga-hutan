@@ -150,8 +150,8 @@ class Player extends DB_Model
     ];
     $ecosystems = Ecosystems::getScoresForAllEcosystems($this);
     if ($ecosystems) {
-      $data['ecosystems'] = $ecosystems;
-      $data['overall'] = $overall + array_sum(array_values($data['ecosystems']));;
+      $data['overall'] = $overall + array_sum(array_values($ecosystems));;
+      $data = array_merge($data, $ecosystems);
     }
     return $data;
   }

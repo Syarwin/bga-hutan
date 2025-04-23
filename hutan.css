@@ -804,6 +804,17 @@ body {
     background-position-x: 50%;
     background-position-y: 100%; }
 
+.card-tooltip {
+  display: flex;
+  --hutanFlowerCardScale: 0.7;
+  --hutanEcosystemCardScale: 0.7; }
+  .card-tooltip .tooltip-text {
+    margin-left: 10px; }
+    .card-tooltip .tooltip-text h2 {
+      text-decoration: underline; }
+    .card-tooltip .tooltip-text p {
+      max-width: 200px; }
+
 .player-board {
   order: 2; }
 
@@ -925,7 +936,8 @@ body {
       margin-top: -2px; }
   #popin_showScores table {
     margin: 30px;
-    font-size: 18px; }
+    font-size: 18px;
+    --hutanEcosystemCardScale: 0.12; }
     #popin_showScores table td,
     #popin_showScores table th {
       padding: 12px 15px;
@@ -946,6 +958,14 @@ body {
       color: #e10301; }
       #popin_showScores table tr#score-row-unfinishedAndMixed td span::before {
         content: "-"; }
+    #popin_showScores table tr.score-row-ecosystem th {
+      padding: 0px;
+      align-content: center;
+      display: flex;
+      justify-content: center; }
+      #popin_showScores table tr.score-row-ecosystem th .hutan-ecosystem-card-wrapper {
+        box-shadow: 1px 1px 12px 6px black;
+        border-radius: 2px; }
 
 #logs .log.notif_newTurn .roundedbox,
 .chatwindowlogs_zone .log.notif_newTurn.roundedbox {

@@ -25,3 +25,21 @@
     }
   }
 }
+
+.card-tooltip {
+  display: flex;
+  --hutanFlowerCardScale: 0.7;
+  --hutanEcosystemCardScale: 0.7;
+
+  .tooltip-text {
+    margin-left: 10px;
+
+    h2 {
+      text-decoration: underline;
+    }
+
+    p {
+      max-width: 200px;
+    }
+  }
+}

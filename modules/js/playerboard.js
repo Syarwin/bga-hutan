@@ -49,6 +49,18 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
             player.scores[scoringCategory]
           );
         });
+
+        // Scores ecosystem
+        if (this.gamedatas.ecosystemsTexts) {
+          Object.keys(this.gamedatas.ecosystemsTexts).forEach((id) => {
+            $(`score-row-ecosystem-${id}`).insertAdjacentHTML(
+              'beforeend',
+              `<td><span id='score-${player.id}-ecosystem-${id}'></span></td>`
+            );
+
+            this._scoresCounters[player.id][id] = this.createCounter(`score-${player.id}-ecosystem-${id}`, player.scores[id]);
+          });
+        }
       });
     },
 
@@ -58,9 +70,14 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       this.gamedatas.players[args.player_id].scores = args.scores;
 
       ['trees', 'animals', 'completedAreas', 'unfinishedAndMixed', 'overall'].forEach((scoringCategory) => {
-        console.log(scoringCategory);
         this._scoresCounters[args.player_id][scoringCategory].toValue(args.scores[scoringCategory]);
       });
+
+      if (this.gamedatas.ecosystemsTexts) {
+        Object.keys(this.gamedatas.ecosystemsTexts).forEach((id) => {
+          this._scoresCounters[args.player_id][id].toValue(args.scores[id]);
+        });
+      }
     },
 
     getCell(cell, pId = null) {

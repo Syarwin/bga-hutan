@@ -223,5 +223,30 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         <div class="hutan-pangolin-holder" id="pangolin-${player.id}"></div>
       </div>`;
     },
+
+    tplScoreModal() {
+      let content = `<table id='scoresheet'>
+        <tr id="score-row-name"><th>${this.formatIcon('player')}</th></tr>
+        <tr id="score-row-trees"><th>${this.formatIcon('tree')}</th></tr>
+        <tr id="score-row-animals"><th>${this.formatIcon('paw')}</th></tr>
+        <tr id="score-row-completedAreas"><th>${this.formatIcon('ok')}</th></tr>
+        <tr id="score-row-unfinishedAndMixed"><th>${this.formatIcon('nok')}</th></tr>`;
+
+      if (this.gamedatas.ecosystemsTexts) {
+        Object.keys(this.gamedatas.ecosystemsTexts).forEach((id) => {
+          content += `<tr id='score-row-ecosystem-${id}' class='score-row-ecosystem'>
+            <th>
+              <div class='hutan-ecosystem-card' data-id='${id}'>
+                <div class='hutan-ecosystem-card-wrapper'></div>
+              </div>
+            </th>
+          </tr>`;
+        });
+      }
+
+      content += `<tr id="score-row-overall"><th></th></tr>
+      </table>`;
+      return content;
+    },
   });
 });

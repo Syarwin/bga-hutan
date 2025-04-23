@@ -86,10 +86,29 @@ define([
 
       addFlowerCard(card, container = null) {
         let o = this.place('tplFlowerCard', card, container || $('flower-cards-holder'));
-        if (o !== undefined) {
-          let tooltip = JSON.stringify(card);
-          this.addCustomTooltip(o.id, tooltip, { midSize: false });
-        }
+
+        let names = {
+          b: _('Blue'),
+          y: _('Yellow'),
+          r: _('Red'),
+          w: _('White'),
+          g: _('Grey'),
+          j: _('Multicolor'),
+        };
+        let colors = card.flowers.map((type) => names[type]);
+        let text = colors.join(', ');
+
+        let tooltip = `<div class='card-tooltip'>
+          ${this.tplFlowerCard(card, true)}
+          <div class='tooltip-text'>
+            <h2>${_('Flower card')}</h2>
+            <p>
+              ${_('Color(s):') + text}
+            </p>
+          </div>
+        </div>`;
+
+        this.addCustomTooltip(o.id, tooltip, { midSize: false });
       },
 
       setupEcosystemCards() {
@@ -97,7 +116,15 @@ define([
         Object.entries(this.gamedatas.ecosystemsTexts).forEach(([id, text]) => {
           let o = this.place('tplEcosystemCard', { id }, $('ecosystem-cards-holder'));
 
-          let tooltip = _(text);
+          let tooltip = `<div class='card-tooltip'>
+            ${this.tplEcosystemCard({ id }, true)}
+            <div class='tooltip-text'>
+              <h2>${this.format_string_recursive(_('Ecosystem card n°${id}'), { id })}</h2>
+              <p>
+                ${_(text)}
+              </p>
+            </div>
+          </div>`;
           this.addCustomTooltip(o.id, tooltip, { midSize: false });
         });
       },
@@ -241,14 +268,7 @@ define([
           closeIcon: 'fa-times',
           closeAction: 'hide',
           verticalAlign: 'flex-start',
-          contentsTpl: `<table id='scoresheet'>
-             <tr id="score-row-name"><th>${this.formatIcon('player')}</th></tr>
-             <tr id="score-row-trees"><th>${this.formatIcon('tree')}</th></tr>
-             <tr id="score-row-animals"><th>${this.formatIcon('paw')}</th></tr>
-             <tr id="score-row-completedAreas"><th>${this.formatIcon('ok')}</th></tr>
-             <tr id="score-row-unfinishedAndMixed"><th>${this.formatIcon('nok')}</th></tr>
-             <tr id="score-row-overall"><th></th></tr>
-           </table>`,
+          contentsTpl: this.tplScoreModal(),
         });
         $('show-scores').addEventListener('click', () => this._scoresModal.show());
       },

@@ -69,5 +69,18 @@
         }
       }
     }
+
+    --hutanEcosystemCardScale: 0.12;
+    tr.score-row-ecosystem th {
+      padding: 0px;
+      align-content: center;
+      display: flex;
+      justify-content: center;
+
+      .hutan-ecosystem-card-wrapper {
+        box-shadow: 1px 1px 12px 6px black;
+        border-radius: 2px;
+      }
+    }
   }
 }
