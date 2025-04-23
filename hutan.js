@@ -102,7 +102,7 @@ define([
       },
 
       getFlowerCardContainer(card) {
-        return $('flower-cards-container');
+        return $('flower-cards-holder');
       },
 
       //////////////////////////////////////////

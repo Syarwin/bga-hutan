@@ -314,12 +314,82 @@
   width: 30px;
   height: 30px; }
 
+/********************
+* HORIZONTAL LAYOUT *
+********************/
+body {
+  overflow-x: hidden;
+  max-width: 100vw; }
+
+#overall-content {
+  overflow: initial !important;
+  max-width: 100vw; }
+  #overall-content[data-mode="1"] {
+    overflow: hidden !important; }
+
 #hutan-main-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap; }
+  flex-flow: row;
+  align-items: stretch; }
+  #hutan-main-container #flower-cards-container {
+    position: relative;
+    margin-right: 10px;
+    width: 270px;
+    flex-shrink: 0;
+    background: #f0f0f0;
+    border-radius: 5px;
+    border: 1px solid #737373; }
+    #hutan-main-container #flower-cards-container #flower-cards-container-sticky {
+      position: sticky;
+      top: 60px; }
+      #hutan-main-container #flower-cards-container #flower-cards-container-sticky #flower-cards-container-resizable {
+        transform-origin: top left; }
+        #hutan-main-container #flower-cards-container #flower-cards-container-sticky #flower-cards-container-resizable #flower-cards-holder {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-evenly; }
+  #hutan-main-container #player-boards-container-resizable #player-board-holder {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; }
+  #hutan-main-container #ecosystem-cards-container {
+    margin-left: 10px;
+    position: relative; }
+    #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky {
+      position: sticky;
+      top: 60px; }
+      #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable {
+        transform-origin: top left;
+        display: flex;
+        flex-flow: column; }
 
+/******************
+* VERTICAL LAYOUT *
+******************/
+@media (max-width: 1160px) {
+  #hutan-main-container {
+    flex-flow: column; }
+    #hutan-main-container #flower-cards-container {
+      flex-basis: 100%;
+      width: auto;
+      margin-right: 0px; }
+      #hutan-main-container #flower-cards-container #flower-cards-container-sticky {
+        position: initial; }
+        #hutan-main-container #flower-cards-container #flower-cards-container-sticky #flower-cards-container-resizable {
+          transform-origin: top left;
+          display: flex;
+          flex-flow: row; }
+          #hutan-main-container #flower-cards-container #flower-cards-container-sticky #flower-cards-container-resizable #flower-cards-holder {
+            justify-content: center;
+            width: 100%; }
+    #hutan-main-container #ecosystem-cards-container {
+      margin-left: 0px; }
+      #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky {
+        position: initial; }
+        #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable {
+          transform-origin: top left;
+          display: flex;
+          flex-flow: row; } }
 .hutan-player-board-resizable {
   width: calc(var(--hutanBoardScale) * 1024px);
   height: calc(var(--hutanBoardScale) * 1064px);
@@ -594,17 +664,6 @@
   .hutan-flower-card.selected .hutan-flower-card-wrapper {
     border-color: #fffb00;
     box-shadow: 0px 0px 5px 3px yellow; }
-
-#flower-cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  flex-basis: 100%;
-  background: #f8f8f8;
-  border-radius: 5px;
-  justify-content: center;
-  border: 1px solid black;
-  align-items: center;
-  height: 202px; }
 
 .player-board {
   order: 2; }

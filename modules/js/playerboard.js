@@ -25,7 +25,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       // Add player board and player panel
       this.orderedPlayers.forEach((player, i) => {
         // Player board
-        this.place('tplPlayerBoard', player, 'hutan-main-container');
+        this.place('tplPlayerBoard', player, 'player-board-holder');
 
         // Panels
         this.place('tplPlayerPanel', player, `overall_player_board_${player.id}`);
