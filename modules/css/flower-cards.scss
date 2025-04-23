@@ -4,6 +4,7 @@
   width: calc(var(--hutanFlowerCardScale) * 238px);
   height: calc(var(--hutanFlowerCardScale) * 374px);
   margin: 5px;
+  position: relative;
 
   .hutan-flower-card-wrapper {
     scale: var(--hutanFlowerCardScale);

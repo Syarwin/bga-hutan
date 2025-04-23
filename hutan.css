@@ -27,7 +27,8 @@
   font-display: swap; }
 :root {
   --hutanBoardScale: 0.6;
-  --hutanFlowerCardScale: 0.5; }
+  --hutanFlowerCardScale: 0.5;
+  --hutanEcosystemCardScale: 0.5; }
 
 .icon-container {
   display: inline-block;
@@ -324,8 +325,6 @@ body {
 #overall-content {
   overflow: initial !important;
   max-width: 100vw; }
-  #overall-content[data-mode="1"] {
-    overflow: hidden !important; }
 
 #hutan-main-container {
   display: flex;
@@ -336,7 +335,7 @@ body {
     margin-right: 10px;
     width: 270px;
     flex-shrink: 0;
-    background: #f0f0f0;
+    background: #f0f0f0cc;
     border-radius: 5px;
     border: 1px solid #737373; }
     #hutan-main-container #flower-cards-container #flower-cards-container-sticky {
@@ -348,25 +347,40 @@ body {
           display: flex;
           flex-wrap: wrap;
           justify-content: space-evenly; }
-  #hutan-main-container #player-boards-container-resizable #player-board-holder {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; }
+  #hutan-main-container #player-boards-container {
+    flex-grow: 1; }
+    #hutan-main-container #player-boards-container #player-boards-container-resizable #player-board-holder {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center; }
   #hutan-main-container #ecosystem-cards-container {
-    margin-left: 10px;
-    position: relative; }
-    #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky {
-      position: sticky;
-      top: 60px; }
-      #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable {
-        transform-origin: top left;
-        display: flex;
-        flex-flow: column; }
+    display: none; }
+    [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container {
+      display: block;
+      margin-left: 10px;
+      position: relative;
+      width: 270px;
+      flex-shrink: 0;
+      background: #f0f0f0cc;
+      border-radius: 5px;
+      border: 1px solid #737373; }
+      [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky {
+        position: sticky;
+        top: 60px; }
+        [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable {
+          transform-origin: top left; }
+          [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable #ecosystem-cards-holder {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly; }
 
 /******************
 * VERTICAL LAYOUT *
 ******************/
 @media (max-width: 1160px) {
+  #overall-content {
+    overflow: hidden !important; }
+
   #hutan-main-container {
     flex-flow: column; }
     #hutan-main-container #flower-cards-container {
@@ -381,15 +395,42 @@ body {
           flex-flow: row; }
           #hutan-main-container #flower-cards-container #flower-cards-container-sticky #flower-cards-container-resizable #flower-cards-holder {
             justify-content: center;
-            width: 100%; }
-    #hutan-main-container #ecosystem-cards-container {
-      margin-left: 0px; }
-      #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky {
+            width: 100%; } }
+@media (max-width: 1438px) {
+  [data-ecosystems="1"] #overall-content {
+    overflow: hidden !important; }
+  [data-ecosystems="1"] #hutan-main-container {
+    flex-flow: column;
+    order: 1; }
+    [data-ecosystems="1"] #hutan-main-container #flower-cards-container {
+      flex-basis: 100%;
+      width: auto;
+      margin-right: 0px; }
+      [data-ecosystems="1"] #hutan-main-container #flower-cards-container #flower-cards-container-sticky {
         position: initial; }
-        #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable {
+        [data-ecosystems="1"] #hutan-main-container #flower-cards-container #flower-cards-container-sticky #flower-cards-container-resizable {
           transform-origin: top left;
           display: flex;
-          flex-flow: row; } }
+          flex-flow: row; }
+          [data-ecosystems="1"] #hutan-main-container #flower-cards-container #flower-cards-container-sticky #flower-cards-container-resizable #flower-cards-holder {
+            justify-content: center;
+            width: 100%; }
+    [data-ecosystems="1"] #hutan-main-container #player-boards-container {
+      order: 3; }
+    [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container {
+      margin-left: 0px;
+      flex-basis: 100%;
+      width: auto;
+      order: 2; }
+      [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky {
+        position: initial; }
+        [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable {
+          transform-origin: top left;
+          display: flex;
+          flex-flow: row; }
+          [data-ecosystems="1"] #hutan-main-container #ecosystem-cards-container #ecosystem-cards-container-sticky #ecosystem-cards-container-resizable #ecosystem-cards-holder {
+            justify-content: center;
+            width: 100%; } }
 .hutan-player-board-resizable {
   width: calc(var(--hutanBoardScale) * 1024px);
   height: calc(var(--hutanBoardScale) * 1064px);
@@ -558,12 +599,14 @@ body {
 
 :root {
   --hutanBoardScale: 0.6;
-  --hutanFlowerCardScale: 0.5; }
+  --hutanFlowerCardScale: 0.5;
+  --hutanEcosystemCardScale: 0.5; }
 
 .hutan-flower-card {
   width: calc(var(--hutanFlowerCardScale) * 238px);
   height: calc(var(--hutanFlowerCardScale) * 374px);
-  margin: 5px; }
+  margin: 5px;
+  position: relative; }
   .hutan-flower-card .hutan-flower-card-wrapper {
     scale: var(--hutanFlowerCardScale);
     transform-origin: top left;
@@ -664,6 +707,102 @@ body {
   .hutan-flower-card.selected .hutan-flower-card-wrapper {
     border-color: #fffb00;
     box-shadow: 0px 0px 5px 3px yellow; }
+
+:root {
+  --hutanBoardScale: 0.6;
+  --hutanFlowerCardScale: 0.5;
+  --hutanEcosystemCardScale: 0.5; }
+
+.hutan-ecosystem-card {
+  width: calc(var(--hutanEcosystemCardScale) * 238px);
+  height: calc(var(--hutanEcosystemCardScale) * 374px);
+  margin: 5px;
+  position: relative; }
+  .hutan-ecosystem-card .hutan-ecosystem-card-wrapper {
+    scale: var(--hutanEcosystemCardScale);
+    transform-origin: top left;
+    width: 230px;
+    height: 366px;
+    background-image: url("img/ecosystems-cards.jpg");
+    background-size: 700% 400%;
+    border-radius: 15px;
+    box-shadow: 2px 2px 5px 1px black;
+    border: 4px solid white; }
+  .hutan-ecosystem-card[data-id="0"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 0%; }
+  .hutan-ecosystem-card[data-id="1"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 0%; }
+  .hutan-ecosystem-card[data-id="2"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 0%; }
+  .hutan-ecosystem-card[data-id="3"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 0%; }
+  .hutan-ecosystem-card[data-id="4"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 66.6666666667%;
+    background-position-y: 0%; }
+  .hutan-ecosystem-card[data-id="5"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 83.3333333333%;
+    background-position-y: 0%; }
+  .hutan-ecosystem-card[data-id="6"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 100%;
+    background-position-y: 0%; }
+  .hutan-ecosystem-card[data-id="7"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 33.3333333333%; }
+  .hutan-ecosystem-card[data-id="8"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 33.3333333333%; }
+  .hutan-ecosystem-card[data-id="9"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 33.3333333333%; }
+  .hutan-ecosystem-card[data-id="10"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 33.3333333333%; }
+  .hutan-ecosystem-card[data-id="11"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 66.6666666667%;
+    background-position-y: 33.3333333333%; }
+  .hutan-ecosystem-card[data-id="12"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 83.3333333333%;
+    background-position-y: 33.3333333333%; }
+  .hutan-ecosystem-card[data-id="13"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 100%;
+    background-position-y: 33.3333333333%; }
+  .hutan-ecosystem-card[data-id="14"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 66.6666666667%; }
+  .hutan-ecosystem-card[data-id="15"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 66.6666666667%; }
+  .hutan-ecosystem-card[data-id="16"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 66.6666666667%; }
+  .hutan-ecosystem-card[data-id="17"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 66.6666666667%; }
+  .hutan-ecosystem-card[data-id="18"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 66.6666666667%;
+    background-position-y: 66.6666666667%; }
+  .hutan-ecosystem-card[data-id="19"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 83.3333333333%;
+    background-position-y: 66.6666666667%; }
+  .hutan-ecosystem-card[data-id="20"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 100%;
+    background-position-y: 66.6666666667%; }
+  .hutan-ecosystem-card[data-id="21"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 0%;
+    background-position-y: 100%; }
+  .hutan-ecosystem-card[data-id="22"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 16.6666666667%;
+    background-position-y: 100%; }
+  .hutan-ecosystem-card[data-id="23"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 33.3333333333%;
+    background-position-y: 100%; }
+  .hutan-ecosystem-card[data-id="24"] .hutan-ecosystem-card-wrapper {
+    background-position-x: 50%;
+    background-position-y: 100%; }
 
 .player-board {
   order: 2; }

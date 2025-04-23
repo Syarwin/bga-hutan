@@ -52,6 +52,12 @@ define([
         this.setupMeeples();
         this.setupFlowerCards();
         this.updateZonesStatuses();
+
+        // Ecosystems
+        if (gamedatas.ecosystemsTexts) {
+          this.setupEcosystemCards();
+        }
+
         this.inherited(arguments);
       },
 
@@ -68,41 +74,32 @@ define([
       /////////////////////////////////
 
       setupFlowerCards() {
-        this.placeFlowerCards(this.gamedatas.flowerCards);
-      },
-
-      placeFlowerCards(cards) {
-        return cards.map((card) => {
+        this.gamedatas.flowerCards.forEach((card) => {
           if (!$(`flower-card-${card.id}`)) {
             this.addFlowerCard(card);
           }
 
           let o = $(`flower-card-${card.id}`);
           if (!o) return null;
-
-          let container = this.getFlowerCardContainer(card);
-          if (o.parentNode !== $(container)) {
-            dojo.place(o, container);
-          }
-
-          return o;
         });
       },
 
       addFlowerCard(card, container = null) {
-        if (container == null) {
-          container = this.getFlowerCardContainer(card);
-        }
-
-        let o = this.place('tplFlowerCard', card, container);
+        let o = this.place('tplFlowerCard', card, container || $('flower-cards-holder'));
         if (o !== undefined) {
           let tooltip = JSON.stringify(card);
           this.addCustomTooltip(o.id, tooltip, { midSize: false });
         }
       },
 
-      getFlowerCardContainer(card) {
-        return $('flower-cards-holder');
+      setupEcosystemCards() {
+        $('ebd-body').dataset.ecosystems = '1';
+        Object.entries(this.gamedatas.ecosystemsTexts).forEach(([id, text]) => {
+          let o = this.place('tplEcosystemCard', { id }, $('ecosystem-cards-holder'));
+
+          let tooltip = _(text);
+          this.addCustomTooltip(o.id, tooltip, { midSize: false });
+        });
       },
 
       //////////////////////////////////////////

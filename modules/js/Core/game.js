@@ -602,6 +602,35 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
       dojo.destroy(element);
     },
 
+    toggleHelpMode(b) {
+      if (b) this.activateHelpMode();
+      else this.desactivateHelpMode();
+    },
+
+    activateHelpMode() {
+      this._helpMode = true;
+      dojo.addClass('ebd-body', 'help-mode');
+      this._displayedTooltip = null;
+      document.body.addEventListener('click', this.closeCurrentTooltip.bind(this));
+    },
+
+    desactivateHelpMode() {
+      this.closeCurrentTooltip();
+      this._helpMode = false;
+      dojo.removeClass('ebd-body', 'help-mode');
+      document.body.removeEventListener('click', this.closeCurrentTooltip.bind(this));
+    },
+
+    closeCurrentTooltip() {
+      if (!this._helpMode) return;
+
+      if (this._displayedTooltip == null) return;
+      else {
+        this._displayedTooltip.close();
+        this._displayedTooltip = null;
+      }
+    },
+
     addCustomTooltip(id, html, config = {}) {
       config = Object.assign(
         {

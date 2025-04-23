@@ -44,6 +44,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         <div id="ecosystem-cards-container">
           <div id="ecosystem-cards-container-sticky">
             <div id="ecosystem-cards-container-resizable">
+              <div id="ecosystem-cards-holder"></div>
             </div>
           </div>
         </div>
@@ -57,11 +58,19 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     },
 
     tplFlowerCard(card, tooltip = false) {
-      let uid = 'flower-card-' + card.id;
+      let uid = (tooltip ? 'tooltip-' : '') + 'flower-card-' + card.id;
       let type = card.flowers.join('');
 
       return `<div id="${uid}" class='hutan-flower-card' data-id='${card.id}' data-type='${type}'>
           <div class='hutan-flower-card-wrapper'></div>
+        </div>`;
+    },
+
+    tplEcosystemCard(card, tooltip = false) {
+      let uid = (tooltip ? 'tooltip-' : '') + 'ecosystem-card-' + card.id;
+
+      return `<div id="${uid}" class='hutan-ecosystem-card' data-id='${card.id}'>
+          <div class='hutan-ecosystem-card-wrapper'></div>
         </div>`;
     },
 
