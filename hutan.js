@@ -271,6 +271,31 @@ define([
           contentsTpl: this.tplScoreModal(),
         });
         $('show-scores').addEventListener('click', () => this._scoresModal.show());
+
+        this.addTooltip('score-row-trees', _('Trees: count all your Trees and score 2 points for each.'), '');
+        this.addTooltip(
+          'score-row-animals',
+          _('Animals: each animal scores the point shown on the paw icon in their respective Areas.'),
+          ''
+        );
+        this.addTooltip(
+          'score-row-completedAreas',
+          _('Each completed Area scores the points shown in their respective Area icon.'),
+          ''
+        );
+        this.addTooltip(
+          'score-row-unfinishedAndMixed',
+          _(
+            'You score minus points for each unfinished and mixed Area. The minus value is the same as shown in their respective Area icon.'
+          ),
+          ''
+        );
+
+        if (this.gamedatas.ecosystemsTexts) {
+          Object.entries(this.gamedatas.ecosystemsTexts).forEach(([id, text]) => {
+            this.addTooltip(`score-row-ecosystem-${id}`, _(text), '');
+          });
+        }
       },
 
       onEnteringStateGameEnd(args) {
