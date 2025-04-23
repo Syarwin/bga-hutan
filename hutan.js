@@ -25,7 +25,6 @@ define([
   g_gamethemeurl + 'modules/js/common.js',
   g_gamethemeurl + 'modules/js/lexemes.js',
   g_gamethemeurl + 'modules/js/tpls.js',
-  g_gamethemeurl + 'modules/js/States/PhaseOne.js',
   g_gamethemeurl + 'modules/js/States/Turn.js',
 ], function (dojo, declare) {
   const ANIMAL_CASSOWARY = 'animal-cassowary';
@@ -37,7 +36,7 @@ define([
 
   return declare(
     'bgagame.hutan',
-    [customgame.game, hutan.playerboard, hutan.common, hutan.lexemes, hutan.phaseOne, hutan.turn, hutan.htmltemplates],
+    [customgame.game, hutan.playerboard, hutan.common, hutan.lexemes, hutan.turn, hutan.htmltemplates],
     {
       constructor() {
         // this.default_viewport = 'width=990';

@@ -37,7 +37,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       await Promise.all(
         args.cards.map((card, i) => {
           this.addFlowerCard(card, this.getVisibleTitleContainer());
-          return this.slide(`flower-card-${card.id}`, this.getFlowerCardContainer(card), {
+          return this.slide(`flower-card-${card.id}`, $('flower-cards-holder'), {
             delay: 100 * i,
             phantomEnd: true,
           });
@@ -57,7 +57,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       cardIds.forEach((cardId) => {
         this.onClick(`flower-card-${cardId}`, () => {
           let colors = $(`flower-card-${cardId}`).dataset.type.split('');
-          let data = { cardId, colors, flowers: {} };
+          let data = { cardId, colors, flowers: {}, flowersOrder: [] };
 
           // Joker card => select the color first
           if (colors.length === 1) {
@@ -225,6 +225,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       cells.forEach((cell) => {
         this.onClick(this.getCell(cell), () => {
           args.flowers[args.i] = cell;
+          args.flowersOrder.push(args.i);
           let isFinished = Object.values(args.flowers).length === args.colors.length;
           if (isFinished) {
             this.clientState('placeAnimal', _('You may place an animal'), args);

@@ -109,9 +109,10 @@ trait TurnTrait
 
     // Place flowers
     $flowers = [];
-    foreach ($turn['flowers'] as $i => $flower) {
+    foreach ($turn['flowersOrder'] as $i) {
+      $flower = $turn['flowers'][$i];
       $flower['color'] = $cardFlowers[$i];
-      $flowers[] = $flower;
+      $flowers[$i] = $flower;
     }
     $this->verifyTurnParams($flowers, $cardFlowers);
 
