@@ -5,7 +5,6 @@ namespace Bga\Games\Hutan\Models;
 use Bga\Games\Hutan\Game;
 use Bga\Games\Hutan\Helpers\Collection;
 use Bga\Games\Hutan\Helpers\DB_Model;
-use Bga\Games\Hutan\Helpers\Utils;
 use Bga\Games\Hutan\Managers\Ecosystems;
 use Bga\Games\Hutan\Managers\Meeples;
 
@@ -28,7 +27,6 @@ class Player extends DB_Model
     'zombie' => 'player_zombie',
   ];
   protected int $id;
-  protected int $flowerCardId;
 
   protected Board $board;
 

@@ -29,7 +29,6 @@ trait TurnTrait
   public function stEndOfTurnCleanup()
   {
     $player = Players::getActive();
-    Players::resetCounters();
 
     // Move pangolin to market if needed
     if (Globals::getPangolinLocation() === $player->getId() && !Globals::isPangolinPlayedThisTurn()) {
@@ -52,8 +51,7 @@ trait TurnTrait
       } else {
         $this->gamestate->jumpToState(ST_PREPARE_MARKET);
       }
-    }
-    // Still playing
+    } // Still playing
     else {
       $this->activeNextPlayer();
       $this->gamestate->jumpToState(ST_TURN);

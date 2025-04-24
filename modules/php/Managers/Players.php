@@ -123,11 +123,4 @@ class Players extends CachedDB_Manager
     } while ($p != $firstPlayer);
     return $order;
   }
-
-  public static function resetCounters()
-  {
-    self::DB()->update(
-      ['player_flower_card_id' => -1, 'player_joker_color' => '']
-    )->run();
-  }
 }
