@@ -58,7 +58,10 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
               `<td><span id='score-${player.id}-ecosystem-${id}'></span></td>`
             );
 
-            this._scoresCounters[player.id][id] = this.createCounter(`score-${player.id}-ecosystem-${id}`, player.scores[id]);
+            this._scoresCounters[player.id][id] = this.createCounter(
+              `score-${player.id}-ecosystem-${id}`,
+              player.scores.ecosystems[id]
+            );
           });
         }
       });
@@ -75,7 +78,8 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
 
       if (this.gamedatas.ecosystemsTexts) {
         Object.keys(this.gamedatas.ecosystemsTexts).forEach((id) => {
-          this._scoresCounters[args.player_id][id].toValue(args.scores[id]);
+          console.log(id, args.scores[id]);
+          this._scoresCounters[args.player_id][id].toValue(args.scores.ecosystems[id]);
         });
       }
     },
