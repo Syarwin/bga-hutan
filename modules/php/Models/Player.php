@@ -26,7 +26,6 @@ class Player extends DB_Model
     'score' => ['player_score', 'int'],
     'scoreAux' => ['player_score_aux', 'int'],
     'zombie' => 'player_zombie',
-    'flowerCardId' => 'player_flower_card_id',
   ];
   protected int $id;
   protected int $flowerCardId;

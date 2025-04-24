@@ -15,7 +15,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     notif_pangolinMovedToMarket(args) {
       debug('Notif: pangolinMovedToMarket', args);
       this.gamedatas.pangolin = LOCATION_TABLE;
-      return this.slide('meeple-pangolin', $('flower-cards-container'));
+      return this.slide('meeple-pangolin', $('flower-cards-holder'));
     },
   });
 });

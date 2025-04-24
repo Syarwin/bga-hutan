@@ -299,10 +299,11 @@
   background-position: 23.946037099494095% 2.6490066225165565%;
   background-size: 761.3382899628252%;
   aspect-ratio: 269 / 269;
-  width: 100px;
-  height: 100px;
+  width: 119px;
+  height: 119px;
   border-radius: 50%;
-  box-shadow: 2px 2px 5px 1px black; }
+  box-shadow: 2px 2px 5px 1px black;
+  margin: 5px; }
   #meeple-pangolin.selectable {
     box-shadow: 1px 1px 5px 1px red;
     cursor: pointer; }
@@ -314,6 +315,9 @@
 .hutan-pangolin-holder #meeple-pangolin {
   width: 30px;
   height: 30px; }
+
+#flower-cards-holder #meeple-pangolin {
+  margin: 40px 5px; }
 
 /********************
 * HORIZONTAL LAYOUT *

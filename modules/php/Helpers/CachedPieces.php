@@ -541,4 +541,30 @@ class CachedPieces extends DB_Manager
   {
     return self::create([$token])->first();
   }
+
+
+  /**
+   * Delete meeples
+   */
+  public static function delete($ids)
+  {
+    if (!is_array($ids)) {
+      $ids = [$ids];
+    }
+    if (empty($ids)) {
+      return [];
+    }
+
+    self::checkIdArray($ids);
+    $pieces = self::getMany($ids);
+    self::DB()
+      ->delete()
+      ->whereIn(static::$prefix . 'id', $ids)
+      ->run();
+    foreach ($ids as $id) {
+      unset(static::$datas[$id]);
+    }
+
+    return $pieces;
+  }
 }

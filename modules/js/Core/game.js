@@ -333,7 +333,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
 
     place(tplMethodName, object, container) {
       if ($(container) === null) {
-        console.error('Trying to place on null container', container);
+        console.error('Trying to place on null container', tplMethodName, object, container);
         return;
       }
 
@@ -728,6 +728,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
     clientState(name, descriptionmyturn, args) {
       this.setClientState(name, {
         descriptionmyturn,
+        description: descriptionmyturn,
         args,
       });
     },

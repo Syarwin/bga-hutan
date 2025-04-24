@@ -2,11 +2,14 @@
 
 namespace Bga\Games\Hutan\States;
 
+use \Bga\GameFramework\Actions\CheckAction;
+
 use Bga\Games\Hutan\Core\Globals;
 use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\GameFramework\Actions\Types\JsonParam;
+use Bga\Games\Hutan\Managers\Meeples;
 
 trait TurnTrait
 {
@@ -27,34 +30,55 @@ trait TurnTrait
   {
     $player = Players::getActive();
     Players::resetCounters();
-    $flowerCardId = $player->getFlowerCardId();
-    if (!Globals::isPangolinPlayedThisTurn() && $flowerCardId === 0) {
-      Globals::setPangolinPlayedThisTurn(true);
-    } else {
-      FlowerCards::move($flowerCardId, LOCATION_DISCARD);
-    }
+
+    // Move pangolin to market if needed
     if (Globals::getPangolinLocation() === $player->getId() && !Globals::isPangolinPlayedThisTurn()) {
       Globals::setPangolinLocation(LOCATION_TABLE);
       Notifications::pangolinMovedToMarket($player);
     }
-    $flowerCardsLeft = FlowerCards::getInLocation(LOCATION_TABLE);
-    if (Globals::isSolo() || ($flowerCardsLeft->count() === 0 && Globals::getPangolinLocation() !== LOCATION_TABLE)) {
-      // End of round
+
+    // Is round over ?
+    $remainingPIds = $this->getRemainingPlayersToPlay();
+    if (empty($remainingPIds)) {
+      // In solo => clear remaining flower cards
       if (Globals::isSolo()) {
         FlowerCards::moveAllInLocation(LOCATION_TABLE, LOCATION_DISCARD);
         Notifications::discardLeftoverFlowerCards();
       }
+
+      // Is end of game ?
       if (Globals::getTurn() === Globals::getMaxTurn()) {
         $this->gamestate->jumpToState(ST_END_GAME);
-        // End of game
       } else {
         $this->gamestate->jumpToState(ST_PREPARE_MARKET);
       }
-    } else {
-      // Still playing
+    }
+    // Still playing
+    else {
       $this->activeNextPlayer();
       $this->gamestate->jumpToState(ST_TURN);
     }
+  }
+
+  /**
+   * Return the list of player ids that need to take a turn this round
+   */
+  public function getRemainingPlayersToPlay(): array
+  {
+    $nLeft = FlowerCards::getInLocation(LOCATION_TABLE)->count();
+    if (Globals::isSolo()) {
+      $nLeft = $nLeft == 3 ? 1 : 0;
+    } else {
+      $nLeft += Globals::isPangolinPlayedThisTurn() ? 0 : 1;
+    }
+
+    $pIds = [];
+    $turnOrder = Players::getTurnOrder(Players::getActiveId());
+    for ($i = 0; $i < $nLeft; $i++) {
+      $pIds[] = $turnOrder[$i % count($turnOrder)];
+    }
+
+    return $pIds;
   }
 
 
@@ -77,6 +101,8 @@ trait TurnTrait
 
     $args = [
       'cards' => $playableCards,
+      'remainingPIds' => $this->getRemainingPlayersToPlay(),
+      '_private' => Globals::getPlannedTurns()
     ];
     if (!Globals::isSolo()) {
       $args['pangolin'] = Globals::getPangolinLocation();
@@ -85,24 +111,86 @@ trait TurnTrait
     return $args;
   }
 
+  public function stTurn()
+  {
+    $pId = Players::getActiveId();
+    $planned = Globals::getPlannedTurns();
+    $turn = $planned[$pId] ?? null;
+    if (is_null($turn)) return;
+
+    // Is the turn still valid?
+    $valid = true;
+
+    // Is the card/pangolin still available?
+    $cardId = (int)$turn['cardId'];
+    if ($cardId === 0) {
+      $valid = Globals::getPangolinLocation() == LOCATION_TABLE;
+    } else {
+      $valid = FlowerCards::getSingle($cardId)->getLocation() == LOCATION_TABLE;
+    }
+
+    // Is the animal still available, if any?
+    if ($valid && isset($turn['animal'])) {
+      $valid = !is_null(Meeples::getNextAvailableAnimal($turn['animal']));
+    }
+
+    // Try to take the turn
+    if ($valid) {
+      try {
+        $this->actTakeTurn($turn);
+      } catch (\BgaVisibleSystemException $exception) {
+        $valid = false;
+      }
+    }
+
+    if (!$valid) {
+      unset($planned[$pId]);
+      Globals::setPlannedTurns($planned);
+      // TODO: more gracefully inform the player that their planned turn was invalid??
+    }
+  }
+
+
+  #[CheckAction(false)]
+  public function actPlanTurn(#[JsonParam] array $turn): void
+  {
+    $player = Players::getCurrent();
+    $planned = Globals::getPlannedTurns();
+    $planned[$player->getId()] = $turn;
+    Globals::setPlannedTurns($planned);
+    Notifications::plannedTurn($player, $turn);
+  }
+
+  #[CheckAction(false)]
+  public function actCancelPlan(): void
+  {
+    $player = Players::getCurrent();
+    $planned = Globals::getPlannedTurns();
+    unset($planned[$player->getId()]);
+    Globals::setPlannedTurns($planned);
+    Notifications::cancelPlannedTurn($player);
+  }
+
   /**
    * @throws \BgaVisibleSystemException
    */
   public function actTakeTurn(#[JsonParam] array $turn): void
   {
-    $player = Players::getCurrent();
+    $player = Players::getActive();
 
     // Choose card
     $cardId = (int)$turn['cardId'];
-    $player->setFlowerCardId($cardId);  // We need that for EndOfTurnCleanup state
     if ($cardId === 0) {
       Globals::setPangolinLocation($player->getId());
+      Globals::setPangolinPlayedThisTurn(true);
 
       if (count($turn['colors']) > 1) {
         throw new \BgaVisibleSystemException(
           "More than one color is sent for Pangolin. That should not be possible"
         );
       }
+    } else {
+      FlowerCards::move($cardId, LOCATION_DISCARD);
     }
     $cardFlowers = $turn['colors'];
     Notifications::flowerCardChosen($player, $cardId);

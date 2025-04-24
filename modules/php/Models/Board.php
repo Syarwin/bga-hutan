@@ -328,7 +328,6 @@ class Board
 
   public function moveTreeToReserve(Meeple $tree)
   {
-    $tree->setLocation(LOCATION_RESERVE);
-    $tree->setPId(null);
+    Meeples::delete($tree->getId());
   }
 }

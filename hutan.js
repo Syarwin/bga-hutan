@@ -177,7 +177,7 @@ define([
           }
         });
 
-        if (!$('meeple-pangolin')) {
+        if (!$('meeple-pangolin') && this.gamedatas.pangolin) {
           this.addMeeple({ id: 'pangolin', location: this.gamedatas.pangolin, type: 'pangolin' });
         }
       },
@@ -206,7 +206,7 @@ define([
       getMeepleContainer(meeple) {
         // Pangolin
         if (meeple.type == 'pangolin') {
-          if (meeple.location == 'table') return $('flower-cards-container');
+          if (meeple.location == 'table') return $('flower-cards-holder');
           else return $(`pangolin-${meeple.location}`);
         }
         // Reserve

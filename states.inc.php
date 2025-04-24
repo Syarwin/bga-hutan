@@ -42,7 +42,8 @@ $machinestates = [
     'descriptionmyturn' => clienttranslate('${you} must choose a Flower card and place the corresponding Flowers'),
     'type' => 'activeplayer',
     'args' => 'argsTurn',
-    'possibleactions' => ['actTakeTurn'],
+    'action' => 'stTurn',
+    'possibleactions' => ['actTakeTurn', 'actPlanTurn', 'actCancelPlan'],
     'transitions' => ['' => ST_END_OF_TURN_CLEANUP],
   ],
 

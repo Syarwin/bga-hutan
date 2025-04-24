@@ -88,6 +88,18 @@ class Notifications
     self::notifyAll('discardLeftoverFlowerCards', '', []);
   }
 
+  public static function plannedTurn($player, $turn)
+  {
+    self::notify($player, 'plannedTurn', '', ['turn' => $turn]);
+    self::notifyAll('sync', '', []);
+  }
+
+  public static function cancelPlannedTurn($player)
+  {
+    self::notify($player, 'cancelPlannedTurn', '', []);
+    self::notifyAll('sync', '', []);
+  }
+
   ///////////////////////////////////////////////////////////////////////////////////
   //   ____                      _        __  __      _   _               _     
   //  / ___| ___ _ __   ___ _ __(_) ___  |  \/  | ___| |_| |__   ___   __| |___ 

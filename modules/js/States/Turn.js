@@ -27,6 +27,8 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       this._notifications.push('meeplePlaced');
       this._notifications.push('animalPlaced');
       this._notifications.push('discardLeftoverFlowerCards');
+      this._notifications.push('plannedTurn');
+      this._notifications.push('cancelPlannedTurn');
     },
 
     async notif_newTurn(args) {
@@ -50,7 +52,34 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     /////////////////////////////////////////////////////////
     onEnteringStateTurn(args) {
       if (this.isSpectator) return;
-      // TODO: if inactive, force the player to it a button "plan my next move" first
+
+      // Is the player inactive ?
+      if (!this.isCurrentPlayerActive()) {
+        // Is the player currently planning their next turn?
+        if (args.planTurn) {
+          this.addCancelStateBtn();
+        }
+        // Otherwise, offer them to plan their next turn only if they have one
+        else {
+          if (args.remainingPIds.includes(this.player_id)) {
+            // Have they planned something already?
+            if (args._private) {
+              this.addSecondaryActionButton('btnCancel', _('Cancel planned turn'), () => {
+                this.bgaPerformAction('actCancelPlan', {}, { checkAction: false });
+              });
+              this.highlightOngoingMoves(args._private);
+            }
+            // Fresh planification
+            else {
+              this.addPrimaryActionButton('btnPlan', _('Plan next turn'), () => {
+                args.planTurn = true;
+                this.clientState('turn', _('You must choose a Flower card and place the corresponding Flowers'), args);
+              });
+            }
+          }
+          return;
+        }
+      }
 
       // Cards
       let cardIds = args.cards[this.player_id];
@@ -73,13 +102,26 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       // Pangolin
       if (args.pangolin === LOCATION_TABLE) {
         let callbackPangolin = () => {
-          let data = { cardId: 0, flowers: {} };
+          let data = { cardId: 0, flowers: {}, flowersOrder: [] };
           this.clientState('chooseFlowerCardColor', _('Which flower do you want to place?'), data);
         };
 
         this.addPrimaryActionButton('pangolin', _('Take Pangolin'), callbackPangolin);
         this.onClick('meeple-pangolin', callbackPangolin);
       }
+    },
+
+    notif_plannedTurn(args) {
+      debug('Notif: planned turn', args);
+      this.last_server_state.args._private = args.turn;
+      this.restoreServerGameState();
+    },
+
+    notif_cancelPlannedTurn(args) {
+      debug('Notif: cancel planned turn', args);
+      delete this.gamedatas.gamestate.args._private;
+      delete this.last_server_state.args._private;
+      this.restoreServerGameState();
     },
 
     // Notif choose card
@@ -112,7 +154,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       // Normal flower card
       else {
         let oCard = $(`flower-card-${cardId}`);
-        oCard.classList.add('selected');
+        if (oCard) oCard.classList.add('selected');
       }
 
       // Place temporary flowers
@@ -404,8 +446,9 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       delete args.fertilizeIndex;
       delete args.i;
 
+      let action = this.isCurrentPlayerActive() ? 'actTakeTurn' : 'actPlanTurn';
       this.addPrimaryActionButton('btnConfirm', _('Confirm'), () =>
-        this.bgaPerformAction('actTakeTurn', { turn: JSON.stringify(args) })
+        this.bgaPerformAction(action, { turn: JSON.stringify(args) }, { checkAction: this.isCurrentPlayerActive() })
       );
     },
 

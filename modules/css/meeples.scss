@@ -35,10 +35,11 @@
 
 #meeple-pangolin {
   @include icon-pangolin;
-  width: 100px;
-  height: 100px;
+  width: 119px;
+  height: 119px;
   border-radius: 50%;
   box-shadow: 2px 2px 5px 1px black;
+  margin: 5px;
 
   &.selectable {
     box-shadow: 1px 1px 5px 1px red;
@@ -56,5 +57,10 @@
   #meeple-pangolin {
     width: 30px;
     height: 30px;
+  }
+}
+#flower-cards-holder {
+  #meeple-pangolin {
+    margin: 40px 5px;
   }
 }
