@@ -74,7 +74,7 @@ class Board
 
           // Unique zone id (each board has at most 4 zones)
           if ($zone != WATER) {
-            $zoneId = 4 * $k + $zone;
+            $zoneId = $zone;
             $this->zones[$zoneId]['cells'][] = ['x' => $x, 'y' => $y];
             $this->cellsZone[$x][$y] = $zoneId;
           } else {

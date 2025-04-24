@@ -143,6 +143,26 @@
         }
       }
 
+      // SPECIFIC ALIGNEMENT
+      .board-quadrant[data-board="4"] {
+        &[data-orientation="1"],
+        &[data-orientation="3"] {
+          & ~ .zone-info-19 {
+            grid-column-end: span 1 !important;
+          }
+        }
+      }
+
+      .board-quadrant[data-board="6"] {
+        &[data-orientation="1"],
+        &[data-orientation="3"] {
+          & ~ .zone-info-14 {
+            margin-left: -200%;
+          }
+        }
+      }
+      ////////////////////////
+
       .zone-infos-wrapper {
         display: flex;
         justify-content: center;

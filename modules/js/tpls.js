@@ -15,6 +15,40 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     5: [8, 12],
   };
 
+  const ZONE_SHAPES = {
+    // PINK_CIRCLE
+    0: '2',
+    1: '3I',
+    2: '2',
+    3: '2',
+    // RED_CIRCLE
+    4: '2',
+    5: '3L',
+    6: '3I',
+    // BLUE_CIRCLE
+    7: '4O',
+    8: '2',
+    9: '2',
+    // WHITE_CIRCLE
+    10: '4T',
+    11: '2',
+    12: '2',
+    // PINK_SQUARE
+    13: '2',
+    14: '5S',
+    15: '2',
+    // RED_SQUARE
+    16: '5L',
+    17: '3L',
+    // BLUE_SQUARE
+    18: '4L',
+    19: '4S',
+    // WHITE_SQUARE
+    20: '3I',
+    21: '2',
+    22: '3L',
+  };
+
   return declare('hutan.htmltemplates', null, {
     centralAreaHtml() {
       return `
@@ -149,6 +183,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
       // Zone indicators
       Object.entries(this.gamedatas.board.zones).forEach(([zoneId, zone]) => {
+        console.log(zoneId, zone);
         // Compute where to place the shape
         let minX = 6,
           minY = 6,
@@ -170,26 +205,9 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
         // Find info about that zone
         let scoring = ZONES_SCORING[zone.cells.length];
-        let shape = '';
-        switch (zone.cells.length) {
-          case 2:
-            shape = 'zone-2';
-            break;
+        let shape = 'zone-' + ZONE_SHAPES[zoneId];
 
-          case 3:
-            shape = minX != maxX && minY != maxY ? 'zone-3L' : 'zone-3I';
-            break;
-
-          case 4:
-            if (maxX == minX + 1 && maxY == minY + 1) shape = 'zone-4O';
-            // TODO
-            break;
-
-          default:
-            shape = 'zone-4S';
-        }
-
-        grid += `<div class='zone-infos-wrapper' style='grid-row-start:${minX + 1}; grid-column:${column}'>
+        grid += `<div class='zone-infos-wrapper zone-info-${zoneId}' style='grid-row-start:${minX + 1}; grid-column:${column}'>
           <div class='zone-infos'>
             <div class='zone-size-scoring'>
               <span id='zone-${player.id}-${zoneId}'>${scoring[0]}</span>${this.formatIcon(shape, null, false)}

@@ -559,6 +559,10 @@ body {
         .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="7"]::before {
           background-color: white;
           border-color: black; }
+      .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="4"][data-orientation="1"] ~ .zone-info-19, .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="4"][data-orientation="3"] ~ .zone-info-19 {
+        grid-column-end: span 1 !important; }
+      .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="6"][data-orientation="1"] ~ .zone-info-14, .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="6"][data-orientation="3"] ~ .zone-info-14 {
+        margin-left: -200%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper {
         display: flex;
         justify-content: center;
