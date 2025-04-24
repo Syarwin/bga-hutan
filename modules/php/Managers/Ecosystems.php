@@ -381,7 +381,7 @@ class Ecosystems
 
   private static function isDiagonallyAdjacent($firstObj, $secondObj): bool
   {
-    return abs($firstObj['x'] - $secondObj['x']) === 1 && abs($firstObj['y'] - $secondObj['x']) === 1;
+    return abs($firstObj['x'] - $secondObj['x']) === 1 && abs($firstObj['y'] - $secondObj['y']) === 1;
   }
 
   private static function isCoordContainLakeAnimalTree(Board $playerBoard, int $x, int $y): bool
