@@ -105,10 +105,10 @@ class Ecosystems
 
       case 16: // 5 points for each group of 3 or more connected Trees you have (not diagonally)
         $groupsOfConnectedTrees = static::findTreeGroups($player->getTrees()->toArray());
-        $groupsOfThree = array_filter($groupsOfConnectedTrees, function ($group) {
-          return count($group) === 3;
+        $groupsOfThreeOrMore = array_filter($groupsOfConnectedTrees, function ($group) {
+          return count($group) >= 3;
         });
-        return count($groupsOfThree) * 3;
+        return count($groupsOfThreeOrMore) * 5;
 
       case 17: // For each lake, score 1 point for every adjacent Tree you have (also diagonally)
         $lakes = $playerBoard->getWaterSpaces();
