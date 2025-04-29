@@ -145,6 +145,9 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       // TODO : improve client state to make it work like a stack
       this.addCancelStateBtn();
 
+      // Remove colors dial
+      if ($('colors-dial')) $('colors-dial').remove();
+
       // Highlight card //
       let cardId = args.cardId;
       // Pangolin
@@ -207,6 +210,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     onEnteringStateChooseFlowerCardColor(args) {
       this.highlightOngoingMoves(args);
 
+      let colorsByCells = {};
       Object.keys(COLORS_FULL_TYPE).forEach((type, i) => {
         // Ignore joker color
         if (type == 'j') return;
@@ -218,6 +222,44 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           this.clientState('placeFlower', _('Where do you want to place that flower?') + icon, args);
         });
         $(`flower${i}`).classList.add('flowerBtn');
+
+        let color = type;
+        let cells = this.getFlowerValidPosition(color, args.flowers);
+        cells.forEach((cell) => {
+          let uid = `${cell.x}-${cell.y}`;
+          if (!colorsByCells[uid]) colorsByCells[uid] = [];
+          if (!colorsByCells[uid].includes(color)) colorsByCells[uid].push(color);
+        });
+      });
+
+      // Allow to click on cell directly
+      Object.entries(colorsByCells).forEach(([cellUId, colors]) => {
+        let cell = this.extractCellFromUId(cellUId);
+        let oCell = this.getCell(cell);
+        this.onClick(oCell, () => {
+          if ($('colors-dial')) $('colors-dial').remove();
+
+          // Only one color can be placed here => autoplace
+          if (colors.length == 1) {
+            args.colors = colors;
+            this.auxPlaceFlower(args, 0, cell);
+          }
+          // Display a dial
+          else {
+            oCell.insertAdjacentHTML('beforeend', `<div id="colors-dial"></div>`);
+            colors.forEach((color) => {
+              $('colors-dial').insertAdjacentHTML(
+                'beforeend',
+                `<div id='dial-${color}' class='dial-selector'>${this.formatIcon(COLORS_FULL_TYPE[color])}</div>`
+              );
+              this.onClick(`dial-${color}`, () => {
+                args.colors = [color];
+                this.auxPlaceFlower(args, 0, cell);
+              });
+            });
+            $('colors-dial').dataset.n = colors.length;
+          }
+        });
       });
     },
 
@@ -241,6 +283,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       };
 
       let remainingColors = {};
+      let colorsByCells = {};
       for (let i = 0; i < args.colors.length; i++) {
         let color = args.colors[i];
         let icon = this.formatIcon(COLORS_FULL_TYPE[color]);
@@ -249,13 +292,62 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         $(`flower${i}`).classList.add('flowerBtn');
         $(`flower${i}`).classList.toggle('placed', isPlaced);
 
-        if (!isPlaced) remainingColors[i] = color;
+        if (!isPlaced) {
+          remainingColors[i] = color;
+          let cells = this.getFlowerValidPosition(color, args.flowers);
+          cells.forEach((cell) => {
+            let uid = `${cell.x}-${cell.y}`;
+            if (!colorsByCells[uid]) colorsByCells[uid] = [];
+            if (!colorsByCells[uid].includes(color)) colorsByCells[uid].push(color);
+          });
+        }
       }
 
       // Auto select if only one color type left
       if (Object.values(remainingColors).filter(onlyUnique).length === 1) {
         let i = Object.keys(remainingColors)[0];
         callback(i, false)();
+        return;
+      }
+
+      // Allow to click on cell
+      Object.entries(colorsByCells).forEach(([cellUId, colors]) => {
+        let cell = this.extractCellFromUId(cellUId);
+        let oCell = this.getCell(cell);
+        this.onClick(oCell, () => {
+          if ($('colors-dial')) $('colors-dial').remove();
+
+          // Only one color can be placed here => autoplace
+          if (colors.length == 1) {
+            let color = colors[0];
+            let i = Object.keys(remainingColors).find((key) => remainingColors[key] === color);
+            this.auxPlaceFlower(args, i, cell);
+          }
+          // Display a dial
+          else {
+            oCell.insertAdjacentHTML('beforeend', `<div id="colors-dial"></div>`);
+            colors.forEach((color) => {
+              let i = Object.keys(remainingColors).find((key) => remainingColors[key] === color);
+              $('colors-dial').insertAdjacentHTML(
+                'beforeend',
+                `<div id='dial-${color}' class='dial-selector'>${this.formatIcon(COLORS_FULL_TYPE[color])}</div>`
+              );
+              this.onClick(`dial-${color}`, () => this.auxPlaceFlower(args, i, cell));
+            });
+            $('colors-dial').dataset.n = colors.length;
+          }
+        });
+      });
+    },
+
+    auxPlaceFlower(args, i, cell) {
+      args.flowers[i] = cell;
+      args.flowersOrder.push(i);
+      let isFinished = Object.values(args.flowers).length === args.colors.length;
+      if (isFinished) {
+        this.clientState('placeAnimal', _('You may place an animal'), args);
+      } else {
+        this.clientState('placeFlowers', _('You must place the flowers on your board'), args);
       }
     },
 
@@ -266,14 +358,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       let cells = this.getFlowerValidPosition(args.colors[args.i], args.flowers);
       cells.forEach((cell) => {
         this.onClick(this.getCell(cell), () => {
-          args.flowers[args.i] = cell;
-          args.flowersOrder.push(args.i);
-          let isFinished = Object.values(args.flowers).length === args.colors.length;
-          if (isFinished) {
-            this.clientState('placeAnimal', _('You may place an animal'), args);
-          } else {
-            this.clientState('placeFlowers', _('You must place the flowers on your board'), args);
-          }
+          this.auxPlaceFlower(args, args.i, cell);
         });
       });
     },
@@ -325,6 +410,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
         if (isFullAndValid) {
           /// Any animal left of this type?
+          console.log(args.colors[i], COLOR_ANIMAL_MAP);
           let animalType = COLOR_ANIMAL_MAP[args.colors[i]];
           debug(`animal-reserve-animal-${animalType}-counter`);
           let counter = $(`animal-reserve-animal-${animalType}-counter`);
@@ -411,7 +497,8 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     onEnteringStateFertilizeChooseColor(args) {
       this.highlightOngoingMoves(args);
 
-      this.getCell(args.fertilizeCell).classList.add('selected');
+      let oCell = this.getCell(args.fertilizeCell);
+      oCell.classList.add('selected');
 
       let callback = (color) => {
         args.fertilized[args.fertilizeIndex] = {
@@ -428,11 +515,17 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
       // Otherwise, create buttons
       else {
+        oCell.insertAdjacentHTML('beforeend', `<div id="colors-dial"></div>`);
         args.fertilizeCell.colors.forEach((type, i) => {
           let icon = this.formatIcon(COLORS_FULL_TYPE[type]);
           this.addSecondaryActionButton(`flower${i}`, icon, () => callback(type));
           $(`flower${i}`).classList.add('flowerBtn');
+
+          let color = type;
+          $('colors-dial').insertAdjacentHTML('beforeend', `<div id='dial-${color}' class='dial-selector'>${icon}</div>`);
+          this.onClick(`dial-${color}`, () => callback(type));
         });
+        $('colors-dial').dataset.n = args.fertilizeCell.colors.length;
       }
     },
 

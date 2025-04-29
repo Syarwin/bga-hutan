@@ -334,6 +334,9 @@
   &.icon-flower-multi {
     @include icon-flower-multi;
   }
+  &.icon-flower-joker {
+    @include icon-flower-multi;
+  }
 
   &.icon-flower-red {
     @include icon-flower-red;

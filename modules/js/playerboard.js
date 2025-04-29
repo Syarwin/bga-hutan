@@ -89,6 +89,11 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
       return $(`cell-${pId}-${cell.x}-${cell.y}`);
     },
 
+    extractCellFromUId(uid) {
+      let t = uid.split('-');
+      return { x: parseInt(t[0]), y: parseInt(t[1]) };
+    },
+
     getFlowerValidPosition(color, previousFlowers) {
       let previousCells = Object.values(previousFlowers);
       let cells = [];

@@ -153,6 +153,11 @@
     background-position: 35.177453027139876% 62.61160714285714%;
     background-size: 1551.5151515151515%;
     aspect-ratio: 132 / 128; }
+  .hutan-icon.icon-flower-joker {
+    background: url("img/icons.png") no-repeat;
+    background-position: 35.177453027139876% 62.61160714285714%;
+    background-size: 1551.5151515151515%;
+    aspect-ratio: 132 / 128; }
   .hutan-icon.icon-flower-red {
     background: url("img/icons.png") no-repeat;
     background-position: 1.0810810810810811% 67.91767554479419%;
@@ -481,12 +486,68 @@ body {
           top: 50%;
           translate: -50% -50%; }
         .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell.selectable {
-          background: rgba(229, 255, 0, 0.3);
+          background: rgba(229, 255, 0, 0.5);
           cursor: pointer; }
           .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell.selectable:hover {
-            background: rgba(229, 255, 0, 0.6); }
+            background: rgba(229, 255, 0, 0.7); }
         .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell.selected {
-          background: rgba(229, 255, 0, 0.6); }
+          background: rgba(229, 255, 0, 0.7); }
+        .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial {
+          position: absolute;
+          left: 0;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-wrap: wrap;
+          cursor: default; }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial .dial-selector {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            background: white;
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+            border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: -31px;
+            font-size: 28px;
+            cursor: pointer; }
+            .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial .dial-selector:hover {
+              background: #e5ff00; }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="2"] .dial-selector:nth-of-type(1) {
+            transform: rotate(0deg) translate(50px) rotate(0deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="2"] .dial-selector:nth-of-type(2) {
+            transform: rotate(180deg) translate(50px) rotate(-180deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="3"] .dial-selector:nth-of-type(1) {
+            transform: rotate(0deg) translate(50px) rotate(0deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="3"] .dial-selector:nth-of-type(2) {
+            transform: rotate(120deg) translate(50px) rotate(-120deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="3"] .dial-selector:nth-of-type(3) {
+            transform: rotate(240deg) translate(50px) rotate(-240deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="4"] .dial-selector:nth-of-type(1) {
+            transform: rotate(0deg) translate(50px) rotate(0deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="4"] .dial-selector:nth-of-type(2) {
+            transform: rotate(90deg) translate(50px) rotate(-90deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="4"] .dial-selector:nth-of-type(3) {
+            transform: rotate(180deg) translate(50px) rotate(-180deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="4"] .dial-selector:nth-of-type(4) {
+            transform: rotate(270deg) translate(50px) rotate(-270deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="5"] .dial-selector:nth-of-type(1) {
+            transform: rotate(0deg) translate(50px) rotate(0deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="5"] .dial-selector:nth-of-type(2) {
+            transform: rotate(72deg) translate(50px) rotate(-72deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="5"] .dial-selector:nth-of-type(3) {
+            transform: rotate(144deg) translate(50px) rotate(-144deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="5"] .dial-selector:nth-of-type(4) {
+            transform: rotate(216deg) translate(50px) rotate(-216deg); }
+          .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-cell #colors-dial[data-n="5"] .dial-selector:nth-of-type(5) {
+            transform: rotate(288deg) translate(50px) rotate(-288deg); }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant {
         grid-row-end: span 3;
         grid-column-end: span 3;
