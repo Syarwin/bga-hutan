@@ -9,7 +9,7 @@
   &.icon-flower-red,
   &.icon-flower-white,
   &.icon-flower-yellow {
-    height: 6em;
+    height: 6.2em;
   }
 
   &.icon-tree-1,
@@ -20,7 +20,10 @@
   &.icon-tree-6,
   &.icon-tree-7,
   &.icon-tree-8 {
-    height: 6em;
+    height: 5.5em;
+  }
+  &.icon-tree-8 {
+    height: 5em;
   }
 
   &.icon-animal-cassowary,
@@ -28,7 +31,7 @@
   &.icon-animal-orangutan,
   &.icon-animal-rhinoceros,
   &.icon-animal-tiger {
-    height: 6em;
+    height: 5.5em;
     z-index: 200;
   }
 }

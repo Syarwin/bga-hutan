@@ -287,11 +287,13 @@
 .hutan-meeple.tmp {
   opacity: 0.7; }
 .hutan-meeple.icon-flower-grey, .hutan-meeple.icon-flower-blue, .hutan-meeple.icon-flower-joker, .hutan-meeple.icon-flower-red, .hutan-meeple.icon-flower-white, .hutan-meeple.icon-flower-yellow {
-  height: 6em; }
+  height: 6.2em; }
 .hutan-meeple.icon-tree-1, .hutan-meeple.icon-tree-2, .hutan-meeple.icon-tree-3, .hutan-meeple.icon-tree-4, .hutan-meeple.icon-tree-5, .hutan-meeple.icon-tree-6, .hutan-meeple.icon-tree-7, .hutan-meeple.icon-tree-8 {
-  height: 6em; }
+  height: 5.5em; }
+.hutan-meeple.icon-tree-8 {
+  height: 5em; }
 .hutan-meeple.icon-animal-cassowary, .hutan-meeple.icon-animal-hornbill, .hutan-meeple.icon-animal-orangutan, .hutan-meeple.icon-animal-rhinoceros, .hutan-meeple.icon-animal-tiger {
-  height: 6em;
+  height: 5.5em;
   z-index: 200; }
 
 #meeple-pangolin {
