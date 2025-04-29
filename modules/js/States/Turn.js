@@ -168,7 +168,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           if (args.animal && args.animal == i) {
             o = this.addMeeple({ id: `tmp-${i}`, type: `animal-${COLOR_ANIMAL_MAP[args.colors[i]]}` }, oCell);
           } else {
-            o = this.addMeeple({ id: `tmp-${i}`, type: `tree-${+i + 1}` }, oCell);
+            o = this.addMeeple({ id: `tmp-${i}`, type: `tree-${2 * (parseInt(i) % 4) + 1}` }, oCell);
           }
         }
         // Otherwise, basic flow
@@ -187,7 +187,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
           // Already something here ? => Place a tree instead
           if (oCell.querySelector('.hutan-meeple')) {
-            o = this.addMeeple({ id: `tmp-fertilize-${i}`, type: `tree-${+i + 1}` }, oCell);
+            o = this.addMeeple({ id: `tmp-fertilize-${i}`, type: `tree-${2 * (parseInt(i) % 4) + 1}` }, oCell);
           }
           // Otherwise, basic flow
           else {

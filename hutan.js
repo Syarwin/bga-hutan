@@ -186,7 +186,7 @@ define([
         if ($('meeple-' + meeple.id)) return;
 
         if (meeple.type == 'tree') {
-          meeple.type += '-' + Math.ceil(Math.random() * 8);
+          meeple.type += '-' + 2 * Math.ceil(Math.random() * 4);
         }
 
         let o = this.place('tplMeeple', meeple, location == null ? this.getMeepleContainer(meeple) : location);
