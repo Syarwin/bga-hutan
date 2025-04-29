@@ -31,6 +31,15 @@ class Notifications
     self::notifyAll('flowerCardChosen', $msg, $data);
   }
 
+  public static function flowerCardDiscard(Player $player, int $cardId)
+  {
+    self::notifyAll('flowerCardChosen', clienttranslate('${player_name} can\'t play and discards a flower card instead (${colors_desc})'), [
+      'player' => $player,
+      'flowerCardId' => $cardId,
+      'colors' => FlowerCards::getSingle($cardId)->getFlowers(),
+    ]);
+  }
+
   public static function meeplePlaced(Player $player, Meeple $meeple, bool $isFertilization = false)
   {
     $msg = $isFertilization ?

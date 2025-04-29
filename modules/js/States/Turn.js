@@ -109,6 +109,15 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
         this.addPrimaryActionButton('pangolin', _('Take Pangolin'), callbackPangolin);
         this.onClick('meeple-pangolin', callbackPangolin);
       }
+
+      // No move left
+      if (cardIds.length == 0 && args.pangolin !== LOCATION_TABLE) {
+        this.clientState(
+          'impossibleMove',
+          _("You can't play any flower card, please select the one you want to discard instead"),
+          {}
+        );
+      }
     },
 
     notif_plannedTurn(args) {
@@ -122,6 +131,22 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       delete this.gamedatas.gamestate.args._private;
       delete this.last_server_state.args._private;
       this.restoreServerGameState();
+    },
+
+    // No move possible
+    onEnteringStateImpossibleMove() {
+      $('flower-cards-holder')
+        .querySelectorAll('.hutan-flower-card')
+        .forEach((oCard) => {
+          this.onClick(oCard, () => {
+            this.clientState('confirmTurn', _('Please confirm your discard'), {
+              cardId: oCard.dataset.id,
+              flowers: {},
+              flowersOrder: [],
+              discard: true,
+            });
+          });
+        });
     },
 
     // Notif choose card

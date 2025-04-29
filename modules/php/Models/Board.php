@@ -237,6 +237,9 @@ class Board
 
   public function getPlacableColorsAtCell(int $x, int $y, ?array $availableColors = null): array
   {
+    // Cant place flower on water
+    if ($this->cellsZone[$x][$y] == WATER) return [];
+
     $availableColors = $availableColors ?? ALL_COLORS;
     $meeples = $this->getItemsAt($x, $y);
 

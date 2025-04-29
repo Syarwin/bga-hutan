@@ -175,6 +175,20 @@ trait TurnTrait
   public function actTakeTurn(#[JsonParam] array $turn): void
   {
     $player = Players::getActive();
+    $args = $this->argsTurn();
+    $cardIs = $args['cards'][$player->getId()];
+
+    // Impossible turn
+    if ($turn['discard'] ?? false) {
+      if (!empty($cardIs)) {
+        throw new \BgaVisibleSystemException("You have a valid card to play so you cant discard. That should not be possible");
+      }
+      $cardId = (int) $turn['cardId'];
+      FlowerCards::move($cardId, LOCATION_DISCARD);
+      Notifications::flowerCardDiscard($player, $cardId);
+      $this->gamestate->nextState('');
+      return;
+    }
 
     // Choose card
     $cardId = (int)$turn['cardId'];
@@ -188,6 +202,9 @@ trait TurnTrait
         );
       }
     } else {
+      if (!in_array($cardId, $cardIs)) {
+        throw new \BgaVisibleSystemException("Invalid card to play. That should not be possible");
+      }
       FlowerCards::move($cardId, LOCATION_DISCARD);
     }
     $cardFlowers = $turn['colors'];
