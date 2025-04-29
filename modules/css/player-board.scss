@@ -153,6 +153,19 @@
         }
       }
 
+      .board-quadrant[data-board="5"] {
+        &[data-orientation="2"] {
+          & ~ .zone-info-16 {
+            grid-column: 6 / span 1 !important;
+          }
+        }
+        &[data-orientation="3"] {
+          & ~ .zone-info-16 {
+            grid-column: 4 / span 1 !important;
+          }
+        }
+      }
+
       .board-quadrant[data-board="6"] {
         &[data-orientation="1"],
         &[data-orientation="3"] {
@@ -160,7 +173,20 @@
             margin-left: -200%;
           }
         }
+
+        &[data-orientation="3"] {
+          & ~ .zone-info-18 {
+            margin-left: -50%;
+          }
+        }
+
+        &[data-orientation="2"] {
+          & ~ .zone-info-18 {
+            grid-column: 6 / span 1 !important;
+          }
+        }
       }
+
       ////////////////////////
 
       .zone-infos-wrapper {

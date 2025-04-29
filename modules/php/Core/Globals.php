@@ -29,6 +29,12 @@ class Globals extends DB_Manager
     'solo' => 'bool',
   ];
 
+  // public static function getBoards()
+  // {
+  //   $or = NW;
+  //   return [[PINK_SQUARE, $or], [RED_SQUARE, $or], [BLUE_SQUARE, $or], [WHITE_SQUARE, $or]];
+  // }
+
   /*
    * Setup new game
    */
