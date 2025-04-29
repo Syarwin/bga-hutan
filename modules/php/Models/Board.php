@@ -144,7 +144,7 @@ class Board
           $animalsFound = !empty(array_intersect($meepleTypes, ANIMALS));
         }
       }
-      return $correctZone;
+      return $correctZone && ($animalsFound || !$withAnimalsOnly);
     });
     foreach ($zones as &$zone) {
       $zone['colors'] = Utils::getFlowerColorsForZone($this, $zone);
