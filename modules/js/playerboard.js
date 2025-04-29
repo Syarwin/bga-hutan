@@ -174,6 +174,8 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
     updateZonesStatus(pId) {
       let zones = this.gamedatas.board.zones;
       Object.entries(zones).forEach(([zoneId, zone]) => {
+        if (!$(`zone-${pId}-${zoneId}`)) return;
+
         let isFull = true,
           isValid = true,
           hasAnimal = false,
