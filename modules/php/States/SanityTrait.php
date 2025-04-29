@@ -53,7 +53,7 @@ trait SanityTrait
       }
     }
 
-    $playerBoard = Players::getCurrent()->board();
+    $playerBoard = Players::getActive()->board();
     foreach ($flowers as $flower) {
       $x = $flower['x'];
       $y = $flower['y'];

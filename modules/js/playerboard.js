@@ -78,7 +78,6 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
 
       if (this.gamedatas.ecosystemsTexts) {
         Object.keys(this.gamedatas.ecosystemsTexts).forEach((id) => {
-          console.log(id, args.scores[id]);
           this._scoresCounters[args.player_id][id].toValue(args.scores.ecosystems[id]);
         });
       }

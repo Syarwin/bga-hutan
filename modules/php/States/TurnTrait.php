@@ -104,6 +104,7 @@ trait TurnTrait
     ];
     if (!Globals::isSolo()) {
       $args['pangolin'] = Globals::getPangolinLocation();
+      $args['pangolinPlayed'] = Globals::isPangolinPlayedThisTurn();
     }
 
     return $args;
@@ -132,6 +133,10 @@ trait TurnTrait
       $valid = !is_null(Meeples::getNextAvailableAnimal($turn['animal']));
     }
 
+    // Clear the turn
+    unset($planned[$pId]);
+    Globals::setPlannedTurns($planned);
+
     // Try to take the turn
     if ($valid) {
       try {
@@ -142,8 +147,6 @@ trait TurnTrait
     }
 
     if (!$valid) {
-      unset($planned[$pId]);
-      Globals::setPlannedTurns($planned);
       // TODO: more gracefully inform the player that their planned turn was invalid??
     }
   }

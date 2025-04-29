@@ -100,7 +100,10 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       });
 
       // Pangolin
-      if (args.pangolin === LOCATION_TABLE) {
+      let canTakePangolin = args.pangolin === LOCATION_TABLE;
+      if (args.planTurn && !args.pangolinPlayed) canTakePangolin = true;
+
+      if (canTakePangolin) {
         let callbackPangolin = () => {
           let data = { cardId: 0, flowers: {}, flowersOrder: [] };
           this.clientState('chooseFlowerCardColor', _('Which flower do you want to place?'), data);
@@ -111,7 +114,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
 
       // No move left
-      if (cardIds.length == 0 && args.pangolin !== LOCATION_TABLE) {
+      if (cardIds.length == 0 && !canTakePangolin) {
         this.clientState(
           'impossibleMove',
           _("You can't play any flower card, please select the one you want to discard instead"),

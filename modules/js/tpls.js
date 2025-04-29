@@ -183,7 +183,6 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
       // Zone indicators
       Object.entries(this.gamedatas.board.zones).forEach(([zoneId, zone]) => {
-        console.log(zoneId, zone);
         // Compute where to place the shape
         let minX = 6,
           minY = 6,
