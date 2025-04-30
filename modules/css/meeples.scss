@@ -20,9 +20,11 @@
   &.icon-tree-6,
   &.icon-tree-7,
   &.icon-tree-8 {
+    margin-top: 0.8em;
     height: 5.5em;
   }
   &.icon-tree-8 {
+    margin-top: 1em;
     height: 5em;
   }
 
@@ -31,6 +33,7 @@
   &.icon-animal-orangutan,
   &.icon-animal-rhinoceros,
   &.icon-animal-tiger {
+    margin-top: 1em;
     height: 5.5em;
     z-index: 200;
   }
