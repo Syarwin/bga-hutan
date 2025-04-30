@@ -274,6 +274,8 @@ class Board
     $visited[] = "{$x}_{$y}";
     foreach ($colors as $color) {
       $key = array_search($color, $colorsToPlace);
+      if ($key === false) continue;
+
       unset($colorsToPlace[$key]);
 
       // We placed all the colors!
