@@ -9,6 +9,7 @@ use Bga\Games\Hutan\Core\Notifications;
 use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Managers\Players;
 use Bga\GameFramework\Actions\Types\JsonParam;
+use Bga\GameFramework\Notify;
 use Bga\Games\Hutan\Managers\Meeples;
 
 trait TurnTrait
@@ -47,6 +48,34 @@ trait TurnTrait
 
       // Is end of game ?
       if (Globals::getTurn() === Globals::getMaxTurn()) {
+        // Solo EOG
+        if (Globals::isSolo()) {
+          $player = Players::getActive();
+          $score = $player->getScore();
+
+          // < 80 is a LOSS
+          if ($score < 80) {
+            $player->setScore(-1);
+            Notifications::message(clienttranslate('You have not reached 80 points, try again!'));
+          }
+          // Otherwise, it's a win
+          else {
+            $msgs = [
+              80 => clienttranslate('You\'ve scored ${score}. A great start!'),
+              100 => clienttranslate('You\'ve scored ${score}. Well done!'),
+              120 => clienttranslate('You\'ve scored ${score}. Outstanding!'),
+              135 => clienttranslate('You\'ve scored ${score}. Expert!'),
+              150 => clienttranslate('You\'ve scored ${score}. Almost unbelievable!'),
+            ];
+            $msg = '';
+            foreach ($msgs as $threshold => $message) {
+              if ($score >= $threshold) $mg = $message;
+            }
+
+            Notifications::message($msg, ['score' => $score]);
+          }
+        }
+
         $this->gamestate->jumpToState(ST_END_GAME);
       } else {
         $this->gamestate->jumpToState(ST_PREPARE_MARKET);
