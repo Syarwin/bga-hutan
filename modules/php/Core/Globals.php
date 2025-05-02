@@ -76,6 +76,7 @@ class Globals extends DB_Manager
         $orientation = bga_rand(0, 3);
         $boards[] = [$boardId, $orientation];
       }
+      shuffle($boards);
     }
     static::setBoards($boards);
     static::setEcosystems($ecosystems);
