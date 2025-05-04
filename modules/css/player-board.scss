@@ -214,16 +214,16 @@
             translate: -100% 0%;
           }
         }
-      }
 
-      .board-quadrant[data-board="6"] {
         &[data-orientation="1"],
         &[data-orientation="3"] {
           & ~ .zone-info-14 {
             translate: -100% 0%;
           }
         }
+      }
 
+      .board-quadrant[data-board="6"] {
         &[data-orientation="3"] {
           & ~ .zone-info-18 {
             translate: -25% 0%;
