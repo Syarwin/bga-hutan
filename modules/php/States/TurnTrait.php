@@ -75,6 +75,14 @@ trait TurnTrait
             Notifications::message($msg, ['score' => $score]);
           }
         }
+        // Tie breaker
+        else {
+          $pangolinHolder = Globals::getPangolinLocation();
+          $turnOrder = Players::getTurnOrder($pangolinHolder);
+          foreach ($turnOrder as $pId) {
+            Players::get($pId)->setScoreAux(count($turnOrder) - $i);
+          }
+        }
 
         $this->gamestate->jumpToState(ST_END_GAME);
       } else {
