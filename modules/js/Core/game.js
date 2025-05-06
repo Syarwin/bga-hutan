@@ -507,6 +507,13 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
         func(evt);
       });
       this._connections.push(connection);
+
+      const connectionTap = dojo.connect($(element), 'tap', (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
+        func(evt);
+      });
+      this._connections.push(connectionTap);
     },
 
     addClass(element, clazz, removeAfter = false, delay = 1000) {
@@ -672,8 +679,9 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
         id
       );
 
-      dojo.connect($(id), 'click', (evt) => {
+      let clickCallback = (evt) => {
         if (!this._helpMode) {
+          if (tooltip.showTimeout != null) clearTimeout(tooltip.showTimeout);
           tooltip.close();
         } else {
           evt.stopPropagation();
@@ -686,7 +694,9 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
             this._displayedTooltip = tooltip;
           }
         }
-      });
+      };
+      dojo.connect($(id), 'click', clickCallback);
+      dojo.connect($(id), 'tap', clickCallback);
 
       tooltip.showTimeout = null;
       dojo.connect($(id), 'mouseenter', (evt) => {
