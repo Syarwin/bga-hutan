@@ -888,6 +888,7 @@ body {
 
 .card-tooltip {
   display: flex;
+  flex-wrap: wrap;
   --hutanFlowerCardScale: 0.7;
   --hutanEcosystemCardScale: 0.7; }
   .card-tooltip .tooltip-text {
