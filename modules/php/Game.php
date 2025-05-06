@@ -107,7 +107,13 @@ class Game extends \Table
    */
   function getGameProgression()
   {
-    return 51;
+    if (Globals::isSolo()) {
+      return 100 * (Globals::getTurn() - 1) / 18;
+    } else {
+      $pIds = $this->getRemainingPlayersToPlay();
+      $nPlayers = Players::count();
+      return 100 * (2 * $nPlayers * Globals::getTurn() - count($pIds)) / (2 * $nPlayers * 9);
+    }
   }
 
   ///////////////////////////
@@ -125,7 +131,7 @@ class Game extends \Table
   public function zombieTurn($state, $active_player): void
   {
     switch ($state['name']) {
-      // TODO
+        // TODO
     }
   }
 

@@ -32,8 +32,8 @@ $machinestates = [
     'description' => clienttranslate('Preparing market for the next round'),
     'type' => 'game',
     'action' => 'stPrepareMarket',
-    // 'transitions' => ['' => ST_PHASE_ONE_CHOOSE_FLOWER_CARD],
     'transitions' => ['' => ST_TURN],
+    'updateGameProgression' => true,
   ],
 
   ST_TURN => [
@@ -45,6 +45,7 @@ $machinestates = [
     'action' => 'stTurn',
     'possibleactions' => ['actTakeTurn', 'actPlanTurn', 'actCancelPlan'],
     'transitions' => ['' => ST_END_OF_TURN_CLEANUP],
+    'updateGameProgression' => true,
   ],
 
   ST_END_OF_TURN_CLEANUP => [
