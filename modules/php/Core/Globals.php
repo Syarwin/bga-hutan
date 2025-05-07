@@ -31,7 +31,7 @@ class Globals extends DB_Manager
 
   // public static function getBoards()
   // {
-  //   $or = NE;
+  //   $or = SE;
   //   return [[PINK_SQUARE, $or], [RED_SQUARE, $or], [BLUE_SQUARE, $or], [WHITE_SQUARE, $or]];
   // }
 

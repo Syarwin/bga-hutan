@@ -629,6 +629,8 @@ body {
         translate: -25% 0%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="2"] ~ .zone-info-16 {
         translate: 100% 0%; }
+      .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="2"] ~ .zone-info-14 {
+        translate: -100% 0%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="3"] ~ .zone-info-16 {
         translate: -100% 0%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="1"] ~ .zone-info-14, .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="3"] ~ .zone-info-14 {
@@ -637,6 +639,8 @@ body {
         translate: -25% 0%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="6"][data-orientation="2"] ~ .zone-info-18 {
         translate: 100% 0%; }
+      .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="6"][data-orientation="0"] ~ .zone-info-19 {
+        translate: 50% 0%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .zone-infos-wrapper {
         display: flex;
         justify-content: center;

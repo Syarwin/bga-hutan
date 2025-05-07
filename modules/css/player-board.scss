@@ -208,6 +208,9 @@
           & ~ .zone-info-16 {
             translate: 100% 0%;
           }
+          & ~ .zone-info-14 {
+            translate: -100% 0%;
+          }
         }
         &[data-orientation="3"] {
           & ~ .zone-info-16 {
@@ -233,6 +236,12 @@
         &[data-orientation="2"] {
           & ~ .zone-info-18 {
             translate: 100% 0%;
+          }
+        }
+
+        &[data-orientation="0"] {
+          & ~ .zone-info-19 {
+            translate: 50% 0%;
           }
         }
       }
