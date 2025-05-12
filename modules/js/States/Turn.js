@@ -464,7 +464,12 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           });
         });
 
-        this.addDangerActionButton('pass', _('Pass'), () => this.clientState('confirmTurn', _('Please confirm your turn'), args));
+        this.addDangerActionButton('pass', _('Pass'), () =>
+          this.confirmationDialog(
+            _("Are you sure you don't want to place an animal? You won't be able to place one in this perfect habitat(s) later."),
+            () => this.clientState('confirmTurn', _('Please confirm your turn'), args)
+          )
+        );
       }
     },
 
@@ -515,7 +520,11 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
           });
         });
 
-        this.addDangerActionButton('pass', _('Pass'), () => this.clientState('confirmTurn', _('Please confirm your turn'), args));
+        this.addDangerActionButton('pass', _('Pass'), () =>
+          this.confirmationDialog(_("Are you sure you don't want to fertilize the other place(s)?"), () =>
+            this.clientState('confirmTurn', _('Please confirm your turn'), args)
+          )
+        );
       }
     },
 
