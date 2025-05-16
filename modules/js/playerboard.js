@@ -113,13 +113,17 @@ define(['dojo', 'dojo/_base/declare', 'ebg/counter'], (dojo, declare) => {
           // Check adjacency to other ongoing flowers
           if (previousCells.length > 0) {
             let isValid = false;
+            let isOverPreviousCell = false;
             previousCells.forEach((cell) => {
               if (Math.abs(cell.x - x) + Math.abs(cell.y - y) == 1) {
                 isValid = true;
               }
+              if (Math.abs(cell.x - x) + Math.abs(cell.y - y) == 0) {
+                isOverPreviousCell = true;
+              }
             });
 
-            if (!isValid) continue;
+            if (!isValid || isOverPreviousCell) continue;
           }
           // Otherwise, check if it's connex
           else if (!this._emptyBoard) {
