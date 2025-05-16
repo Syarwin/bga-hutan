@@ -125,6 +125,7 @@ define([
             </div>
           </div>`;
           this.addCustomTooltip(o.id, tooltip, { midSize: false });
+          $(o.id).addEventListener('click', (evt) => this.tooltips[o.id].hoverCallback(evt));
         });
       },
 

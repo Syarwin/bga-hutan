@@ -501,19 +501,28 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
     },
 
     dojoConnect(element, func) {
-      const connection = dojo.connect($(element), 'click', (evt) => {
-        evt.preventDefault();
-        evt.stopPropagation();
-        func(evt);
-      });
-      this._connections.push(connection);
+      // const connection = dojo.connect($(element), 'click', (evt) => {
+      //   evt.preventDefault();
+      //   evt.stopPropagation();
+      //   func(evt);
+      // });
+      // this._connections.push(connection);
 
-      const connectionTap = dojo.connect($(element), 'tap', (evt) => {
+      const connectionDown = dojo.connect($(element), 'pointerdown', (evt) => {
         evt.preventDefault();
         evt.stopPropagation();
-        func(evt);
+        this._pointerDownElt = $(element);
       });
-      this._connections.push(connectionTap);
+      this._connections.push(connectionDown);
+
+      const connectionUp = dojo.connect($(element), 'pointerup', (evt) => {
+        evt.preventDefault();
+        evt.stopPropagation();
+        if ($(element) == this._pointerDownElt) {
+          func(evt);
+        }
+      });
+      this._connections.push(connectionUp);
     },
 
     addClass(element, clazz, removeAfter = false, delay = 1000) {
@@ -679,7 +688,7 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
         id
       );
 
-      let clickCallback = (evt) => {
+      tooltip.clickCallback = (evt) => {
         if (!this._helpMode) {
           if (tooltip.showTimeout != null) clearTimeout(tooltip.showTimeout);
           tooltip.close();
@@ -695,11 +704,10 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
           }
         }
       };
-      dojo.connect($(id), 'click', clickCallback);
-      dojo.connect($(id), 'tap', clickCallback);
+      dojo.connect($(id), 'click', tooltip.clickCallback.bind(this));
 
       tooltip.showTimeout = null;
-      dojo.connect($(id), 'mouseenter', (evt) => {
+      tooltip.hoverCallback = (evt) => {
         evt.stopPropagation();
         if (!this._helpMode && !this._dragndropMode) {
           if (tooltip.showTimeout != null) clearTimeout(tooltip.showTimeout);
@@ -708,7 +716,8 @@ define(['dojo', 'dojo/_base/declare', 'ebg/core/gamegui'], (dojo, declare) => {
             if ($(id)) tooltip.open($(id));
           }, config.delay);
         }
-      });
+      };
+      dojo.connect($(id), 'mouseenter', tooltip.hoverCallback.bind(this));
 
       dojo.connect($(id), 'mouseleave', (evt) => {
         evt.stopPropagation();
