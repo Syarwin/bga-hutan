@@ -52,15 +52,22 @@ trait TurnTrait
         if (Globals::isSolo()) {
           $player = Players::getActive();
           $score = $player->getScore();
+          $isStandard = empty(Globals::getEcosystems());
 
           // < 80 is a LOSS
-          if ($score < 80) {
+          if ($score < $isStandard ? 60 : 80) {
             $player->setScore(-1);
             Notifications::message(clienttranslate('You have not reached 80 points, try again!'));
           }
           // Otherwise, it's a win
           else {
-            $msgs = [
+            $msgs = $isStandard ? [
+              60 => clienttranslate('You\'ve scored ${score}. A great start!'),
+              70 => clienttranslate('You\'ve scored ${score}. Well done!'),
+              80 => clienttranslate('You\'ve scored ${score}. Outstanding!'),
+              90 => clienttranslate('You\'ve scored ${score}. Expert!'),
+              100 => clienttranslate('You\'ve scored ${score}. Almost unbelievable!'),
+            ] : [
               80 => clienttranslate('You\'ve scored ${score}. A great start!'),
               100 => clienttranslate('You\'ve scored ${score}. Well done!'),
               120 => clienttranslate('You\'ve scored ${score}. Outstanding!'),
