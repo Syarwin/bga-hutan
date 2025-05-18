@@ -98,6 +98,8 @@ trait TurnTrait
     } // Still playing
     else {
       $this->activeNextPlayer();
+      $pId = $this->getActivePlayerId();
+      $this->giveExtraTime($pId);
       $this->gamestate->jumpToState(ST_TURN);
     }
   }
