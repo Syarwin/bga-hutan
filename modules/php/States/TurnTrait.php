@@ -55,9 +55,9 @@ trait TurnTrait
           $isStandard = empty(Globals::getEcosystems());
 
           // < 80 is a LOSS
-          if ($score < $isStandard ? 60 : 80) {
+          if ($score < ($isStandard ? 60 : 80)) {
             $player->setScore(-1);
-            Notifications::message(clienttranslate('You have not reached 80 points, try again!'));
+            Notifications::message($isStandard ? clienttranslate('You have not reached 60 points, try again!') : clienttranslate('You have not reached 80 points, try again!'));
           }
           // Otherwise, it's a win
           else {

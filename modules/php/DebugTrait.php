@@ -2,6 +2,7 @@
 
 namespace Bga\Games\Hutan;
 
+use Bga\Games\Hutan\Core\Globals;
 use Bga\Games\Hutan\Managers\FlowerCards;
 use Bga\Games\Hutan\Managers\Players;
 
@@ -15,9 +16,11 @@ trait DebugTrait
 
   public function tp()
   {
-    $card = FlowerCards::getSingle(43);
-    $player = Players::getCurrent();
-    $board = $player->board();
-    var_dump($board->canPlayCard($card));
+    // $card = FlowerCards::getSingle(43);
+    // $player = Players::getCurrent();
+    // $board = $player->board();
+    // var_dump($board->canPlayCard($card));
+    $isStandard = empty(Globals::getEcosystems());
+    var_dump($isStandard);
   }
 }
