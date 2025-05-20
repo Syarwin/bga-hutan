@@ -57,9 +57,11 @@ trait TurnTrait
           // < 80 is a LOSS
           if ($score < ($isStandard ? 60 : 80)) {
             $player->setScore(-1);
-            Notifications::message($isStandard ? clienttranslate('You have not reached 60 points, try again!') : clienttranslate('You have not reached 80 points, try again!'));
-          }
-          // Otherwise, it's a win
+            Notifications::message(
+              $isStandard ? clienttranslate('You have not reached 60 points, try again!') :
+                clienttranslate('You have not reached 80 points, try again!')
+            );
+          } // Otherwise, it's a win
           else {
             $msgs = $isStandard ? [
               60 => clienttranslate('You\'ve scored ${score}. A great start!'),
@@ -76,13 +78,12 @@ trait TurnTrait
             ];
             $msg = '';
             foreach ($msgs as $threshold => $message) {
-              if ($score >= $threshold) $mg = $message;
+              if ($score >= $threshold) $msg = $message;
             }
 
             Notifications::message($msg, ['score' => $score]);
           }
-        }
-        // Tie breaker
+        } // Tie breaker
         else {
           $pangolinHolder = Globals::getPangolinLocation();
           $turnOrder = Players::getTurnOrder($pangolinHolder);
@@ -230,9 +231,11 @@ trait TurnTrait
     // Impossible turn
     if ($turn['discard'] ?? false) {
       if (!empty($cardIs)) {
-        throw new \BgaVisibleSystemException("You have a valid card to play so you cant discard. That should not be possible");
+        throw new \BgaVisibleSystemException(
+          "You have a valid card to play so you cant discard. That should not be possible"
+        );
       }
-      $cardId = (int) $turn['cardId'];
+      $cardId = (int)$turn['cardId'];
       FlowerCards::move($cardId, LOCATION_DISCARD);
       Notifications::flowerCardDiscard($player, $cardId);
       $this->gamestate->nextState('');
