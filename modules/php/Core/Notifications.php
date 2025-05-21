@@ -33,11 +33,15 @@ class Notifications
 
   public static function flowerCardDiscard(Player $player, int $cardId)
   {
-    self::notifyAll('flowerCardChosen', clienttranslate('${player_name} can\'t play and discards a flower card instead (${colors_desc})'), [
-      'player' => $player,
-      'flowerCardId' => $cardId,
-      'colors' => FlowerCards::getSingle($cardId)->getFlowers(),
-    ]);
+    self::notifyAll(
+      'flowerCardChosen',
+      clienttranslate('${player_name} can\'t play and discards a flower card instead (${colors_desc})'),
+      [
+        'player' => $player,
+        'flowerCardId' => $cardId,
+        'colors' => FlowerCards::getSingle($cardId)->getFlowers(),
+      ]
+    );
   }
 
   public static function meeplePlaced(Player $player, Meeple $meeple, bool $isFertilization = false)
@@ -71,7 +75,9 @@ class Notifications
       ANIMAL_HORNBILL => clienttranslate('a Hornbill <ANIMAL-HORNBILL>'),
     ];
 
-    self::notifyAll('animalPlaced', '${player_name} places ${animal_desc} on his board (${coords})', [
+    $msg = clienttranslate('${player_name} places ${animal_desc} on his board (${coords})');
+
+    self::notifyAll('animalPlaced', $msg, [
       'player' => $player,
       'animal' => $animal,
       'animal_desc' => $animalNames[$animal->getType()],
