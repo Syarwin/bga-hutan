@@ -87,7 +87,7 @@ trait TurnTrait
         else {
           $pangolinHolder = Globals::getPangolinLocation();
           $turnOrder = Players::getTurnOrder($pangolinHolder);
-          foreach ($turnOrder as $pId) {
+          foreach ($turnOrder as $i => $pId) {
             Players::get($pId)->setScoreAux(count($turnOrder) - $i);
           }
         }
