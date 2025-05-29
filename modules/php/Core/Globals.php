@@ -19,6 +19,8 @@ class Globals extends DB_Manager
     'pangolinLocation' => 'str',
     'pangolinPlayedThisTurn' => 'bool',
     'plannedTurns' => 'obj',
+    'endGameText' => 'str',
+    'endGameStars' => 'int',
 
     // Setup
     'scenario' => 'int',

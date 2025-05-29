@@ -299,6 +299,8 @@ define([
       },
 
       onEnteringStateGameEnd(args) {
+        debug('onEnteringStateGameEnd', args);
+        dojo.place(this.tplEndGameText(this.gamedatas.endGameStars, this.gamedatas.endGameText), 'popin_showScores');
         this._scoresModal.show();
       },
 
@@ -344,7 +346,14 @@ define([
       },
 
       formatString(str) {
-        const ICONS = ['ANIMAL-CASSOWARY', 'ANIMAL-ORANGUTAN', 'ANIMAL-TIGER', 'ANIMAL-HORNBILL', 'ANIMAL-RHINOCEROS', 'TREE-5'];
+        const ICONS = [
+          'ANIMAL-CASSOWARY',
+          'ANIMAL-ORANGUTAN',
+          'ANIMAL-TIGER',
+          'ANIMAL-HORNBILL',
+          'ANIMAL-RHINOCEROS',
+          'TREE-5'
+        ];
 
         ICONS.forEach((name) => {
           str = str.replaceAll(new RegExp('<' + name + '>', 'g'), this.formatIcon(name));

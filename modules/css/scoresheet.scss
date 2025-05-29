@@ -4,6 +4,7 @@
   position: relative;
   border-radius: 8px;
   box-shadow: 1px 1px 3px black;
+  max-width: min-content;
 
   #popin_showScores_close {
     background-color: #30952d;
@@ -31,6 +32,7 @@
       margin-top: -2px;
     }
   }
+
   table {
     margin: 30px;
     font-size: 18px;
@@ -64,6 +66,7 @@
     tr#score-row-unfinishedAndMixed td {
       span {
         color: #e10301;
+
         &::before {
           content: "-";
         }
@@ -71,6 +74,7 @@
     }
 
     --hutanEcosystemCardScale: 0.12;
+
     tr.score-row-ecosystem th {
       padding: 0px;
       align-content: center;
@@ -80,6 +84,28 @@
       .hutan-ecosystem-card-wrapper {
         box-shadow: 1px 1px 12px 6px black;
         border-radius: 2px;
+      }
+    }
+  }
+
+  #end-game-text-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "DK Sensory Overload";
+    font-size: 24px;
+    gap: 10px;
+    margin-bottom: 10px;
+
+    #end-game-text {
+      text-align: center;
+    }
+
+    #end-game-stars {
+      display: flex;
+
+      .hutan-icon {
+        height: 2.5em;
       }
     }
   }

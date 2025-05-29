@@ -53,36 +53,39 @@ trait TurnTrait
           $player = Players::getActive();
           $score = $player->getScore();
           $isStandard = empty(Globals::getEcosystems());
+          $msg = '';
+          $stars = 0;
 
           // < 80 is a LOSS
           if ($score < ($isStandard ? 60 : 80)) {
             $player->setScore(-1);
-            Notifications::message(
-              $isStandard ? clienttranslate('You have not reached 60 points, try again!') :
-                clienttranslate('You have not reached 80 points, try again!')
-            );
+            $msg = $isStandard ? clienttranslate('You have not reached 60 points, try again!') :
+              clienttranslate('You have not reached 80 points, try again!');
           } // Otherwise, it's a win
           else {
             $msgs = $isStandard ? [
-              60 => clienttranslate('You\'ve scored ${score}. A great start!'),
-              70 => clienttranslate('You\'ve scored ${score}. Well done!'),
-              80 => clienttranslate('You\'ve scored ${score}. Outstanding!'),
-              90 => clienttranslate('You\'ve scored ${score}. Expert!'),
-              100 => clienttranslate('You\'ve scored ${score}. Almost unbelievable!'),
+              60 => ['text' => clienttranslate('A great start!'), 'stars' => 1],
+              70 => ['text' => clienttranslate('Well done!'), 'stars' => 2],
+              80 => ['text' => clienttranslate('Outstanding!'), 'stars' => 3],
+              90 => ['text' => clienttranslate('Expert!'), 'stars' => 4],
+              100 => ['text' => clienttranslate('Almost unbelievable!'), 'stars' => 5],
             ] : [
-              80 => clienttranslate('You\'ve scored ${score}. A great start!'),
-              100 => clienttranslate('You\'ve scored ${score}. Well done!'),
-              120 => clienttranslate('You\'ve scored ${score}. Outstanding!'),
-              135 => clienttranslate('You\'ve scored ${score}. Expert!'),
-              150 => clienttranslate('You\'ve scored ${score}. Almost unbelievable!'),
+              80 => ['text' => clienttranslate('A great start!'), 'stars' => 1],
+              100 => ['text' => clienttranslate('Well done!'), 'stars' => 2],
+              120 => ['text' => clienttranslate('Outstanding!'), 'stars' => 3],
+              135 => ['text' => clienttranslate('Expert!'), 'stars' => 4],
+              150 => ['text' => clienttranslate('Almost unbelievable!'), 'stars' => 5],
             ];
-            $msg = '';
-            foreach ($msgs as $threshold => $message) {
-              if ($score >= $threshold) $msg = $message;
+            foreach ($msgs as $threshold => $messageAndStars) {
+              if ($score >= $threshold) {
+                $msg = $messageAndStars['text'];
+                $stars = $messageAndStars['stars'];
+              };
             }
-
-            Notifications::message($msg, ['score' => $score]);
           }
+          Globals::setEndGameText($msg);
+          Globals::setEndGameStars($stars);
+          Notifications::endGameScores($player, $msg, $stars);
         } // Tie breaker
         else {
           $pangolinHolder = Globals::getPangolinLocation();

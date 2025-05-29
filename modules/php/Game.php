@@ -87,6 +87,8 @@ class Game extends \Table
       'players' => Players::getUiData(),
 
       'turn' => Globals::getTurn(),
+      'endGameText' => Globals::getEndGameText(),
+      'endGameStars' => Globals::getEndGameStars(),
     ];
     $ecosystemsIds = Globals::getEcosystems();
     if ($ecosystemsIds) {
@@ -131,7 +133,7 @@ class Game extends \Table
   public function zombieTurn($state, $active_player): void
   {
     switch ($state['name']) {
-        // TODO
+      // TODO
     }
   }
 

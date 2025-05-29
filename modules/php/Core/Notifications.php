@@ -115,6 +115,11 @@ class Notifications
     self::notifyAll('sync', '', []);
   }
 
+  public static function endGameScores($player, $text, $stars)
+  {
+    self::notify($player, 'endGameScores', '', ['text' => $text, 'stars' => $stars]);;
+  }
+
   ///////////////////////////////////////////////////////////////////////////////////
   //   ____                      _        __  __      _   _               _     
   //  / ___| ___ _ __   ___ _ __(_) ___  |  \/  | ___| |_| |__   ___   __| |___ 
