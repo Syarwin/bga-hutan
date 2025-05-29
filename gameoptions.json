@@ -11,6 +11,16 @@
       },
       "1": {
         "name": "Base"
+      },
+      "2": {
+        "name": "Advanced",
+        "tmdisplay": "[Ecosystem]",
+        "description": "Play with 5 Ecosystem cards",
+        "nobeginner": true
+      },
+      "3": {
+        "name": "Scenarios",
+        "description": "Play a pre-built layout"
       }
     }
   },
