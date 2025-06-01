@@ -82,6 +82,10 @@ class Globals extends DB_Manager
     }
     static::setBoards($boards);
     static::setEcosystems($ecosystems);
+    // We set end game text here because if player abandons game in the middle, they should have some text set
+    $msg = empty($ecosystems) ? clienttranslate('You have not reached 60 points, try again!') :
+      clienttranslate('You have not reached 80 points, try again!');
+    Globals::setEndGameText($msg);
   }
 
   private static function getRandomEcosystems(): array

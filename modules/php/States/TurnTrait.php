@@ -59,8 +59,6 @@ trait TurnTrait
           // < 80 is a LOSS
           if ($score < ($isStandard ? 50 : 80)) {
             $player->setScore(-1);
-            $msg = $isStandard ? clienttranslate('You have not reached 60 points, try again!') :
-              clienttranslate('You have not reached 80 points, try again!');
           } // Otherwise, it's a win
           else {
             $msgs = $isStandard ? [
@@ -82,10 +80,10 @@ trait TurnTrait
                 $stars = $messageAndStars['stars'];
               };
             }
+            Globals::setEndGameText($msg);
+            Globals::setEndGameStars($stars);
+            Notifications::endGameScores($player, $msg, $stars);
           }
-          Globals::setEndGameText($msg);
-          Globals::setEndGameStars($stars);
-          Notifications::endGameScores($player, $msg, $stars);
         } // Tie breaker
         else {
           $pangolinHolder = Globals::getPangolinLocation();

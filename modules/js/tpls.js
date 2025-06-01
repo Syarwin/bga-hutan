@@ -269,8 +269,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
     tplEndGameText(starsAmount, text) {
       let stars = new Array(starsAmount).fill(this.tplFlowerIcon('icon-flower-yellow'));
       for (let i = 0; i < 5 - starsAmount; i++) {
-        // TODO: Change to empty flower
-        stars.push(this.tplFlowerIcon('icon-flower-grey'));
+        stars.push(this.tplFlowerIcon('icon-flower-empty'));
       }
       return `
 <div id="end-game-text-block">
