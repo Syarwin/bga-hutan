@@ -75,6 +75,7 @@ class Game extends \Table
   public function getAllDatas(): array
   {
     $board = new Board(null);
+    $isSolo = Globals::isSolo();
     $data = [
       'board' => [
         'ids' => Globals::getBoards(),
@@ -87,8 +88,8 @@ class Game extends \Table
       'players' => Players::getUiData(),
 
       'turn' => Globals::getTurn(),
-      'endGameText' => Globals::getEndGameText(),
-      'endGameStars' => Globals::getEndGameStars(),
+      'endGameText' => $isSolo ? Globals::getEndGameText() : null,
+      'endGameStars' => $isSolo ? Globals::getEndGameStars() : null,
     ];
     $ecosystemsIds = Globals::getEcosystems();
     if ($ecosystemsIds) {
@@ -98,7 +99,7 @@ class Game extends \Table
       }
       $data['ecosystemsTexts'] = $ecosystems;
     }
-    if (!Globals::isSolo()) {
+    if (!$isSolo) {
       $data['pangolin'] = Globals::getPangolinLocation();
     }
     return $data;

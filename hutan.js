@@ -300,7 +300,9 @@ define([
 
       onEnteringStateGameEnd(args) {
         debug('onEnteringStateGameEnd', args);
-        dojo.place(this.tplEndGameText(this.gamedatas.endGameStars, this.gamedatas.endGameText), 'popin_showScores');
+        if (this.gamedatas.endGameText) {
+          dojo.place(this.tplEndGameText(this.gamedatas.endGameStars, this.gamedatas.endGameText), 'popin_showScores');
+        }
         this._scoresModal.show();
       },
 
