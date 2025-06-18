@@ -57,18 +57,18 @@ trait TurnTrait
           $stars = 0;
 
           // < 80 is a LOSS
-          if ($score < ($isStandard ? 60 : 80)) {
+          if ($score < ($isStandard ? 50 : 80)) {
             $player->setScore(-1);
             $msg = $isStandard ? clienttranslate('You have not reached 60 points, try again!') :
               clienttranslate('You have not reached 80 points, try again!');
           } // Otherwise, it's a win
           else {
             $msgs = $isStandard ? [
-              60 => ['text' => clienttranslate('A great start!'), 'stars' => 1],
-              70 => ['text' => clienttranslate('Well done!'), 'stars' => 2],
-              80 => ['text' => clienttranslate('Outstanding!'), 'stars' => 3],
-              90 => ['text' => clienttranslate('Expert!'), 'stars' => 4],
-              100 => ['text' => clienttranslate('Almost unbelievable!'), 'stars' => 5],
+              50 => ['text' => clienttranslate('A great start!'), 'stars' => 1],
+              60 => ['text' => clienttranslate('Well done!'), 'stars' => 2],
+              70 => ['text' => clienttranslate('Outstanding!'), 'stars' => 3],
+              80 => ['text' => clienttranslate('Expert!'), 'stars' => 4],
+              90 => ['text' => clienttranslate('Almost unbelievable!'), 'stars' => 5],
             ] : [
               80 => ['text' => clienttranslate('A great start!'), 'stars' => 1],
               100 => ['text' => clienttranslate('Well done!'), 'stars' => 2],

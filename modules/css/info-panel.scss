@@ -4,12 +4,15 @@
 
 #info-panel {
   order: 1;
+  border-radius: 7px;
+  box-shadow: 1px 1px 1px #404040;
+  border: 1px solid #424242;
 
   .info-panel-row {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding: 5px 0px;
+    padding: 1px 0px;
     border-bottom: 1px solid #80502e;
     &:last-child {
       border-bottom: none;
@@ -18,29 +21,31 @@
   }
 
   #turn-counter-wrapper {
-    border-bottom: 1px solid #6a4b2f;
+    // border-bottom: 1px solid #6a4b2f;
     margin: 0px 3px;
     text-align: center;
     font-size: 27px;
     font-family: "Hawlers Two";
     display: block;
     position: relative;
-    padding-top: 0px;
-    line-height: 37px;
-    padding-bottom: 0px;
+    line-height: 31px;
+    padding: 6px 0px 0px;
   }
 
   #player_config {
     padding-bottom: 8px;
+    margin-bottom: 4px;
 
     #show-scores {
       svg {
-        width: 33px;
+        width: 30px;
         cursor: pointer;
       }
     }
 
     #help-mode-switch {
+      zoom: 0.8;
+
       .checkbox {
         display: none;
       }
@@ -85,6 +90,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      display: none;
 
       &:hover {
         color: grey;

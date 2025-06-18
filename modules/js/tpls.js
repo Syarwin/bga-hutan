@@ -128,10 +128,6 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 
       return `
    <div class='player-board' id="info-panel">
-      <div class="info-panel-row" id="turn-counter-wrapper">
-        ${_('Turn')} <span id="turn-number">1</span> / <span id="max-turns">8</span>
-      </div>
-
      <div class="info-panel-row" id="player_config">
         <div id="show-scores">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
@@ -140,6 +136,10 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
               <path class="fa-primary" fill="currentColor" d="M314 320.3l-54.7-8-24.5-49.6a12 12 0 0 0-21.5 0l-24.5 49.6-54.7 8a12 12 0 0 0-6.6 20.5l39.6 38.6-9.4 54.6a12 12 0 0 0 17.4 12.6l48.9-25.8 49 25.8a12 12 0 0 0 17.4-12.6l-9.4-54.6 39.6-38.6a12 12 0 0 0-6.6-20.5zM400 64h-48v48a16 16 0 0 1-16 16h-32a16 16 0 0 1-16-16V64H160v48a16 16 0 0 1-16 16h-32a16 16 0 0 1-16-16V64H48a48 48 0 0 0-48 48v80h448v-80a48 48 0 0 0-48-48z"></path>
             </g>
           </svg>
+        </div>
+
+        <div id="turn-counter-wrapper">
+          ${_('Turn')} <span id="turn-number">1</span> / <span id="max-turns">8</span>
         </div>
 
         <div id="help-mode-switch">
@@ -276,7 +276,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
 <div id="end-game-text-block">
   <div id="end-game-text">${text}</div>
   <div id="end-game-stars">${stars.join('')}</div>
-</div>`
+</div>`;
     },
   });
 });

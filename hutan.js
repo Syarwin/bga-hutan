@@ -232,7 +232,7 @@ define([
       //////////////////////////////////////////////////////
 
       setupInfoPanel() {
-        dojo.place(this.tplInfoPanel(ANIMALS), 'player_boards', 'first');
+        dojo.place(this.tplInfoPanel(ANIMALS), 'flower-cards-container', 'first');
 
         // Mutators observers
         ANIMALS.forEach((type) => {
@@ -346,14 +346,7 @@ define([
       },
 
       formatString(str) {
-        const ICONS = [
-          'ANIMAL-CASSOWARY',
-          'ANIMAL-ORANGUTAN',
-          'ANIMAL-TIGER',
-          'ANIMAL-HORNBILL',
-          'ANIMAL-RHINOCEROS',
-          'TREE-5'
-        ];
+        const ICONS = ['ANIMAL-CASSOWARY', 'ANIMAL-ORANGUTAN', 'ANIMAL-TIGER', 'ANIMAL-HORNBILL', 'ANIMAL-RHINOCEROS', 'TREE-5'];
 
         ICONS.forEach((name) => {
           str = str.replaceAll(new RegExp('<' + name + '>', 'g'), this.formatIcon(name));
