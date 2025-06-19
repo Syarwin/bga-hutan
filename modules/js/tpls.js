@@ -273,7 +273,7 @@ define(['dojo', 'dojo/_base/declare'], (dojo, declare) => {
       }
       return `
 <div id="end-game-text-block">
-  <div id="end-game-text">${text}</div>
+  <div id="end-game-text">${_(text)}</div>
   <div id="end-game-stars">${stars.join('')}</div>
 </div>`;
     },
