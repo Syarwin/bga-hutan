@@ -246,6 +246,11 @@ trait TurnTrait
     // Choose card
     $cardId = (int)$turn['cardId'];
     if ($cardId === 0) {
+      if (Globals::getPangolinLocation() != LOCATION_TABLE) {
+        throw new \BgaVisibleSystemException(
+          "You cant take the Pangolin token. That should not be possible"
+        );
+      }
       Globals::setPangolinLocation($player->getId());
       Globals::setPangolinPlayedThisTurn(true);
 
