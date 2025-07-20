@@ -204,6 +204,11 @@
       }
 
       .board-quadrant[data-board="5"] {
+        &[data-orientation="0"] {
+          & ~ .zone-info-14 {
+            translate: -100% 0%;
+          }
+        }
         &[data-orientation="2"] {
           & ~ .zone-info-16 {
             translate: 100% 0%;

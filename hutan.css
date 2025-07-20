@@ -627,6 +627,8 @@ body {
           border-color: black; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="4"][data-orientation="1"] ~ .zone-info-19, .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="4"][data-orientation="3"] ~ .zone-info-19 {
         translate: -25% 0%; }
+      .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="0"] ~ .zone-info-14 {
+        translate: -100% 0%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="2"] ~ .zone-info-16 {
         translate: 100% 0%; }
       .hutan-player-board-resizable .hutan-player-board .hutan-board-grid .board-quadrant[data-board="5"][data-orientation="2"] ~ .zone-info-14 {
